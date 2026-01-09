@@ -694,6 +694,12 @@ from core.views import SubscriptionPlan
 def paymob_checkout(request):
     try: teacher = request.user.teacher_profile
     except: return redirect('home')
+
+    # +++++ الشرط الجديد: ممنوع الدفع لو الاشتراك ساري +++++
+    if teacher.has_active_subscription():
+        messages.warning(request, "اشتراكك ما زال سارياً. لا يمكنك الاشتراك في باقة جديدة الآن.")
+        return redirect('subscription_info')
+    # ++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
     plan_id = request.GET.get('plan_id')
     method = request.GET.get('method', 'card') # card or wallet

@@ -78,7 +78,9 @@ def complete_profile(request):
                 )
             
             elif user.role == 'teacher':
-                default_plan = SubscriptionPlan.objects.order_by('price').first()
+                default_plan = SubscriptionPlan.objects.filter(is_default=True).first()
+                if not default_plan: # لو مفيش، ناخد الأرخص كاحتياطي
+                    default_plan = SubscriptionPlan.objects.order_by('price').first()
                 TeacherProfile.objects.update_or_create(
                     user=saved_user,
                     defaults={

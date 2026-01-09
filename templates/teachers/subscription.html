@@ -69,6 +69,10 @@
                     <div class="mt-auto d-grid gap-2">
                         {% if is_active and plan.id == teacher.current_plan.id %}
                             <button class="btn btn-light border disabled">{% trans "مشترك" %}</button>
+                        {% elif is_active %}
+                            <button class="btn btn-secondary w-100 disabled">
+                                {% trans "لا يمكن التغيير والاشتراك ساري" %}
+                            </button>
                         {% else %}
                             <a href="{% url 'paymob_checkout' %}?plan_id={{ plan.id }}&method=card" class="btn btn-outline-primary fw-bold">
                                 <i class="bi bi-credit-card"></i> {% trans "فيزا" %}

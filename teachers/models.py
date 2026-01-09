@@ -36,7 +36,14 @@ class SubscriptionPlan(models.Model):
     # --- صلاحيات (نعم/لا) ---
     allow_online_packages = models.BooleanField(default=False, verbose_name=_("مسموح بالحزم الأونلاين"))
     allow_question_images = models.BooleanField(default=False, verbose_name=_("مسموح بصور الأسئلة"))
-    
+    is_default = models.BooleanField(default=False, verbose_name=_("باقة افتراضية (مجانية)"))
+
+    def save(self, *args, **kwargs):
+        # لو اخترت دي افتراضية، الغي الافتراضي من الباقي
+        if self.is_default:
+            SubscriptionPlan.objects.filter(is_default=True).update(is_default=False)
+            
+        super().save(*args, **kwargs)
     def __str__(self):
         return f"{self.name} ({self.price} EGP)"
 
