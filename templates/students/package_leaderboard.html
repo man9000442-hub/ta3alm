@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "ترتيب الحزمة" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-warning"><i class="bi bi-trophy-fill"></i> {% trans "لوحة شرف الحزمة" %}</h2>
+        <p class="text-muted">{{ package.title }}</p>
+        <a href="{% url 'my_package_content' package.id %}" class="btn btn-sm btn-outline-secondary mt-2">{% trans "عودة للمحتوى" %}</a>
+    </div>
+
+    <!-- كارت ترتيبي -->
+    {% if my_rank %}
+    <div class="card bg-dark text-white mb-4 border-0 shadow text-center p-4">
+        <h3>{% trans "ترتيبك:" %} <span class="text-warning fw-bold">#{{ my_rank }}</span></h3>
+    </div>
+    {% endif %}
+
+    <!-- الجدول -->
+    <div class="card shadow border-0">
+        <table class="table table-hover align-middle mb-0 text-center">
+            <thead class="table-light">
+                <tr><th>{% trans "المركز" %}</th><th>{% trans "الطالب" %}</th><th>{% trans "النقاط" %}</th></tr>
+            </thead>
+            <tbody>
+                {% for item in leaderboard %}
+                <tr class="{% if item.student == user.student_profile %}table-warning fw-bold{% endif %}">
+                    <td>{{ item.rank }}</td>
+                    <td>{{ item.student.user.first_name }} {{ item.student.user.last_name }}</td>
+                    <td>{{ item.score }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

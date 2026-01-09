@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load socialaccount %} {% block title %}{% trans "تسجيل الدخول" %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-5 text-center">
+                
+                <h2 class="mb-4 fw-bold text-primary">{% trans "مرحباً بعودتك!" %}</h2>
+                <p class="text-muted mb-4">{% trans "سجل دخولك للمنصة للمتابعة" %}</p>
+
+                <form action="{% provider_login_url 'google' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-light border btn-lg w-100 d-flex align-items-center justify-content-center gap-2 py-3 shadow-sm hover-shadow">
+                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="24" height="24" alt="Google Logo">
+                        <span class="fw-bold text-dark">{% trans "المتابعة باستخدام Google" %}</span>
+                    </button>
+                </form>
+
+                <hr class="my-4">
+                
+                <p class="small text-muted">
+                    {% trans "ليس لديك حساب؟" %} 
+                    <a href="{% url 'home' %}" class="text-decoration-none fw-bold">{% trans "أنشئ حساباً جديداً من الرئيسية" %}</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-shadow:hover {
+        background-color: #f8f9fa;
+        transform: translateY(-2px);
+        transition: all 0.2s;
+    }
+</style>
+{% endblock %}

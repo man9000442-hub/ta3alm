@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "مدفوعات الطلاب" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-primary"><i class="bi bi-receipt me-2"></i> {% trans "سجل مبيعات الحزم (للطلاب)" %}</h2>
+        <a href="{% url 'owner_dashboard' %}" class="btn btn-outline-secondary">{% trans "عودة" %}</a>
+    </div>
+
+    <!-- الإجمالي -->
+    <div class="alert alert-info shadow-sm d-flex justify-content-between align-items-center mb-4">
+        <span class="fw-bold">{% trans "إجمالي المبيعات:" %}</span>
+        <h3 class="mb-0 text-dark fw-bold">{{ total_revenue }} <span class="fs-6">EGP</span></h3>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle text-center mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>{% trans "الطالب" %}</th>
+                        <th>{% trans "المعلم" %}</th>
+                        <th>{% trans "الحزمة" %}</th>
+                        <th>{% trans "المبلغ" %}</th>
+                        <th>{% trans "التاريخ" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pay in payments %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td class="fw-bold">{{ pay.student.user.first_name }} {{ pay.student.user.last_name }}</td>
+                        <td>{{ pay.package.teacher.user.first_name }}</td>
+                        <td>{{ pay.package.title }}</td>
+                        <td class="text-success fw-bold">{{ pay.package.price }} EGP</td>
+                        <td class="text-muted small">{{ pay.joined_at|date:"d/m/Y H:i" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="6" class="py-4 text-muted">{% trans "لا توجد عمليات بيع حتى الآن." %}</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

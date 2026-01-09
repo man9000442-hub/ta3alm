@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "امتحان:" %} {{ exam.title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <!-- العداد (مثبت في الأعلى) -->
+    <div class="sticky-top bg-white py-3 border-bottom mb-4 d-flex justify-content-between align-items-center shadow-sm px-3 rounded">
+        <h4 class="mb-0 fw-bold text-primary">{{ exam.title }}</h4>
+        <div class="d-flex align-items-center">
+            <i class="bi bi-stopwatch text-danger fs-4 me-2"></i>
+            <div class="h4 fw-bold text-danger mb-0" id="timer">00:00</div>
+        </div>
+    </div>
+
+    <form method="POST" id="examForm">
+        {% csrf_token %}
+        
+        {% for q in questions %}
+        <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-body p-4">
+                <h5 class="fw-bold mb-3 d-flex justify-content-between">
+                    <span>{{ forloop.counter }}. {{ q.text }}</span>
+                    <span class="badge bg-light text-dark border">{{ q.marks }} {% trans "درجات" %}</span>
+                </h5>
+                
+                <!-- عرض الصورة (إذا وجدت) -->
+                {% if q.image %}
+                    <div class="mb-3 text-center">
+                        <img src="{{ q.image.url }}" class="img-fluid rounded border" style="max-height: 300px;">
+                    </div>
+                {% endif %}
+                
+                <!-- الاختيارات -->
+                <div class="vstack gap-2">
+                    <div class="form-check p-3 border rounded hover-bg">
+                        <input class="form-check-input ms-2" type="radio" name="question_{{ q.id }}" value="A" id="q{{ q.id }}a" required>
+                        <label class="form-check-label w-100 cursor-pointer" for="q{{ q.id }}a">{{ q.option_a }}</label>
+                    </div>
+                    <div class="form-check p-3 border rounded hover-bg">
+                        <input class="form-check-input ms-2" type="radio" name="question_{{ q.id }}" value="B" id="q{{ q.id }}b">
+                        <label class="form-check-label w-100 cursor-pointer" for="q{{ q.id }}b">{{ q.option_b }}</label>
+                    </div>
+                    <div class="form-check p-3 border rounded hover-bg">
+                        <input class="form-check-input ms-2" type="radio" name="question_{{ q.id }}" value="C" id="q{{ q.id }}c">
+                        <label class="form-check-label w-100 cursor-pointer" for="q{{ q.id }}c">{{ q.option_c }}</label>
+                    </div>
+                    <div class="form-check p-3 border rounded hover-bg">
+                        <input class="form-check-input ms-2" type="radio" name="question_{{ q.id }}" value="D" id="q{{ q.id }}d">
+                        <label class="form-check-label w-100 cursor-pointer" for="q{{ q.id }}d">{{ q.option_d }}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        
+        <div class="d-grid mt-5">
+            <button type="submit" class="btn btn-success btn-lg fw-bold py-3 shadow" onclick="return confirm('{% trans "هل أنت متأكد من تسليم الإجابات؟" %}')">
+                {% trans "تسليم الامتحان" %}
+            </button>
+        </div>
+    </form>
+</div>
+
+<style>
+    .hover-bg:hover { background-color: #f8f9fa; border-color: #0d6efd !important; }
+    .cursor-pointer { cursor: pointer; }
+</style>
+
+<script>
+    // المدة بالدقائق من الباك إند
+    let duration = {{ exam.duration_minutes }} * 60; 
+    
+    function startTimer() {
+        let timer = duration, minutes, seconds;
+        const display = document.querySelector('#timer');
+        
+        const interval = setInterval(function () {
+            minutes = parseInt(timer / 60, 10);
+            seconds = parseInt(timer % 60, 10);
+
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = minutes + ":" + seconds;
+
+            if (--timer < 0) {
+                clearInterval(interval);
+                alert("{% trans 'انتهى الوقت! سيتم تسليم إجاباتك الآن.' %}");
+                document.getElementById('examForm').submit(); // تسليم تلقائي
+            }
+        }, 1000);
+    }
+
+    window.onload = function () {
+        startTimer();
+    };
+</script>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="container py-5 text-center">
+    <i class="bi bi-x-circle-fill display-1 text-danger"></i>
+    <h2 class="mt-3 fw-bold">{% trans "فشلت العملية" %}</h2>
+    <p class="lead">{% trans "لم يتم خصم المبلغ. يرجى التأكد من رصيد البطاقة." %}</p>
+    <a href="{% url 'subscription_info' %}" class="btn btn-secondary mt-3">{% trans "حاول مرة أخرى" %}</a>
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "طلبات الانضمام" %} | {{ group.name }}{% endblock %}
+
+{% block content %}
+    {% include 'teachers/includes/group_navbar.html' %}
+    <form method="GET" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="{% trans 'بحث...' %}" value="{{ request.GET.q }}">
+            <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
+        </div>
+    </form>
+    <div class="container py-3">
+        <h4 class="fw-bold mb-4">{% trans "طلبات الانضمام المعلقة" %} <span class="badge bg-danger rounded-pill">{{ pending_count }}</span></h4>
+
+        <div class="card shadow-sm border-0">
+            <div class="list-group list-group-flush">
+                {% for req in pending_enrollments %}
+                <div class="list-group-item p-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                    
+                    <div class="d-flex align-items-center">
+                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-person fs-3 text-secondary"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-1 fw-bold">{{ req.student.user.first_name }} {{ req.student.user.last_name }}</h5>
+                            <div class="text-muted small">
+                                <span class="me-3"><i class="bi bi-telephone"></i> {{ req.student.user.phone }}</span>
+                                <span><i class="bi bi-people"></i> {% trans "ولي الأمر:" %} {{ req.student.parent_phone }}</span>
+                            </div>
+                            <div class="text-muted small mt-1">
+                                <i class="bi bi-clock"></i> {% trans "تم الطلب:" %} {{ req.joined_at|date:"Y-m-d h:i A" }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="enroll_id" value="{{ req.id }}">
+                            <input type="hidden" name="action_type" value="accept">
+                            <button type="submit" class="btn btn-success px-4">
+                                <i class="bi bi-check-lg"></i> {% trans "قبول" %}
+                            </button>
+                        </form>
+                        
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="enroll_id" value="{{ req.id }}">
+                            <input type="hidden" name="action_type" value="reject">
+                            <button type="submit" class="btn btn-outline-danger px-4" onclick="return confirm('{% trans "هل أنت متأكد من رفض هذا الطلب وحذفه نهائياً؟" %}')">
+                                <i class="bi bi-x-lg"></i> {% trans "رفض" %}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-5">
+                    <i class="bi bi-check2-circle display-1 text-success opacity-25 mb-3 d-block"></i>
+                    <h5 class="text-muted">{% trans "لا توجد طلبات معلقة حالياً." %}</h5>
+                    <p class="text-secondary">{% trans "جميع الطلاب تم تسكينهم في المجموعة." %}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

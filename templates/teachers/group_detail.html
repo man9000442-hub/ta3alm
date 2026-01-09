@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "المحاضرات" %} | {{ group.name }}{% endblock %}
+
+{% block content %}
+    <!-- الناف بار -->
+    {% include 'teachers/includes/group_navbar.html' %}
+
+    <div class="container py-3">
+        <!-- الأزرار والبحث -->
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+            <h4 class="fw-bold text-dark border-start border-4 border-primary ps-3 mb-0">{% trans "مكتبة المحاضرات" %}</h4>
+            
+            <div class="d-flex gap-2">
+                <!-- البحث -->
+                <form method="GET" class="d-flex shadow-sm rounded-pill p-1 border bg-white me-2">
+                    <input type="text" name="q" class="form-control border-0 rounded-pill shadow-none px-3" 
+                           placeholder="{% trans 'بحث...' %}" value="{{ query|default:'' }}">
+                    <button type="submit" class="btn btn-light rounded-circle"><i class="bi bi-search"></i></button>
+                </form>
+
+                <!-- زر الاستيراد -->
+                {% if other_groups %}
+                <button class="btn btn-outline-dark shadow-sm" data-bs-toggle="modal" data-bs-target="#importModal">
+                    <i class="bi bi-arrow-repeat me-1"></i> {% trans "استيراد" %}
+                </button>
+                {% endif %}
+
+                
+                
+                <!-- زر الإضافة -->
+                <button class="btn btn-danger shadow-sm px-4" data-bs-toggle="modal" data-bs-target="#addVideoModal">
+                    <i class="bi bi-youtube me-2"></i> {% trans "محاضرة جديدة" %}
+                </button>
+            </div>
+        </div>
+
+        <!-- شبكة الفيديوهات -->
+        <div class="row g-4">
+            {% for lecture in lectures %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0 hover-card">
+                    <div class="ratio ratio-16x9 bg-dark rounded-top">
+                        {% if lecture.get_video_id %}
+                            <iframe 
+                                src="https://www.youtube-nocookie.com/embed/{{ lecture.get_video_id }}?rel=0&modestbranding=1" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                referrerpolicy="strict-origin-when-cross-origin" 
+                                allowfullscreen>
+                            </iframe>
+
+                        {% else %}
+                            <iframe 
+                                src="{{ lecture.video_link }}" 
+                                title="Video player" 
+                                frameborder="0" 
+                                allow="autoplay; fullscreen; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold mb-2 text-truncate" title="{{ lecture.title }}">{{ lecture.title }}</h5>
+                        <p class="card-text text-muted small mb-3">
+                            {{ lecture.description|truncatewords:8|default:_("لا يوجد وصف") }}
+                        </p>
+                        
+                        <div class="d-flex justify-content-between align-items-center border-top pt-3">
+                            <a href="{% url 'manage_video_codes' lecture.id %}" class="btn btn-sm btn-outline-dark">
+                                <i class="bi bi-qr-code me-1"></i> {% trans "الأكواد" %}
+                            </a>
+                            
+                            <div class="d-flex gap-1">
+                                <a href="{% url 'toggle_lecture_status' lecture.id %}" 
+                                   class="btn btn-sm {% if lecture.is_active %}btn-success{% else %}btn-secondary{% endif %}"
+                                   title="{% if lecture.is_active %}{% trans 'إخفاء' %}{% else %}{% trans 'إظهار' %}{% endif %}">
+                                    <i class="bi {% if lecture.is_active %}bi-eye-fill{% else %}bi-eye-slash-fill{% endif %}"></i>
+                                </a>
+                                <a href="{% url 'delete_lecture' lecture.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('{% trans "حذف؟" %}')">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <h5 class="text-muted">{% trans "لا توجد محاضرات في هذه المجموعة." %}</h5>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- 1. Modal إضافة فيديو -->
+    <div class="modal fade" id="addVideoModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title fw-bold">{% trans "نشر محاضرة جديدة" %}</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <input type="hidden" name="video_submit" value="1">
+                        {% for field in form %}
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">{{ field.label }}</label>
+                            {{ field }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "إلغاء" %}</button>
+                        <button type="submit" class="btn btn-danger px-4">{% trans "نشر المحاضرة" %}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Modal الاستيراد المخصص -->
+    <div class="modal fade" id="importModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-arrow-repeat me-2"></i> {% trans "استيراد محتوى مخصص" %}</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="{% url 'import_group_content' group.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">{% trans "اختر المجموعة المصدر:" %}</label>
+                            <select id="sourceGroupSelect" class="form-select border-primary" required>
+                                <option value="" selected disabled>{% trans "-- اختر مجموعة --" %}</option>
+                                {% for g in other_groups %}
+                                    <option value="group_{{ g.id }}">{{ g.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div id="contentArea" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-6 border-end">
+                                    <h6 class="fw-bold text-primary border-bottom pb-2">
+                                        <input type="checkbox" class="form-check-input me-1" id="selectAllLecs"> {% trans "المحاضرات" %}
+                                    </h6>
+                                    <div style="max-height: 300px; overflow-y: auto;">
+                                        {% for g in other_groups %}
+                                            <div class="group-content group_{{ g.id }}" style="display: none;">
+                                                {% for lec in g.lectures.all %}
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input lec-chk" type="checkbox" name="lecture_ids" value="{{ lec.id }}" id="lec_{{ lec.id }}">
+                                                        <label class="form-check-label small" for="lec_{{ lec.id }}">
+                                                            {{ lec.title }}
+                                                        </label>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <h6 class="fw-bold text-warning text-dark border-bottom pb-2">
+                                        <input type="checkbox" class="form-check-input me-1" id="selectAllExams"> {% trans "الامتحانات" %}
+                                    </h6>
+                                    <div style="max-height: 300px; overflow-y: auto;">
+                                        {% for g in other_groups %}
+                                            <div class="group-content group_{{ g.id }}" style="display: none;">
+                                                {% for exam in g.exams.all %}
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input exam-chk" type="checkbox" name="exam_ids" value="{{ exam.id }}" id="exam_{{ exam.id }}">
+                                                        <label class="form-check-label small" for="exam_{{ exam.id }}">
+                                                            {{ exam.title }}
+                                                        </label>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="submit" class="btn btn-primary px-4">{% trans "بدء الاستيراد" %}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const groupSelect = document.getElementById('sourceGroupSelect');
+        const contentArea = document.getElementById('contentArea');
+        const allContentDivs = document.querySelectorAll('.group-content');
+        
+        // عند تغيير المجموعة
+        groupSelect.addEventListener('change', function() {
+            const selectedClass = this.value;
+            
+            // إظهار المنطقة
+            contentArea.style.display = 'block';
+
+            // إخفاء الكل وإلغاء تحديد الكل (Reset)
+            allContentDivs.forEach(div => {
+                div.style.display = 'none';
+                // إلغاء الـ check عشان ميبعتش بيانات غلط
+                div.querySelectorAll('input[type="checkbox"]').forEach(chk => {
+                    chk.checked = false;
+                });
+            });
+
+            // إظهار المجموعة المختارة فقط
+            if (selectedClass) {
+                const activeDivs = document.querySelectorAll('.' + selectedClass);
+                activeDivs.forEach(div => div.style.display = 'block');
+            }
+            
+            // تصفير أزرار "تحديد الكل"
+            document.getElementById('selectAllLecs').checked = false;
+            document.getElementById('selectAllExams').checked = false;
+        });
+
+        // تحديد الكل (محاضرات) - للمجموعة الظاهرة فقط
+        document.getElementById('selectAllLecs').addEventListener('change', function() {
+            // نختار فقط العناصر التي ليست مخفية (offsetParent !== null)
+            const visibleCheckboxes = document.querySelectorAll('.group-content .lec-chk');
+            visibleCheckboxes.forEach(chk => {
+                if (chk.closest('.group-content').style.display === 'block') {
+                    chk.checked = this.checked;
+                }
+            });
+        });
+
+        // تحديد الكل (امتحانات) - للمجموعة الظاهرة فقط
+        document.getElementById('selectAllExams').addEventListener('change', function() {
+            const visibleCheckboxes = document.querySelectorAll('.group-content .exam-chk');
+            visibleCheckboxes.forEach(chk => {
+                if (chk.closest('.group-content').style.display === 'block') {
+                    chk.checked = this.checked;
+                }
+            });
+        });
+    });
+</script>
+
+<style>
+    .hover-card { transition: transform 0.2s; }
+    .hover-card:hover { transform: translateY(-5px); }
+</style>
+{% endblock %}

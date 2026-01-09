@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "إدارة الباقات" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between mb-4">
+        <h3>💰 {% trans "خطط الاشتراكات" %}</h3>
+        <a href="{% url 'owner_dashboard' %}" class="btn btn-outline-secondary">{% trans "عودة" %}</a>
+    </div>
+
+    <!-- فورم إضافة باقة -->
+    <div class="card p-4 mb-5 bg-light border-0 shadow-sm">
+        <h5 class="mb-3 fw-bold text-primary">{% trans "إضافة باقة جديدة" %}</h5>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="add">
+            
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">{% trans "الاسم" %}</label>
+                    <input type="text" name="name" class="form-control" required>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label fw-bold">{% trans "السعر" %}</label>
+                    <input type="number" name="price" class="form-control" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold">{% trans "الوصف" %}</label>
+                    <input type="text" name="desc" class="form-control">
+                </div>
+
+                <!-- القيود -->
+                <div class="col-md-4">
+                    <label class="form-label small text-muted">{% trans "حد الطلاب" %}</label>
+                    <input type="number" name="student_limit" value="1000" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label small text-muted">{% trans "حد المجموعات" %}</label>
+                    <input type="number" name="group_limit" value="5" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label small text-muted">{% trans "حد المساعدين" %}</label>
+                    <input type="number" name="assistant_limit" value="2" class="form-control">
+                </div>
+
+                <!-- الصلاحيات -->
+                <div class="col-12 mt-3">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="allow_online">
+                        <label class="form-check-label fw-bold">{% trans "السماح بالحزم الأونلاين" %}</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="allow_images">
+                        <label class="form-check-label fw-bold">{% trans "السماح بصور الأسئلة" %}</label>
+                    </div>
+                </div>
+
+                <div class="col-12 mt-3">
+                    <button type="submit" class="btn btn-success px-5 fw-bold">{% trans "إضافة الباقة" %}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- جدول الباقات -->
+    <div class="table-responsive">
+        <table class="table table-bordered text-center align-middle bg-white shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>{% trans "اسم الباقة" %}</th>
+                    <th>{% trans "السعر" %}</th>
+                    <th>{% trans "الطلاب" %}</th>
+                    <th>{% trans "المجموعات" %}</th>
+                    <th>{% trans "المساعدين" %}</th>
+                    <th>{% trans "أونلاين" %}</th>
+                    <th>{% trans "صور" %}</th>
+                    <th>{% trans "تحكم" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in plans %}
+                <tr>
+                    <td class="fw-bold">{{ p.name }}</td>
+                    <td class="text-success fw-bold">{{ p.price }}</td>
+                    <td>{{ p.student_limit }}</td>
+                    <td>{{ p.group_limit }}</td>
+                    <td>{{ p.assistant_limit }}</td>
+                    <td>
+                        {% if p.allow_online_packages %}
+                            <i class="bi bi-check-circle-fill text-success"></i>
+                        {% else %}
+                            <i class="bi bi-x-circle-fill text-danger"></i>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if p.allow_question_images %}
+                            <i class="bi bi-check-circle-fill text-success"></i>
+                        {% else %}
+                            <i class="bi bi-x-circle-fill text-danger"></i>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ p.id }}">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        
+                        <form method="POST" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="plan_id" value="{{ p.id }}">
+                            <button class="btn btn-sm btn-danger" onclick="return confirm('{% trans "حذف؟" %}')">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+
+                <!-- Modal التعديل -->
+                <div class="modal fade" id="editModal{{ p.id }}" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form method="POST">
+                                {% csrf_token %}
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title">{% trans "تعديل:" %} {{ p.name }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body text-start">
+                                    <input type="hidden" name="action" value="edit">
+                                    <input type="hidden" name="plan_id" value="{{ p.id }}">
+                                    
+                                    <label class="form-label">{% trans "الاسم" %}</label>
+                                    <input type="text" name="name" value="{{ p.name }}" class="form-control mb-2" required>
+                                    
+                                    <label class="form-label">{% trans "السعر" %}</label>
+                                    <input type="number" name="price" value="{{ p.price }}" class="form-control mb-2" required>
+                                    
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label class="small text-muted">{% trans "طلاب" %}</label>
+                                            <input type="number" name="student_limit" value="{{ p.student_limit }}" class="form-control">
+                                        </div>
+                                        <div class="col-4">
+                                            <label class="small text-muted">{% trans "مجموعات" %}</label>
+                                            <input type="number" name="group_limit" value="{{ p.group_limit }}" class="form-control">
+                                        </div>
+                                        <div class="col-4">
+                                            <label class="small text-muted">{% trans "مساعدين" %}</label>
+                                            <input type="number" name="assistant_limit" value="{{ p.assistant_limit }}" class="form-control">
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="allow_online" {% if p.allow_online_packages %}checked{% endif %}>
+                                            <label class="form-check-label">{% trans "أونلاين (حزم)" %}</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="allow_images" {% if p.allow_question_images %}checked{% endif %}>
+                                            <label class="form-check-label">{% trans "صور أسئلة" %}</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <label class="mt-2">{% trans "الوصف" %}</label>
+                                    <textarea name="desc" class="form-control">{{ p.description }}</textarea>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">{% trans "حفظ التعديلات" %}</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

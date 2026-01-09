@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "الملفات" %}{% endblock %}
+
+{% block content %}
+    <!-- استدعاء الناف بار (حسب السياق: مجموعة أو حزمة) -->
+    {% if group %}
+        {% include 'students/includes/student_group_navbar.html' %}
+    {% else %}
+        <!-- هنا يمكنك وضع ناف بار الحزمة أو زر عودة بسيط -->
+        <div class="container py-3">
+            <a href="{% url 'my_package_content' package.id %}" class="btn btn-outline-secondary">{% trans "عودة للحزمة" %}</a>
+        </div>
+    {% endif %}
+
+    <div class="container py-4">
+        <h4 class="fw-bold mb-4 border-start border-4 border-danger ps-3">
+            <i class="bi bi-file-pdf me-2 text-danger"></i> {% trans "المكتبة والمذكرات" %}
+        </h4>
+
+        <div class="list-group shadow-sm border-0">
+            {% for pdf in pdfs %}
+            <a href="{{ pdf.link }}" target="_blank" class="list-group-item list-group-item-action p-4 d-flex justify-content-between align-items-center hover-bg">
+                <div class="d-flex align-items-center">
+                    <div class="bg-danger bg-opacity-10 text-danger rounded p-3 me-3">
+                        <i class="bi bi-file-earmark-text-fill fs-4"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-1 fw-bold text-dark">{{ pdf.title }}</h6>
+                        <small class="text-muted"><i class="bi bi-calendar3 me-1"></i> {{ pdf.created_at|date:"d/m/Y" }}</small>
+                    </div>
+                </div>
+                
+                <span class="btn btn-sm btn-outline-danger rounded-pill px-3">
+                    <i class="bi bi-download me-1"></i> {% trans "تحميل" %}
+                </span>
+            </a>
+            {% empty %}
+            <div class="text-center py-5">
+                <i class="bi bi-folder2-open display-4 text-muted opacity-25"></i>
+                <p class="text-muted mt-3">{% trans "لا توجد ملفات مرفوعة حالياً." %}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+<style>
+    .hover-bg:hover { background-color: #f8f9fa; transform: translateX(5px); transition: 0.2s; }
+</style>
+{% endblock %}

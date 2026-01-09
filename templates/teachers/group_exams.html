@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "الامتحانات" %} | {{ group.name }}{% endblock %}
+
+{% block content %}
+    {% include 'teachers/includes/group_navbar.html' %}
+
+    <form method="GET" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="{% trans 'بحث...' %}" value="{{ request.GET.q }}">
+            <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
+        </div>
+    </form>
+
+    <div class="container py-3">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-bold">{% trans "بنك الاختبارات" %}</h4>
+            <button class="btn btn-warning shadow-sm" data-bs-toggle="modal" data-bs-target="#addExamModal">
+                <i class="bi bi-plus-circle"></i> {% trans "امتحان جديد" %}
+            </button>
+        </div>
+
+        <div class="list-group shadow-sm">
+            {% for exam in exams %}
+            <a href="{% url 'exam_manage' exam.id %}" class="list-group-item list-group-item-action p-3 d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-1 fw-bold">{{ exam.title }}</h5>
+                    <small class="text-muted">
+                        {% blocktrans with q_count=exam.questions.count duration=exam.duration_minutes %}
+                            {{ q_count }} سؤال | {{ duration }} دقيقة
+                        {% endblocktrans %}
+                    </small>
+                </div>
+                {% if exam.is_active %}
+                    <span class="badge bg-success">{% trans "نشط" %}</span>
+                {% else %}
+                    <span class="badge bg-secondary">{% trans "مغلق" %}</span>
+                {% endif %}
+            </a>
+            {% empty %}
+            <div class="text-center py-5">
+                <p class="text-muted">{% trans "لا توجد امتحانات." %}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="modal fade" id="addExamModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{% trans "إنشاء امتحان جديد" %}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            {{ exam_form.as_p }}
+                            <input type="hidden" name="exam_submit" value="1">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-warning">{% trans "حفظ" %}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

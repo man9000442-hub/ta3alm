@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "إدارة المساعدين" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h2 class="fw-bold text-primary"><i class="bi bi-people-fill me-2"></i> {% trans "فريق المساعدين" %}</h2>
+            <p class="text-muted">{% trans "إدارة صلاحيات المساعدين وطلبات الانضمام" %}</p>
+        </div>
+        <a href="{% url 'teacher_dashboard' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-right"></i> {% trans "العودة للرئيسية" %}
+        </a>
+    </div>
+
+    {% if pending_requests %}
+    <div class="card border-warning mb-5 shadow-sm">
+        <div class="card-header bg-warning fw-bold text-dark">
+            <i class="bi bi-bell-fill me-2"></i> {% trans "طلبات انضمام جديدة" %}
+        </div>
+        <div class="list-group list-group-flush">
+            {% for job in pending_requests %}
+            <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <div class="d-flex align-items-center">
+                    <div class="bg-light rounded-circle p-2 me-3">
+                        <i class="bi bi-person fs-4 text-warning"></i>
+                    </div>
+                    <div>
+                        <h5 class="mb-0 fw-bold">{{ job.assistant.user.first_name }} {{ job.assistant.user.last_name }}</h5>
+                        <small class="text-muted">{{ job.assistant.phone }}</small>
+                    </div>
+                </div>
+                
+                <form method="POST" class="d-flex gap-2">
+                    {% csrf_token %}
+                    <input type="hidden" name="job_id" value="{{ job.id }}">
+                    
+                    <button type="submit" name="action" value="accept" class="btn btn-success btn-sm px-3">
+                        <i class="bi bi-check-lg"></i> {% trans "قبول" %}
+                    </button>
+                    <button type="submit" name="action" value="reject" class="btn btn-outline-danger btn-sm px-3">
+                        <i class="bi bi-x-lg"></i> {% trans "رفض" %}
+                    </button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3">
+            <h5 class="mb-0 fw-bold text-success">
+                {% blocktrans with count=active_assistants.count %}
+                المساعدين الحاليين ({{ count }})
+                {% endblocktrans %}
+            </h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th>{% trans "الاسم" %}</th>
+                        <th>{% trans "الهاتف" %}</th>
+                        <th>{% trans "تاريخ التعيين" %}</th>
+                        <th>{% trans "إجراءات" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job in active_assistants %}
+                    <tr>
+                        <td class="fw-bold">{{ job.assistant.user.first_name }} {{ job.assistant.user.last_name }}</td>
+                        <td>{{ job.assistant.phone }}</td>
+                        <td>{{ job.joined_at|date:"d/m/Y" }}</td>
+                        <td>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="job_id" value="{{ job.id }}">
+                                <button type="submit" name="action" value="delete" class="btn btn-sm btn-outline-danger" onclick="return confirm('{% trans "هل أنت متأكد من حذف هذا المساعد؟ سيفقد صلاحية الوصول لمجموعاتك." %}')">
+                                    <i class="bi bi-trash me-1"></i> {% trans "حذف" %}
+                                </button>
+                            </form>
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-center gap-2">
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#permModal{{ job.id }}">
+                                    <i class="bi bi-gear-fill"></i> {% trans "صلاحيات" %}
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <div class="modal fade" id="permModal{{ job.id }}" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title">{% trans "صلاحيات:" %} {{ job.assistant.user.first_name }}</h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                </div>
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <div class="modal-body text-start">
+                                        <input type="hidden" name="job_id" value="{{ job.id }}">
+                                        <input type="hidden" name="action" value="update_permissions">
+                                        
+                                        <p class="text-muted small mb-3">{% trans "حدد ما يمكن لهذا المساعد القيام به:" %}</p>
+
+                                        <div class="form-check mb-3 p-3 border rounded bg-light">
+                                            <input class="form-check-input" type="checkbox" name="can_manage_students" id="perm1_{{ job.id }}" {% if job.can_manage_students %}checked{% endif %}>
+                                            <label class="form-check-label fw-bold" for="perm1_{{ job.id }}">
+                                                <i class="bi bi-people-fill text-primary me-2"></i> {% trans "إدارة الطلاب والغياب" %}
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check mb-3 p-3 border rounded bg-light">
+                                            <input class="form-check-input" type="checkbox" name="can_manage_exams" id="perm2_{{ job.id }}" {% if job.can_manage_exams %}checked{% endif %}>
+                                            <label class="form-check-label fw-bold" for="perm2_{{ job.id }}">
+                                                <i class="bi bi-pencil-square text-warning me-2"></i> {% trans "إدارة الامتحانات" %}
+                                            </label>
+                                        </div>
+
+                                        <div class="form-check p-3 border rounded bg-light">
+                                            <input class="form-check-input" type="checkbox" name="can_manage_videos" id="perm3_{{ job.id }}" {% if job.can_manage_videos %}checked{% endif %}>
+                                            <label class="form-check-label fw-bold" for="perm3_{{ job.id }}">
+                                                <i class="bi bi-youtube text-danger me-2"></i> {% trans "إدارة الفيديوهات" %}
+                                            </label>
+                                        </div>
+                                        <!-- داخل المودال، بجوار الصلاحيات الأخرى -->
+                                        <div class="form-check p-3 border rounded bg-light mb-3">
+                                            <input class="form-check-input" type="checkbox" name="can_manage_packages" id="perm4_{{ job.id }}" {% if job.can_manage_packages %}checked{% endif %}>
+                                            <label class="form-check-label fw-bold" for="perm4_{{ job.id }}">
+                                                <i class="bi bi-box-seam-fill text-info me-2"></i> {% trans "إدارة الحزم والكورسات" %}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "إلغاء" %}</button>
+                                        <button type="submit" class="btn btn-primary px-4">{% trans "حفظ الصلاحيات" %}</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="py-5 text-muted">
+                            <i class="bi bi-person-x display-4 opacity-50 mb-3 d-block"></i>
+                            {% trans "لا يوجد مساعدين في فريقك حالياً." %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

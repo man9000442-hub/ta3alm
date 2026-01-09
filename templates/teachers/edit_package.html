@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "تعديل:" %} {{ package.title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">{% trans "تعديل الحزمة:" %} <span class="text-primary">{{ package.title }}</span></h2>
+        <a href="{% url 'teacher_packages' %}" class="btn btn-outline-secondary">{% trans "إلغاء وعودة" %}</a>
+    </div>
+    
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- 1. البيانات الأساسية -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md-8">
+                        <label class="form-label fw-bold">{% trans "اسم الحزمة" %}</label>
+                        {{ form.title }}
+                    </div>
+                                        <!-- +++++ أضف هذا الجزء +++++ -->
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">{% trans "الصف الدراسي" %}</label>
+                        {{ form.grade }}
+                    </div>
+                    <!-- +++++++++++++++++++++++++ -->
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">{% trans "السعر (EGP)" %}</label>
+                        {{ form.price }}
+                    </div>
+                    
+                    <div class="col-12">
+                        <label class="form-label fw-bold">{% trans "وصف الحزمة" %}</label>
+                        {{ form.description }}
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">{% trans "صورة الغلاف" %}</label>
+                        {% if package.image %}
+                            <div class="mb-2">
+                                <img src="{{ package.image.url }}" class="img-thumbnail" style="height: 100px;">
+                                <span class="text-muted small">{% trans "الصورة الحالية" %}</span>
+                            </div>
+                        {% endif %}
+                        {{ form.image }}
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">{% trans "حد مشاهدة الفيديو الواحد" %}</label>
+                        {{ form.view_limit }}
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <!-- 2. واجهة اختيار المحتوى -->
+                <h4 class="fw-bold text-primary mb-3">{% trans "تعديل المحتوى" %}</h4>
+                
+                <!-- فلتر المجموعات -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">{% trans "تصفية حسب المجموعة:" %}</label>
+                    <select id="groupFilter" class="form-select border-primary">
+                        <option value="all">{% trans "عرض الكل" %}</option>
+                        {% for g in groups %}
+                            <option value="g{{ g.id }}">{{ g.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="row g-4">
+                    <!-- المحاضرات -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border">
+                            <div class="card-header bg-dark text-white fw-bold d-flex justify-content-between">
+                                <span>📹 {% trans "المحاضرات" %}</span>
+                                <span class="badge bg-light text-dark">{{ sel_lec|length }} {% trans "مختار" %}</span>
+                            </div>
+                            <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
+                                <ul class="list-group list-group-flush">
+                                    {% for g in groups %}
+                                        {% for lec in g.lectures.all %}
+                                        <li class="list-group-item group-item g{{ g.id }} {% if lec.id in sel_lec %}bg-success bg-opacity-10{% endif %}">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="lectures" value="{{ lec.id }}" 
+                                                       id="lec{{ lec.id }}" {% if lec.id in sel_lec %}checked{% endif %}>
+                                                <label class="form-check-label w-100" for="lec{{ lec.id }}">
+                                                    {{ lec.title }} 
+                                                    <span class="badge bg-light text-dark border float-end">{{ g.name }}</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- الامتحانات -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border">
+                            <div class="card-header bg-warning text-dark fw-bold d-flex justify-content-between">
+                                <span>📝 {% trans "الامتحانات" %}</span>
+                                <span class="badge bg-dark text-white">{{ sel_exam|length }} {% trans "مختار" %}</span>
+                            </div>
+                            <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
+                                <ul class="list-group list-group-flush">
+                                    {% for g in groups %}
+                                        {% for exam in g.exams.all %}
+                                        <li class="list-group-item group-item g{{ g.id }} {% if exam.id in sel_exam %}bg-warning bg-opacity-10{% endif %}">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="exams" value="{{ exam.id }}" 
+                                                       id="exam{{ exam.id }}" {% if exam.id in sel_exam %}checked{% endif %}>
+                                                <label class="form-check-label w-100" for="exam{{ exam.id }}">
+                                                    {{ exam.title }}
+                                                    <span class="badge bg-light text-dark border float-end">{{ g.name }}</span>
+                                                </label>
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid mt-5">
+                    <button type="submit" class="btn btn-success btn-lg fw-bold shadow">
+                        <i class="bi bi-check-circle me-2"></i> {% trans "حفظ التعديلات" %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- سكريبت الفلترة -->
+<script>
+    document.getElementById('groupFilter').addEventListener('change', function() {
+        const selectedGroup = this.value;
+        const items = document.querySelectorAll('.group-item');
+        
+        items.forEach(item => {
+            if (selectedGroup === 'all' || item.classList.contains(selectedGroup)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+</script>
+{% endblock %}

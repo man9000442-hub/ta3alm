@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{{ lecture.title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between mb-4">
+        <h4 class="text-primary">{{ lecture.title }}</h4>
+        <a href="{% url 'my_package_content' package.id %}" class="btn btn-outline-secondary">{% trans "عودة للحزمة" %}</a>
+    </div>
+
+    <!-- مشغل الفيديو -->
+    <div class="ratio ratio-16x9 bg-dark shadow rounded mb-3">
+        {% if lecture.get_video_id %}
+            <iframe 
+                src="https://www.youtube-nocookie.com/embed/{{ lecture.get_video_id }}?rel=0&modestbranding=1" 
+                title="YouTube video player" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                referrerpolicy="strict-origin-when-cross-origin" 
+                allowfullscreen>
+            </iframe>
+
+        {% else %}
+            <iframe 
+                src="{{ lecture.video_link }}" 
+                title="Video player" 
+                frameborder="0" 
+                allow="autoplay; fullscreen; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        {% endif %}
+    </div>
+
+    <!-- عداد المشاهدات -->
+    <div class="alert alert-info d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-eye-fill"></i> {% trans "المشاهدات المستهلكة:" %}</span>
+        <span class="fw-bold fs-5">{{ tracker.views_count }} / {{ package.view_limit }}</span>
+    </div>
+</div>
+{% endblock %}

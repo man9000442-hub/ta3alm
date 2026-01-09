@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load socialaccount %}
+
+{% block title %}{% trans "إنشاء حساب" %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-5 text-center">
+                
+                <h2 class="mb-4 fw-bold text-success">{% trans "إنشاء حساب جديد" %}</h2>
+                <p class="text-muted mb-4">{% trans "يفضل التسجيل من الصفحة الرئيسية لاختيار نوع الحساب (طالب/معلم)" %}</p>
+
+                <div class="d-grid gap-2">
+                    <a href="{% provider_login_url 'google' %}" class="btn btn-light border btn-lg d-flex align-items-center justify-content-center gap-2 py-3 shadow-sm hover-shadow">
+                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="24" height="24" alt="Google Logo">
+                        <span class="fw-bold text-dark">{% trans "تسجيل باستخدام Google" %}</span>
+                    </a>
+                </div>
+
+                <hr class="my-4">
+                
+                <p class="small text-muted">
+                    {% trans "لديك حساب بالفعل؟" %} 
+                    <a href="{% url 'account_login' %}" class="text-decoration-none fw-bold">{% trans "تسجيل الدخول" %}</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

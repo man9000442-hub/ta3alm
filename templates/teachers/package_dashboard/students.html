@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "المشتركين" %}{% endblock %}
+
+{% block content %}
+    {% include 'teachers/includes/package_navbar.html' %}
+
+    <div class="container py-3">
+        
+        <!-- ملخص مالي -->
+        <div class="alert alert-success d-flex justify-content-between align-items-center mb-4 border-0 shadow-sm">
+            <div>
+                <i class="bi bi-cash-stack fs-4 me-2 align-middle"></i>
+                <span class="fw-bold">{% trans "إجمالي مبيعات هذه الحزمة:" %}</span>
+            </div>
+            <h4 class="mb-0 fw-bold">{{ total_revenue }} <span class="fs-6">EGP</span></h4>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th class="text-start">{% trans "اسم الطالب" %}</th>
+                            <th>{% trans "رقم الهاتف" %}</th>
+                            <th>{% trans "تاريخ الشراء" %}</th>
+                            <th>{% trans "الحالة" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for enroll in enrollments %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td class="text-start fw-bold">
+                                {{ enroll.student.user.first_name }} {{ enroll.student.user.last_name }}
+                            </td>
+                            <td>{{ enroll.student.user.phone }}</td>
+                            <td>{{ enroll.joined_at|date:"d/m/Y H:i" }}</td>
+                            <td><span class="badge bg-success">{% trans "مدفوع" %}</span></td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="5" class="py-5 text-muted">{% trans "لا يوجد مشتركين حتى الآن." %}</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "رصد جماعي" %}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold"><i class="bi bi-grid-3x3-gap-fill text-primary"></i> {% trans "رصد الدرجات والغياب" %}</h3>
+        <a href="{% url 'group_students' group.id %}" class="btn btn-outline-secondary">{% trans "عودة" %}</a>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div class="card shadow-sm mb-4 border-primary border-2 sticky-top" style="top: 0; z-index: 1000;">
+            <div class="card-body bg-light py-3">
+                <div class="row g-3 align-items-center">
+                    
+                    <div class="col-md-2 border-end">
+                        <label class="small fw-bold text-muted d-block">{% trans "رقم الحصة الحالية" %}</label>
+                        <input type="number" name="global_session_number" value="1" min="1" class="form-control text-center fw-bold bg-white border-warning">
+                    </div>
+
+                    <div class="col-md-10">
+                        <div class="row g-2">
+                            <div class="col-12"><small class="fw-bold text-muted">{% trans "الدرجات النهائية (Max Score):" %}</small></div>
+                            
+                            <div class="col">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text">{% trans "الواجب" %}</span>
+                                    <input type="number" name="global_hw_max" value="10" class="form-control text-center">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text">{% trans "امتحان الحصة" %}</span>
+                                    <input type="number" name="global_class_max" value="10" class="form-control text-center">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text">{% trans "التسميع" %}</span>
+                                    <input type="number" name="global_recit_max" value="10" class="form-control text-center">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="input-group input-group-sm">
+                                    <span class="input-group-text">{% trans "الشامل" %}</span>
+                                    <input type="number" name="global_comp_max" value="50" class="form-control text-center">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle text-center mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th style="width: 5%">#</th>
+                            <th style="width: 25%" class="text-start">{% trans "الطالب" %}</th>
+                            <th style="width: 8%" class="bg-danger text-white">{% trans "غياب" %}</th>
+                            
+                            <th style="width: 12%">{% trans "درجة الواجب" %}</th>
+                            <th style="width: 12%">{% trans "امتحان الحصة" %}</th>
+                            <th style="width: 12%">{% trans "درجة التسميع" %}</th>
+                            <th style="width: 12%">{% trans "امتحان شامل" %}</th>
+                            
+                            <th>{% trans "ملاحظات" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for enroll in enrollments %}
+                        <tr class="student-row">
+                            <td>{{ forloop.counter }}</td>
+                            <td class="text-start fw-bold">{{ enroll.student.user.first_name }} {{ enroll.student.user.last_name }}</td>
+                            
+                            <td class="bg-danger bg-opacity-10">
+                                <div class="form-check d-flex justify-content-center">
+                                    <input class="form-check-input border-danger" type="checkbox" name="is_absent_{{ enroll.student.id }}" id="abs_{{ enroll.student.id }}">
+                                </div>
+                            </td>
+
+                            <td><input type="number" name="hw_score_{{ enroll.student.id }}" class="form-control form-control-sm text-center score-input" placeholder="-"></td>
+                            <td><input type="number" name="class_score_{{ enroll.student.id }}" class="form-control form-control-sm text-center score-input" placeholder="-"></td>
+                            <td><input type="number" name="recit_score_{{ enroll.student.id }}" class="form-control form-control-sm text-center score-input" placeholder="-"></td>
+                            <td><input type="number" name="comp_score_{{ enroll.student.id }}" class="form-control form-control-sm text-center score-input" placeholder="-"></td>
+                            
+                            <td><input type="text" name="note_{{ enroll.student.id }}" class="form-control form-control-sm"></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="d-grid mt-4 pb-5">
+            <button type="submit" class="btn btn-success btn-lg fw-bold shadow">
+                <i class="bi bi-save me-2"></i> {% trans "حفظ السجل" %}
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // كود التصفير عند الغياب
+    document.querySelectorAll('[id^="abs_"]').forEach(chk => {
+        chk.addEventListener('change', function() {
+            const row = this.closest('tr');
+            // نختار أول 3 خانات فقط (واجب، حصة، تسميع) ونترك الشامل
+            const inputs = row.querySelectorAll('input[type="number"]:not([name^="comp_score"])');
+            
+            if (this.checked) {
+                inputs.forEach(input => input.value = 0);
+                row.classList.add('table-danger');
+            } else {
+                inputs.forEach(input => input.value = '');
+                row.classList.remove('table-danger');
+            }
+        });
+    });
+</script>
+{% endblock %}

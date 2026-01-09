@@ -1,0 +1,38 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "تحت الصيانة" %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+            color: white;
+            font-family: 'Cairo', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="text-center p-5">
+        <div class="mb-4">
+            <i class="bi bi-tools display-1 text-warning"></i>
+        </div>
+        <h1 class="fw-bold mb-3">{% trans "نحن في وضع الصيانة" %}</h1>
+        <p class="lead text-white-50 mb-4">
+            {% trans "نقوم حالياً ببعض التحسينات لجعل تجربتك أفضل." %}<br>
+            {% trans "سنعود للعمل خلال وقت قصير جداً." % exploration} 
+        </p>
+        <div class="spinner-border text-warning" role="status">
+            <span class="visually-hidden">{% trans "جاري التحميل..." %}</span>
+        </div>
+    </div>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</body>
+</html>

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+    {% include 'students/includes/student_group_navbar.html' %}
+    <div class="container py-4">
+        <h4 class="mb-4 fw-bold text-primary">{% trans "فريق العمل والدعم" %}</h4>
+        
+        <div class="card mb-4 border-start border-4 border-primary shadow-sm">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="fw-bold mb-1">{% blocktrans with name=teacher.user.first_name %}مستر/ {{ name }}{% endblocktrans %}</h5>
+                    <small class="text-muted">{% trans "معلم المادة" %}</small>
+                </div>
+                <a href="https://wa.me/+2{{ teacher.user.phone }}" target="_blank" class="btn btn-success">
+                    <i class="bi bi-whatsapp me-2"></i> {% trans "تواصل" %}
+                </a>
+            </div>
+        </div>
+
+        <h5 class="mb-3 fw-bold">{% trans "المساعدين (الدعم الفني)" %}</h5>
+        <div class="list-group">
+            {% for job in assistants %}
+            <div class="list-group-item d-flex justify-content-between align-items-center p-3">
+                <div>
+                    <h6 class="mb-0 fw-bold">{{ job.assistant.user.first_name }}</h6>
+                    <small class="text-muted">{{ job.assistant.phone }}</small>
+                </div>
+                <a href="https://wa.me/+2{{ job.assistant.phone }}" target="_blank" class="btn btn-sm btn-outline-success">
+                    <i class="bi bi-whatsapp"></i>
+                </a>
+            </div>
+            {% empty %}
+            <div class="text-muted small">{% trans "لا يوجد مساعدين حالياً." %}</div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

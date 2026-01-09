@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "إدارة الاشتراك" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <!-- حالة الاشتراك -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden text-center">
+                <div class="card-header bg-dark text-white py-4">
+                    <h4 class="fw-bold mb-0"><i class="bi bi-wallet2 me-2"></i> {% trans "حالة الاشتراك" %}</h4>
+                </div>
+                <div class="card-body p-5">
+                    {% if is_active %}
+                        <div class="bg-success bg-opacity-10 text-success rounded-circle d-inline-flex p-4 mb-3">
+                            <i class="bi bi-check-lg display-4"></i>
+                        </div>
+                        <h3 class="text-success fw-bold">{% trans "اشتراكك ساري" %}</h3>
+                        <p class="fs-5 mt-2">{% trans "الباقة الحالية:" %} <span class="badge bg-primary">{{ teacher.current_plan.name|default:"-" }}</span></p>
+                        <p class="text-muted">{% blocktrans %}متبقي لك <strong>{{ days_left }}</strong> يوم (ينتهي في {{ teacher.subscription_end_date|date:"d/m/Y" }}){% endblocktrans %}</p>
+                    {% else %}
+                        <div class="bg-danger bg-opacity-10 text-danger rounded-circle d-inline-flex p-4 mb-3">
+                            <i class="bi bi-x-lg display-4"></i>
+                        </div>
+                        <h3 class="text-danger fw-bold">{% trans "الاشتراك منتهي" %}</h3>
+                        <p class="text-muted">{% trans "يرجى التجديد لاستعادة الوصول." %}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- الباقات -->
+    <h3 class="fw-bold text-center mb-5">{% trans "خطط الأسعار" %}</h3>
+    
+    <div class="row g-4 justify-content-center">
+        {% for plan in plans %}
+        <div class="col-lg-4 col-md-6">
+            <div class="card h-100 border-0 shadow-sm hover-scale position-relative">
+                {% if plan.id == teacher.current_plan.id %}
+                    <div class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-success shadow-sm">{% trans "الحالية" %}</div>
+                {% endif %}
+                
+                <div class="card-body p-4 text-center d-flex flex-column">
+                    <h4 class="fw-bold text-primary mb-0">{{ plan.name }}</h4>
+                    <h2 class="display-5 fw-bold my-3">{{ plan.price }} <span class="fs-6 text-muted">{% trans "EGP" %}</span></h2>
+                    
+                    <ul class="list-unstyled mb-4 small text-start mx-auto" style="max-width: 220px;">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> {{ plan.student_limit }} {% trans "طالب" %}</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> {{ plan.group_limit }} {% trans "مجموعة" %}</li>
+                        <li class="mb-2">
+                            {% if plan.allow_online_packages %}
+                                <i class="bi bi-check-circle-fill text-success me-2"></i> {% trans "حزم أونلاين" %}
+                            {% else %}
+                                <i class="bi bi-x-circle-fill text-danger me-2"></i> {% trans "حزم أونلاين" %}
+                            {% endif %}
+                        </li>
+                        <li class="mb-2">
+                            {% if plan.allow_question_images %}
+                                <i class="bi bi-check-circle-fill text-success me-2"></i> {% trans "صور أسئلة" %}
+                            {% else %}
+                                <i class="bi bi-x-circle-fill text-danger me-2"></i> {% trans "صور أسئلة" %}
+                            {% endif %}
+                        </li>
+                    </ul>
+                    
+                    <div class="mt-auto d-grid gap-2">
+                        {% if is_active and plan.id == teacher.current_plan.id %}
+                            <button class="btn btn-light border disabled">{% trans "مشترك" %}</button>
+                        {% else %}
+                            <a href="{% url 'paymob_checkout' %}?plan_id={{ plan.id }}&method=card" class="btn btn-outline-primary fw-bold">
+                                <i class="bi bi-credit-card"></i> {% trans "فيزا" %}
+                            </a>
+                            <button type="button" class="btn btn-outline-success fw-bold" data-bs-toggle="modal" data-bs-target="#walletModal{{ plan.id }}">
+                                <i class="bi bi-phone"></i> {% trans "محفظة" %}
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal المحفظة لكل باقة -->
+        <div class="modal fade" id="walletModal{{ plan.id }}" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-success text-white">
+                        <h5 class="modal-title">{% trans "دفع بالمحفظة" %} - {{ plan.name }}</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form action="{% url 'paymob_checkout' %}" method="GET">
+                        <input type="hidden" name="plan_id" value="{{ plan.id }}">
+                        <input type="hidden" name="method" value="wallet">
+                        <div class="modal-body text-start">
+                            <label class="form-label fw-bold">{% trans "رقم المحفظة" %}</label>
+                            <input type="text" name="wallet_number" class="form-control" placeholder="01xxxxxxxxx" required pattern="01[0-9]{9}">
+                            <div class="form-text">{% trans "سيصلك إشعار على تطبيق المحفظة للدفع." %}</div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success fw-bold w-100">{% trans "إرسال الطلب" %}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .hover-scale:hover { transform: translateY(-5px); border: 1px solid #0d6efd !important; transition: 0.3s; }
+</style>
+{% endblock %}

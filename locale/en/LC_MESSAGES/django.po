@@ -1,0 +1,3190 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Ta3alm Platform\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-09 18:45+0200\n"
+"PO-Revision-Date: 2026-01-09 19:00+0200\n"
+"Last-Translator: Abdelrahman Tarek\n"
+"Language-Team: English\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: accounts/models.py:7 templates/core/owner_dashboard.html:48
+#: templates/teachers/subscription.html:51
+msgid "طالب"
+msgstr "Student"
+
+#: accounts/models.py:8 templates/core/owner_dashboard.html:40
+#: templates/home.html:145
+msgid "معلم"
+msgstr "Teacher"
+
+#: accounts/models.py:9
+msgid "سنتر"
+msgstr "Center"
+
+#: accounts/models.py:10 templates/core/owner_dashboard.html:56
+msgid "مساعد"
+msgstr "Assistant"
+
+#: accounts/models.py:11
+msgid "مسؤول منصة"
+msgstr "Admin"
+
+#: accounts/models.py:15
+msgid "نوع المستخدم"
+msgstr "User Type"
+
+#: accounts/models.py:16 assistants/models.py:8
+#: templates/core/owner_edit_user.html:39
+#: templates/core/owner_edit_user.html:80
+#: templates/teachers/group_students.html:50
+#: templates/teachers/package_dashboard/students.html:26
+msgid "رقم الهاتف"
+msgstr "Phone Number"
+
+#: accounts/models.py:17 templates/core/owner_edit_user.html:43
+#: templates/students/settings.html:14
+msgid "الرقم القومي"
+msgstr "National ID"
+
+#: accounts/models.py:18
+msgid "كود المستخدم"
+msgstr "User Code"
+
+#: accounts/models.py:19 templates/core/owner_dashboard.html:128
+#: templates/core/owner_dashboard.html:216
+#: templates/core/owner_dashboard.html:249
+msgid "محظور"
+msgstr "Banned"
+
+#: accounts/models.py:39 templates/core/owner_edit_user.html:72
+msgid "رقم ولي الأمر"
+msgstr "Parent's Phone"
+
+#: accounts/models.py:40
+msgid "المدرسين المشترك معهم"
+msgstr "Enrolled Teachers"
+
+#: assistants/models.py:14 students/models.py:9
+msgid "مقبول"
+msgstr "Accepted"
+
+#: assistants/models.py:17
+msgid "إدارة الطلاب"
+msgstr "Manage Students"
+
+#: assistants/models.py:18 templates/teachers/manage_assistants.html:121
+msgid "إدارة الامتحانات"
+msgstr "Manage Exams"
+
+#: assistants/models.py:19 templates/teachers/manage_assistants.html:128
+msgid "إدارة الفيديوهات"
+msgstr "Manage Videos"
+
+#: assistants/models.py:20 templates/base.html:128
+#: templates/teachers/manage_packages.html:3
+msgid "إدارة الحزم"
+msgstr "Manage Packages"
+
+#: core/models.py:5
+msgid "وضع الصيانة"
+msgstr "Maintenance Mode"
+
+#: core/models.py:23
+msgid "المستقبل"
+msgstr "Recipient"
+
+#: core/models.py:24 exams/models.py:10 teachers/models.py:103
+msgid "العنوان"
+msgstr "Title"
+
+#: core/models.py:25
+msgid "الرسالة"
+msgstr "Message"
+
+#: core/models.py:26
+msgid "الرابط"
+msgstr "Link"
+
+#: core/models.py:27
+msgid "مقروءة"
+msgstr "Read"
+
+#: core/models.py:28
+msgid "وقت الإنشاء"
+msgstr "Created At"
+
+#: exams/models.py:11 teachers/models.py:105
+#: templates/core/manage_plans.html:29 templates/core/manage_plans.html:165
+#: templates/teachers/create_package.html:28
+msgid "الوصف"
+msgstr "Description"
+
+#: exams/models.py:12
+msgid "المدة (دقيقة)"
+msgstr "Duration (min)"
+
+#: exams/models.py:13 templates/core/owner_dashboard.html:128
+#: templates/core/owner_dashboard.html:216
+#: templates/core/owner_dashboard.html:249
+#: templates/teachers/group_exams.html:36
+#: templates/teachers/group_students.html:71
+msgid "نشط"
+msgstr "Active"
+
+#: exams/models.py:22 templates/exams/add_question.html:20
+#: templates/exams/edit_question.html:21
+msgid "نص السؤال"
+msgstr "Question Text"
+
+#: exams/models.py:23 templates/exams/add_question.html:26
+msgid "صورة توضيحية"
+msgstr "Illustration Image"
+
+#: exams/models.py:24
+msgid "اختار A"
+msgstr "Option A"
+
+#: exams/models.py:25
+msgid "اختار B"
+msgstr "Option B"
+
+#: exams/models.py:26
+msgid "اختار C"
+msgstr "Option C"
+
+#: exams/models.py:27
+msgid "اختار D"
+msgstr "Option D"
+
+#: exams/models.py:28 templates/exams/add_question.html:70
+#: templates/exams/edit_question.html:84
+msgid "الإجابة الصحيحة"
+msgstr "Correct Answer"
+
+#: exams/models.py:29 exams/models.py:34 templates/exams/edit_question.html:88
+#: templates/exams/manage.html:111 templates/students/group_marks.html:19
+msgid "الدرجة"
+msgstr "Score"
+
+#: students/models.py:18 teachers/models.py:185
+#: templates/core/owner_payments.html:43
+#: templates/core/owner_student_payments.html:28
+#: templates/core/owner_withdrawals.html:18 templates/exams/manage.html:111
+#: templates/students/group_marks.html:20
+#: templates/students/group_marks.html:68
+#: templates/teachers/student_full_log.html:53
+#: templates/teachers/wallet.html:84
+msgid "التاريخ"
+msgstr "Date"
+
+#: students/models.py:19 templates/students/group_marks.html:68
+#: templates/teachers/group_students.html:111
+msgid "رقم الحصة"
+msgstr "Session Number"
+
+#: students/models.py:20
+msgid "حضور"
+msgstr "Attendance"
+
+#: students/models.py:22 templates/students/group_marks.html:70
+#: templates/teachers/bulk_log.html:31
+#: templates/teachers/group_students.html:115
+#: templates/teachers/student_full_log.html:55
+msgid "الواجب"
+msgstr "Homework"
+
+#: students/models.py:25 templates/students/group_marks.html:71
+#: templates/teachers/bulk_log.html:37 templates/teachers/bulk_log.html:69
+#: templates/teachers/group_students.html:123
+#: templates/teachers/student_full_log.html:56
+msgid "امتحان الحصة"
+msgstr "Class Exam"
+
+#: students/models.py:28 templates/teachers/bulk_log.html:43
+#: templates/teachers/student_full_log.html:57
+msgid "التسميع"
+msgstr "Recitation"
+
+#: students/models.py:31 templates/teachers/bulk_log.html:49
+#: templates/teachers/student_full_log.html:58
+msgid "الشامل"
+msgstr "Comprehensive"
+
+#: students/models.py:34 templates/students/group_marks.html:74
+#: templates/teachers/bulk_log.html:73
+#: templates/teachers/student_full_log.html:59
+msgid "ملاحظات"
+msgstr "Notes"
+
+#: ta3alm_project/settings.py:163
+msgid "Arabic"
+msgstr "Arabic"
+
+#: ta3alm_project/settings.py:164
+msgid "English"
+msgstr "English"
+
+#: teachers/models.py:14
+msgid "الصف الأول الإعدادي"
+msgstr "1st Prep"
+
+#: teachers/models.py:15
+msgid "الصف الثاني الإعدادي"
+msgstr "2nd Prep"
+
+#: teachers/models.py:16
+msgid "الصف الثالث الإعدادي"
+msgstr "3rd Prep"
+
+#: teachers/models.py:17
+msgid "الصف الأول الثانوي"
+msgstr "1st Secondary"
+
+#: teachers/models.py:18
+msgid "الصف الثاني الثانوي"
+msgstr "2nd Secondary"
+
+#: teachers/models.py:19
+msgid "الصف الثالث الثانوي"
+msgstr "3rd Secondary"
+
+#: teachers/models.py:26 templates/core/manage_plans.html:71
+msgid "اسم الباقة"
+msgstr "Plan Name"
+
+#: teachers/models.py:27 templates/teachers/edit_package.html:30
+msgid "السعر (EGP)"
+msgstr "Price (EGP)"
+
+#: teachers/models.py:28
+msgid "حد الطلاب الأقصى"
+msgstr "Max Student Limit"
+
+#: teachers/models.py:29
+msgid "وصف الباقة"
+msgstr "Plan Description"
+
+#: teachers/models.py:32 templates/core/manage_plans.html:35
+msgid "حد الطلاب"
+msgstr "Student Limit"
+
+#: teachers/models.py:33 templates/core/manage_plans.html:39
+msgid "حد المجموعات"
+msgstr "Group Limit"
+
+#: teachers/models.py:34 templates/core/manage_plans.html:43
+msgid "حد المساعدين"
+msgstr "Assistant Limit"
+
+#: teachers/models.py:37
+msgid "مسموح بالحزم الأونلاين"
+msgstr "Online Packages Allowed"
+
+#: teachers/models.py:38
+msgid "مسموح بصور الأسئلة"
+msgstr "Question Images Allowed"
+
+#: teachers/models.py:49
+msgid "نبذة عن المعلم"
+msgstr "Teacher Bio"
+
+#: teachers/models.py:51
+msgid "صورة المعلم"
+msgstr "Teacher Image"
+
+#: teachers/models.py:54 templates/core/owner_edit_user.html:59
+msgid "تاريخ انتهاء الاشتراك"
+msgstr "Subscription End Date"
+
+#: teachers/models.py:55
+msgid "هل استهلك الشهر المجاني؟"
+msgstr "Free Trial Used?"
+
+#: teachers/models.py:56
+msgid "الباقة الحالية"
+msgstr "Current Plan"
+
+#: teachers/models.py:91 templates/assistants/teacher_groups.html:106
+msgid "اسم المجموعة"
+msgstr "Group Name"
+
+#: teachers/models.py:92 teachers/models.py:163
+#: templates/assistants/teacher_groups.html:109 templates/home.html:108
+#: templates/students/search.html:30 templates/teachers/create_package.html:19
+#: templates/teachers/edit_package.html:25
+msgid "الصف الدراسي"
+msgstr "Grade Level"
+
+#: teachers/models.py:104 templates/teachers/includes/modals_content.html:21
+msgid "رابط الفيديو"
+msgstr "Video Link"
+
+#: teachers/models.py:106
+msgid "مفعلة"
+msgstr "Active"
+
+#: teachers/models.py:127 templates/teachers/manage_codes.html:84
+msgid "الكود"
+msgstr "Code"
+
+#: teachers/models.py:129
+msgid "حد المشاهدات"
+msgstr "View Limit"
+
+#: teachers/models.py:130
+msgid "المشاهدات الحالية"
+msgstr "Current Views"
+
+#: teachers/models.py:132
+msgid "تم التفعيل"
+msgstr "Activated"
+
+#: teachers/models.py:148
+msgid "عنوان الملف"
+msgstr "File Title"
+
+#: teachers/models.py:149 templates/teachers/package_dashboard/content.html:145
+msgid "رابط الملف (Drive/Direct)"
+msgstr "File Link (Drive/Direct)"
+
+#: teachers/models.py:160 templates/teachers/edit_package.html:20
+msgid "اسم الحزمة"
+msgstr "Package Name"
+
+#: teachers/models.py:164
+msgid "الملفات المختارة"
+msgstr "Selected Files"
+
+#: teachers/models.py:165 templates/teachers/edit_package.html:35
+msgid "وصف الحزمة"
+msgstr "Package Description"
+
+#: teachers/models.py:166
+msgid "سعر الحزمة (EGP)"
+msgstr "Package Price (EGP)"
+
+#: teachers/models.py:167 templates/teachers/edit_package.html:40
+msgid "صورة الغلاف"
+msgstr "Cover Image"
+
+#: teachers/models.py:170
+msgid "المحاضرات المختارة"
+msgstr "Selected Lectures"
+
+#: teachers/models.py:171
+msgid "الامتحانات المختارة"
+msgstr "Selected Exams"
+
+#: teachers/models.py:173
+msgid "حد المشاهدة للفيديو"
+msgstr "Video View Limit"
+
+#: teachers/models.py:174
+msgid "متاحة للشراء"
+msgstr "Available for Purchase"
+
+#: teachers/models.py:184 templates/core/owner_payments.html:42
+#: templates/core/owner_student_payments.html:27
+#: templates/core/owner_withdrawals.html:15 templates/teachers/wallet.html:82
+msgid "المبلغ"
+msgstr "Amount"
+
+#: templates/account/login.html:3 templates/account/signup.html:27
+#: templates/base.html:168 templates/home.html:53
+msgid "تسجيل الدخول"
+msgstr "Login"
+
+#: templates/account/login.html:11
+msgid "مرحباً بعودتك!"
+msgstr "Welcome Back!"
+
+#: templates/account/login.html:12
+msgid "سجل دخولك للمنصة للمتابعة"
+msgstr "Log in to continue"
+
+#: templates/account/login.html:18 templates/account/role_signup.html:43
+msgid "المتابعة باستخدام Google"
+msgstr "Continue with Google"
+
+#: templates/account/login.html:25
+msgid "ليس لديك حساب؟"
+msgstr "Don't have an account?"
+
+#: templates/account/login.html:26
+msgid "أنشئ حساباً جديداً من الرئيسية"
+msgstr "Create a new account from Home"
+
+#: templates/account/role_signup.html:6
+#, python-format
+msgid "تسجيل %(role_name)s"
+msgstr "Register %(role_name)s"
+
+#: templates/account/role_signup.html:35
+#, python-format
+msgid "تسجيل كـ %(role_name)s"
+msgstr "Register as %(role_name)s"
+
+#: templates/account/role_signup.html:37
+msgid "انقر بالأسفل للمتابعة باستخدام حسابك في Google"
+msgstr "Click below to continue with Google"
+
+#: templates/account/role_signup.html:48
+msgid "تغيير الاختيار والعودة للرئيسية"
+msgstr "Change choice and return Home"
+
+#: templates/account/signup.html:5 templates/base.html:169
+msgid "إنشاء حساب"
+msgstr "Create Account"
+
+#: templates/account/signup.html:13
+msgid "إنشاء حساب جديد"
+msgstr "Create New Account"
+
+#: templates/account/signup.html:14
+msgid "يفضل التسجيل من الصفحة الرئيسية لاختيار نوع الحساب (طالب/معلم)"
+msgstr ""
+"Please register from the home page to select account type (Student/Teacher)"
+
+#: templates/account/signup.html:19
+msgid "تسجيل باستخدام Google"
+msgstr "Register with Google"
+
+#: templates/account/signup.html:26 templates/home.html:53
+msgid "لديك حساب بالفعل؟"
+msgstr "Already have an account?"
+
+#: templates/accounts/complete_profile.html:4
+msgid "إعداد الحساب"
+msgstr "Account Setup"
+
+#: templates/accounts/complete_profile.html:20
+#, python-format
+msgid "مرحباً %(name)s"
+msgstr "Welcome %(name)s"
+
+#: templates/accounts/complete_profile.html:22
+msgid "أنت تسجل الآن بصفتك:"
+msgstr "You are registering as:"
+
+#: templates/accounts/complete_profile.html:28
+msgid "خطوة أخيرة للبدء"
+msgstr "Final Step"
+
+#: templates/accounts/complete_profile.html:29
+msgid ""
+"  يرجى ملء البيانات التالية بدقة لتوثيق حسابك في المنصة. ( سيتم حظرك لو "
+"البيانات غلط)"
+msgstr "Please fill in your details accurately. (False data may lead to ban)"
+
+#: templates/accounts/complete_profile.html:65
+msgid "حفظ البيانات والدخول للوحة التحكم"
+msgstr "Save & Enter Dashboard"
+
+#: templates/assistants/dashboard.html:3 templates/base.html:141
+msgid "لوحة المساعد"
+msgstr "Assistant Dashboard"
+
+#: templates/assistants/dashboard.html:12
+msgid "مرحباً كابتن"
+msgstr "Welcome Captain"
+
+#: templates/assistants/dashboard.html:14
+msgid "لوحة التحكم الخاصة بالمساعدين"
+msgstr "Assistant Control Panel"
+
+#: templates/assistants/dashboard.html:17
+msgid "البحث عن عمل جديد"
+msgstr "Find New Job"
+
+#: templates/assistants/dashboard.html:24
+msgid "المعلمون الحاليون"
+msgstr "Current Teachers"
+
+#: templates/assistants/dashboard.html:50
+msgid "تاريخ الانضمام:"
+msgstr "Join Date:"
+
+#: templates/assistants/dashboard.html:58 templates/home.html:177
+msgid "عرض المجموعات"
+msgstr "View Groups"
+
+#: templates/assistants/dashboard.html:64
+msgid "عرض الحزم"
+msgstr "View Packages"
+
+#: templates/assistants/dashboard.html:68
+msgid "لا تملك صلاحية الحزم"
+msgstr "No Package Permission"
+
+#: templates/assistants/dashboard.html:78
+msgid "لا تعمل مع أي معلم حالياً."
+msgstr "Not working with any teacher currently."
+
+#: templates/assistants/dashboard.html:79
+msgid "اضغط على 'البحث عن عمل جديد' لإرسال طلبات انضمام."
+msgstr "Click 'Find New Job' to send requests."
+
+#: templates/assistants/dashboard.html:89 templates/students/dashboard.html:125
+msgid "طلبات قيد الانتظار"
+msgstr "Pending Requests"
+
+#: templates/assistants/dashboard.html:103
+msgid "في الانتظار"
+msgstr "Pending"
+
+#: templates/assistants/find_teacher.html:3
+msgid "البحث عن عمل"
+msgstr "Find Job"
+
+#: templates/assistants/find_teacher.html:11
+msgid "ابحث عن معلم للعمل معه"
+msgstr "Find a Teacher to Work With"
+
+#: templates/assistants/find_teacher.html:12
+msgid "انضم لفريق عمل أفضل المدرسين وابدأ مسيرتك المهنية"
+msgstr "Join the team of top teachers and start your career"
+
+#: templates/assistants/find_teacher.html:19
+msgid "بحث بالبيانات"
+msgstr "Search by Data"
+
+#: templates/assistants/find_teacher.html:22
+msgid "الاسم، الكود، الهاتف..."
+msgstr "Name, Code, Phone..."
+
+#: templates/assistants/find_teacher.html:27 templates/students/search.html:45
+msgid "المادة"
+msgstr "Subject"
+
+#: templates/assistants/find_teacher.html:29 templates/home.html:123
+#: templates/students/search.html:47
+msgid "كل المواد"
+msgstr "All Subjects"
+
+#: templates/assistants/find_teacher.html:37
+#: templates/students/list_packages.html:16
+msgid "بحث"
+msgstr "Search"
+
+#: templates/assistants/find_teacher.html:74
+msgid "إرسال طلب انضمام"
+msgstr "Send Join Request"
+
+#: templates/assistants/find_teacher.html:84
+msgid "لم يتم العثور على معلمين."
+msgstr "No teachers found."
+
+#: templates/assistants/teacher_groups.html:3
+msgid "مجموعات مستر"
+msgstr "Mr. Groups"
+
+#: templates/assistants/teacher_groups.html:9
+msgid "إنشاء مجموعة جديدة"
+msgstr "Create New Group"
+
+#: templates/assistants/teacher_groups.html:28
+msgid "مجموعات:"
+msgstr "Groups:"
+
+#: templates/assistants/teacher_groups.html:30
+msgid "إدارة المجموعات والطلاب"
+msgstr "Manage Groups & Students"
+
+#: templates/assistants/teacher_groups.html:33
+#: templates/assistants/teacher_packages.html:18
+msgid "عودة للداشبورد"
+msgstr "Back to Dashboard"
+
+#: templates/assistants/teacher_groups.html:54
+msgid "نشطة"
+msgstr "Active"
+
+#: templates/assistants/teacher_groups.html:56
+msgid "مغلقة"
+msgstr "Closed"
+
+#: templates/assistants/teacher_groups.html:63
+#: templates/teachers/dashboard.html:95
+msgid "عدد الطلاب"
+msgstr "Student Count"
+
+#: templates/assistants/teacher_groups.html:64
+#: templates/teachers/dashboard.html:96
+msgid "تاريخ الإنشاء"
+msgstr "Created At"
+
+#: templates/assistants/teacher_groups.html:71
+msgid "الطلاب والغياب"
+msgstr "Students & Attendance"
+
+#: templates/assistants/teacher_groups.html:74
+#: templates/students/includes/student_group_navbar.html:18
+#: templates/students/my_package_content.html:31
+#: templates/students/watch_lecture.html:10
+#: templates/teachers/create_package.html:61
+#: templates/teachers/edit_package.html:76
+#: templates/teachers/group_detail.html:3
+#: templates/teachers/group_detail.html:152
+#: templates/teachers/includes/group_navbar.html:28
+#: templates/teachers/manage_codes.html:12
+#: templates/teachers/package_dashboard/content.html:42
+#: templates/teachers/package_dashboard/content.html:185
+msgid "المحاضرات"
+msgstr "Lectures"
+
+#: templates/assistants/teacher_groups.html:79
+msgid "مغلقة (تجاوز باقة المعلم)"
+msgstr "Closed (Teacher Plan Limit)"
+
+#: templates/assistants/teacher_groups.html:89
+msgid "لا توجد مجموعات لهذا المعلم."
+msgstr "No groups for this teacher."
+
+#: templates/assistants/teacher_groups.html:100
+msgid "إنشاء مجموعة لـ"
+msgstr "Create Group for"
+
+#: templates/assistants/teacher_groups.html:112 templates/home.html:114
+#: templates/students/search.html:36
+msgid "أولى ثانوي"
+msgstr "1st Secondary"
+
+#: templates/assistants/teacher_groups.html:113 templates/home.html:115
+#: templates/students/search.html:37
+msgid "ثانية ثانوي"
+msgstr "2nd Secondary"
+
+#: templates/assistants/teacher_groups.html:114 templates/home.html:116
+#: templates/students/search.html:38
+msgid "ثالثة ثانوي"
+msgstr "3rd Secondary"
+
+#: templates/assistants/teacher_groups.html:119
+#: templates/teachers/dashboard.html:143
+msgid "إنشاء"
+msgstr "Create"
+
+#: templates/assistants/teacher_packages.html:3
+msgid "حزم:"
+msgstr "Packages:"
+
+#: templates/assistants/teacher_packages.html:12
+msgid "حزم"
+msgstr "Packages"
+
+#: templates/assistants/teacher_packages.html:14
+msgid "إدارة محتوى الكورسات الأونلاين"
+msgstr "Manage Online Courses"
+
+#: templates/assistants/teacher_packages.html:22
+#: templates/teachers/create_package.html:7
+#: templates/teachers/manage_packages.html:22
+msgid "إنشاء حزمة جديدة"
+msgstr "Create New Package"
+
+#: templates/assistants/teacher_packages.html:64
+#: templates/teachers/package_dashboard/content.html:3
+msgid "إدارة المحتوى"
+msgstr "Manage Content"
+
+#: templates/assistants/teacher_packages.html:69
+msgid "تعديل البيانات"
+msgstr "Edit Data"
+
+#: templates/assistants/teacher_packages.html:77
+msgid "لا توجد حزم لهذا المعلم."
+msgstr "No packages for this teacher."
+
+#: templates/base.html:10
+msgid "منصة تعلّم"
+msgstr "Ta3alm Platform"
+
+#: templates/base.html:95
+msgid "تواصل معنا"
+msgstr "Contact Us"
+
+#: templates/base.html:101
+msgid "مرحباً،"
+msgstr "Welcome,"
+
+#: templates/base.html:117
+msgid "القائمة الرئيسية"
+msgstr "Main Menu"
+
+#: templates/base.html:127
+msgid "لوحة المعلم"
+msgstr "Teacher Dashboard"
+
+#: templates/base.html:129 templates/core/manage_plans.html:75
+#: templates/core/owner_dashboard.html:85
+msgid "المساعدين"
+msgstr "Assistants"
+
+#: templates/base.html:130
+msgid "المحفظة"
+msgstr "Wallet"
+
+#: templates/base.html:131 templates/core/owner_dashboard.html:99
+msgid "الاشتراك"
+msgstr "Subscription"
+
+#: templates/base.html:132
+msgid "الملف الشخصي"
+msgstr "Profile"
+
+#: templates/base.html:135 templates/students/dashboard.html:3
+msgid "لوحة الطالب"
+msgstr "Student Dashboard"
+
+#: templates/base.html:136 templates/students/dashboard.html:16
+msgid "بحث عن مدرس"
+msgstr "Find Teacher"
+
+#: templates/base.html:137
+msgid "تصفح الكورسات"
+msgstr "Browse Courses"
+
+#: templates/base.html:138 templates/students/dashboard.html:18
+#: templates/students/settings.html:7
+msgid "بياناتي"
+msgstr "My Data"
+
+#: templates/base.html:142
+msgid "بحث عن عمل"
+msgstr "Find Job"
+
+#: templates/base.html:145 templates/core/owner_dashboard.html:4
+msgid "لوحة المالك"
+msgstr "Owner Dashboard"
+
+#: templates/base.html:152 templates/core/notifications.html:3
+msgid "الإشعارات"
+msgstr "Notifications"
+
+#: templates/base.html:162 templates/core/banned.html:41
+msgid "تسجيل الخروج"
+msgstr "Logout"
+
+#: templates/base.html:167 templates/exams/manage.html:21 templates/home.html:5
+msgid "الرئيسية"
+msgstr "Home"
+
+#: templates/base.html:174
+msgid "الإعدادات العامة"
+msgstr "General Settings"
+
+#: templates/base.html:189 templates/base.html:263
+msgid "الوضع الليلي"
+msgstr "Dark Mode"
+
+#: templates/base.html:217
+msgid "جميع الحقوق محفوظة لمنصة"
+msgstr "All rights reserved to"
+
+#: templates/base.html:253 templates/base.html:260
+msgid "الوضع النهاري"
+msgstr "Light Mode"
+
+#: templates/core/banned.html:7
+msgid "حساب محظور"
+msgstr "Banned Account"
+
+#: templates/core/banned.html:27
+msgid "حسابك محظور!"
+msgstr "Your account is banned!"
+
+#: templates/core/banned.html:30
+#, python-format
+msgid ""
+"عفواً يا %(name)s، تم إيقاف حسابك ومنعك من دخول المنصة بسبب مخالفة القوانين "
+"أو عدم الالتزام بالشروط."
+msgstr "Sorry %(name)s, your account has been suspended for violating terms."
+
+#: templates/core/banned.html:34
+msgid "ماذا أفعل؟"
+msgstr "What to do?"
+
+#: templates/core/banned.html:35
+msgid ""
+"إذا كنت تعتقد أن هذا حدث بالخطأ، يرجى التواصل مع إدارة المنصة أو الدعم الفني "
+"فوراً للمراجعة."
+msgstr "If you think this is a mistake, please contact support."
+
+#: templates/core/banned.html:47
+msgid "منصة تعلّم - قسم الأمن والحماية - انقر للتواصل"
+msgstr "Ta3alm Security Dept - Click to contact"
+
+#: templates/core/maintenance.html:7
+msgid "تحت الصيانة"
+msgstr "Under Maintenance"
+
+#: templates/core/maintenance.html:26
+msgid "نحن في وضع الصيانة"
+msgstr "We are under maintenance"
+
+#: templates/core/maintenance.html:28
+msgid "نقوم حالياً ببعض التحسينات لجعل تجربتك أفضل."
+msgstr "We are making improvements for a better experience."
+
+#: templates/core/maintenance.html:32
+msgid "جاري التحميل..."
+msgstr "Loading..."
+
+#: templates/core/manage_plans.html:3 templates/core/owner_dashboard.html:13
+msgid "إدارة الباقات"
+msgstr "Manage Plans"
+
+#: templates/core/manage_plans.html:8
+msgid "خطط الاشتراكات"
+msgstr "Subscription Plans"
+
+#: templates/core/manage_plans.html:9 templates/core/owner_edit_user.html:17
+#: templates/core/owner_payments.html:11
+#: templates/core/owner_student_payments.html:9
+#: templates/students/package_marks.html:9 templates/teachers/bulk_log.html:10
+#: templates/teachers/student_full_log.html:24
+msgid "عودة"
+msgstr "Back"
+
+#: templates/core/manage_plans.html:14
+msgid "إضافة باقة جديدة"
+msgstr "Add New Plan"
+
+#: templates/core/manage_plans.html:21 templates/core/manage_plans.html:133
+#: templates/teachers/create_package.html:15
+#: templates/teachers/manage_assistants.html:66
+msgid "الاسم"
+msgstr "Name"
+
+#: templates/core/manage_plans.html:25 templates/core/manage_plans.html:72
+#: templates/core/manage_plans.html:136
+#: templates/teachers/create_package.html:24
+msgid "السعر"
+msgstr "Price"
+
+#: templates/core/manage_plans.html:51
+msgid "السماح بالحزم الأونلاين"
+msgstr "Allow Online Packages"
+
+#: templates/core/manage_plans.html:55
+msgid "السماح بصور الأسئلة"
+msgstr "Allow Question Images"
+
+#: templates/core/manage_plans.html:60
+msgid "إضافة الباقة"
+msgstr "Add Plan"
+
+#: templates/core/manage_plans.html:73 templates/core/owner_dashboard.html:84
+#: templates/teachers/group_students.html:4
+#: templates/teachers/includes/group_navbar.html:55
+msgid "الطلاب"
+msgstr "Students"
+
+#: templates/core/manage_plans.html:74
+msgid "المجموعات"
+msgstr "Groups"
+
+#: templates/core/manage_plans.html:76
+msgid "أونلاين"
+msgstr "Online"
+
+#: templates/core/manage_plans.html:77
+msgid "صور"
+msgstr "Images"
+
+#: templates/core/manage_plans.html:78 templates/core/owner_dashboard.html:102
+#: templates/core/owner_dashboard.html:207
+#: templates/core/owner_dashboard.html:241
+msgid "تحكم"
+msgstr "Control"
+
+#: templates/core/manage_plans.html:112 templates/core/owner_dashboard.html:221
+#: templates/core/owner_dashboard.html:254 templates/exams/manage.html:74
+#: templates/teachers/group_detail.html:82
+msgid "حذف؟"
+msgstr "Delete?"
+
+#: templates/core/manage_plans.html:126 templates/teachers/edit_package.html:3
+msgid "تعديل:"
+msgstr "Edit:"
+
+#: templates/core/manage_plans.html:141
+msgid "طلاب"
+msgstr "Students"
+
+#: templates/core/manage_plans.html:145
+msgid "مجموعات"
+msgstr "Groups"
+
+#: templates/core/manage_plans.html:149
+msgid "مساعدين"
+msgstr "Assistants"
+
+#: templates/core/manage_plans.html:157
+msgid "أونلاين (حزم)"
+msgstr "Online (Packages)"
+
+#: templates/core/manage_plans.html:161 templates/teachers/subscription.html:62
+#: templates/teachers/subscription.html:64
+msgid "صور أسئلة"
+msgstr "Question Images"
+
+#: templates/core/manage_plans.html:169 templates/core/owner_edit_user.html:86
+#: templates/exams/edit_question.html:97 templates/teachers/edit_group.html:26
+#: templates/teachers/edit_package.html:131
+#: templates/exams/edit_question.html:26
+msgid "حفظ التعديلات"
+msgstr "Save Changes"
+
+#: templates/core/notifications.html:14
+msgid "مركز الإشعارات"
+msgstr "Notification Center"
+
+#: templates/core/notifications.html:37
+#: templates/students/list_packages.html:68
+msgid "عرض التفاصيل"
+msgstr "View Details"
+
+#: templates/core/notifications.html:46
+msgid "لا توجد إشعارات حالياً."
+msgstr "No notifications."
+
+#: templates/core/notifications.html:47
+msgid "سنخبرك فور حدوث أي جديد."
+msgstr "We'll let you know when something new happens."
+
+#: templates/core/owner_dashboard.html:10
+msgid "لوحة القيادة"
+msgstr "Dashboard"
+
+#: templates/core/owner_dashboard.html:16 templates/core/owner_payments.html:4
+#: templates/core/owner_payments.html:9
+msgid "التقارير المالية"
+msgstr "Financial Reports"
+
+#: templates/core/owner_dashboard.html:19
+#: templates/core/owner_withdrawals.html:3
+msgid "طلبات السحب"
+msgstr "Withdrawal Requests"
+
+#: templates/core/owner_dashboard.html:23
+msgid "مبيعات الحزم"
+msgstr "Package Sales"
+
+#: templates/core/owner_dashboard.html:29
+msgid "إيقاف الصيانة"
+msgstr "Stop Maintenance"
+
+#: templates/core/owner_dashboard.html:29
+msgid "تفعيل وضع الصيانة"
+msgstr "Enable Maintenance"
+
+#: templates/core/owner_dashboard.html:64
+msgid "اشتراك ساري"
+msgstr "Active Sub"
+
+#: templates/core/owner_dashboard.html:73
+msgid "ابحث عن مستخدم (اسم، هاتف، ايميل)..."
+msgstr "Search user..."
+
+#: templates/core/owner_dashboard.html:83
+msgid "المعلمين"
+msgstr "Teachers"
+
+#: templates/core/owner_dashboard.html:96 templates/core/owner_payments.html:41
+#: templates/core/owner_student_payments.html:25
+#: templates/core/owner_withdrawals.html:14
+msgid "المعلم"
+msgstr "Teacher"
+
+#: templates/core/owner_dashboard.html:97
+#: templates/core/owner_dashboard.html:204
+#: templates/core/owner_dashboard.html:239
+#: templates/teachers/manage_assistants.html:67
+msgid "الهاتف"
+msgstr "Phone"
+
+#: templates/core/owner_dashboard.html:98
+msgid "الباقة"
+msgstr "Plan"
+
+#: templates/core/owner_dashboard.html:100
+msgid "الرصيد"
+msgstr "Balance"
+
+#: templates/core/owner_dashboard.html:101
+#: templates/core/owner_dashboard.html:206
+#: templates/core/owner_dashboard.html:240
+#: templates/teachers/group_students.html:52
+#: templates/teachers/manage_codes.html:86
+#: templates/teachers/package_dashboard/students.html:28
+#: templates/teachers/wallet.html:85
+msgid "الحالة"
+msgstr "Status"
+
+#: templates/core/owner_dashboard.html:114
+#, python-format
+msgid "ساري (%(days)s يوم)"
+msgstr "Active (%(days)s days)"
+
+#: templates/core/owner_dashboard.html:117
+msgid "منتهي"
+msgstr "Expired"
+
+#: templates/core/owner_dashboard.html:132
+msgid "تجديد مجاني"
+msgstr "Free Renew"
+
+#: templates/core/owner_dashboard.html:136 templates/teachers/dashboard.html:85
+#: templates/teachers/manage_packages.html:77
+msgid "تعديل"
+msgstr "Edit"
+
+#: templates/core/owner_dashboard.html:154 templates/exams/manage.html:48
+msgid "حذف نهائي؟"
+msgstr "Delete Permanently?"
+
+#: templates/core/owner_dashboard.html:163
+#, python-format
+msgid "تجديد: %(name)s"
+msgstr "Renew: %(name)s"
+
+#: templates/core/owner_dashboard.html:172
+msgid "منح المعلم شهراً مجانياً. اختر الباقة:"
+msgstr "Give free month. Select plan:"
+
+#: templates/core/owner_dashboard.html:176
+#, python-format
+msgid "%(name)s (%(limit)s طالب)"
+msgstr "%(name)s (%(limit)s students)"
+
+#: templates/core/owner_dashboard.html:182
+msgid "تجديد"
+msgstr "Renew"
+
+#: templates/core/owner_dashboard.html:190
+msgid "لا يوجد معلمين."
+msgstr "No teachers."
+
+#: templates/core/owner_dashboard.html:203
+#: templates/core/owner_student_payments.html:24
+#: templates/exams/manage.html:111 templates/students/group_ranking.html:38
+#: templates/students/package_leaderboard.html:24
+#: templates/teachers/bulk_log.html:65 templates/teachers/group_ranking.html:24
+#: templates/teachers/package_dashboard/ranking.html:20
+msgid "الطالب"
+msgstr "Student"
+
+#: templates/core/owner_dashboard.html:205
+#: templates/teachers/group_students.html:51
+msgid "ولي الأمر"
+msgstr "Parent"
+
+#: templates/core/owner_dashboard.html:225
+msgid "لا يوجد طلاب."
+msgstr "No students."
+
+#: templates/core/owner_dashboard.html:238
+msgid "المساعد"
+msgstr "Assistant"
+
+#: templates/core/owner_dashboard.html:258
+msgid "لا يوجد مساعدين."
+msgstr "No assistants."
+
+#: templates/core/owner_edit_user.html:5
+#, python-format
+msgid "تعديل: %(name)s"
+msgstr "Edit: %(name)s"
+
+#: templates/core/owner_edit_user.html:15
+#, python-format
+msgid "تعديل بيانات: %(name)s (%(role)s)"
+msgstr "Edit Data: %(name)s (%(role)s)"
+
+#: templates/core/owner_edit_user.html:24 templates/teachers/settings.html:15
+msgid "البيانات الشخصية"
+msgstr "Personal Data"
+
+#: templates/core/owner_edit_user.html:27 templates/teachers/settings.html:31
+msgid "الاسم الأول"
+msgstr "First Name"
+
+#: templates/core/owner_edit_user.html:31 templates/teachers/settings.html:35
+msgid "الاسم الأخير"
+msgstr "Last Name"
+
+#: templates/core/owner_edit_user.html:35
+msgid "البريد الإلكتروني"
+msgstr "Email"
+
+#: templates/core/owner_edit_user.html:47
+msgid "الكود التعريفي (Custom ID)"
+msgstr "Custom ID"
+
+#: templates/core/owner_edit_user.html:53
+msgid "بيانات المعلم والاشتراك"
+msgstr "Teacher Data & Sub"
+
+#: templates/core/owner_edit_user.html:55 templates/home.html:121
+#: templates/teachers/settings.html:41
+msgid "المادة الدراسية"
+msgstr "Subject"
+
+#: templates/core/owner_edit_user.html:61
+msgid "يمكنك تمديد أو تقليص الاشتراك يدوياً من هنا."
+msgstr "You can modify subscription end date here."
+
+#: templates/core/owner_edit_user.html:64
+msgid "النبذة التعريفية"
+msgstr "Bio"
+
+#: templates/core/owner_edit_user.html:70
+msgid "بيانات الطالب"
+msgstr "Student Data"
+
+#: templates/core/owner_edit_user.html:78
+msgid "بيانات المساعد"
+msgstr "Assistant Data"
+
+#: templates/core/owner_payments.html:17
+msgid "إجمالي الإيرادات (Paymob)"
+msgstr "Total Revenue (Paymob)"
+
+#: templates/core/owner_payments.html:24
+msgid "ابحث عن معلم أو طالب (اسم، رقم، كود)..."
+msgstr "Search transaction..."
+
+#: templates/core/owner_payments.html:27
+msgid "إلغاء البحث"
+msgstr "Cancel"
+
+#: templates/core/owner_payments.html:35
+msgid "سجل العمليات (Transactions)"
+msgstr "Transactions"
+
+#: templates/core/owner_payments.html:44
+msgid "رقم العملية (ID)"
+msgstr "Transaction ID"
+
+#: templates/core/owner_payments.html:56
+msgid "لا توجد عمليات دفع مسجلة حتى الآن."
+msgstr "No transactions recorded."
+
+#: templates/core/owner_student_payments.html:3
+msgid "مدفوعات الطلاب"
+msgstr "Student Payments"
+
+#: templates/core/owner_student_payments.html:8
+msgid "سجل مبيعات الحزم (للطلاب)"
+msgstr "Package Sales Log"
+
+#: templates/core/owner_student_payments.html:14
+msgid "إجمالي المبيعات:"
+msgstr "Total Sales:"
+
+#: templates/core/owner_student_payments.html:26
+msgid "الحزمة"
+msgstr "Package"
+
+#: templates/core/owner_student_payments.html:42
+msgid "لا توجد عمليات بيع حتى الآن."
+msgstr "No sales yet."
+
+#: templates/core/owner_withdrawals.html:7
+msgid "طلبات سحب الأرباح"
+msgstr "Withdrawal Requests"
+
+#: templates/core/owner_withdrawals.html:16 templates/teachers/wallet.html:83
+msgid "الطريقة"
+msgstr "Method"
+
+#: templates/core/owner_withdrawals.html:17 templates/teachers/wallet.html:61
+msgid "بيانات التحويل"
+msgstr "Payment Details"
+
+#: templates/core/owner_withdrawals.html:19
+msgid "الحالة / إجراء"
+msgstr "Status / Action"
+
+#: templates/core/owner_withdrawals.html:32 templates/teachers/wallet.html:96
+msgid "تم التحويل"
+msgstr "Paid"
+
+#: templates/core/owner_withdrawals.html:37
+msgid "هل قمت بالتحويل فعلاً؟"
+msgstr "Did you really transfer?"
+
+#: templates/core/owner_withdrawals.html:38
+msgid "تأكيد التحويل"
+msgstr "Confirm Transfer"
+
+#: templates/core/owner_withdrawals.html:45
+msgid "لا توجد طلبات سحب."
+msgstr "No withdrawal requests."
+
+#: templates/exams/add_question.html:3
+msgid "إضافة سؤال جديد"
+msgstr "Add New Question"
+
+#: templates/exams/add_question.html:11
+msgid "إضافة سؤال جديد للامتحان:"
+msgstr "Add Question to Exam:"
+
+#: templates/exams/add_question.html:30
+msgid "اختياري. الصور المسموحة: JPG, PNG."
+msgstr "Optional. Allowed: JPG, PNG."
+
+#: templates/exams/add_question.html:35
+msgid "غير متاح:"
+msgstr "Not Available:"
+
+#: templates/exams/add_question.html:36
+msgid "رفع الصور غير متوفر في باقتك الحالية. يرجى الترقية لتفعيل هذه الميزة."
+msgstr "Image upload is not available in your current plan. Please upgrade."
+
+#: templates/exams/add_question.html:45
+msgid "الاختيارات"
+msgstr "Options"
+
+#: templates/exams/add_question.html:48 templates/exams/edit_question.html:62
+msgid "اختيار A"
+msgstr "Option A"
+
+#: templates/exams/add_question.html:52 templates/exams/edit_question.html:66
+msgid "اختيار B"
+msgstr "Option B"
+
+#: templates/exams/add_question.html:56 templates/exams/edit_question.html:70
+msgid "اختيار C"
+msgstr "Option C"
+
+#: templates/exams/add_question.html:60 templates/exams/edit_question.html:74
+msgid "اختيار D"
+msgstr "Option D"
+
+#: templates/exams/add_question.html:74
+msgid "درجة السؤال"
+msgstr "Question Marks"
+
+#: templates/exams/add_question.html:81 templates/teachers/edit_package.html:9
+msgid "إلغاء وعودة"
+msgstr "Cancel & Return"
+
+#: templates/exams/add_question.html:83
+msgid "حفظ السؤال"
+msgstr "Save Question"
+
+#: templates/exams/edit_question.html:3 templates/exams/edit_question.html:11
+msgid "تعديل سؤال"
+msgstr "Edit Question"
+
+#: templates/exams/edit_question.html:27
+msgid "صورة السؤال"
+msgstr "Question Image"
+
+#: templates/exams/edit_question.html:35
+msgid "حذف الصورة الحالية"
+msgstr "Delete Current Image"
+
+#: templates/exams/edit_question.html:42
+msgid "تغيير الصورة (اختياري):"
+msgstr "Change Image (Optional):"
+
+#: templates/exams/edit_question.html:47
+msgid "إضافة الصور غير متاحة في باقتك الحالية."
+msgstr "Image upload not available in current plan."
+
+#: templates/exams/edit_question.html:51
+msgid "يمكنك حذف الصورة الحالية، لكن لا يمكنك رفع صورة جديدة بسبب قيود الباقة."
+msgstr ""
+"You can delete current image, but can't upload new one due to plan limits."
+
+#: templates/exams/edit_question.html:95 templates/teachers/dashboard.html:142
+#: templates/teachers/edit_group.html:25
+#: templates/teachers/group_detail.html:118
+#: templates/teachers/group_students.html:168
+#: templates/teachers/includes/modals_content.html:31
+#: templates/teachers/includes/modals_content.html:69
+#: templates/teachers/manage_assistants.html:140
+msgid "إلغاء"
+msgstr "Cancel"
+
+#: templates/exams/manage.html:3
+msgid "إدارة:"
+msgstr "Manage:"
+
+#: templates/exams/manage.html:14 templates/teachers/create_package.html:44
+#: templates/teachers/package_dashboard/content.html:12
+msgid "محتوى الحزمة"
+msgstr "Package Content"
+
+#: templates/exams/manage.html:16
+#: templates/students/includes/student_group_navbar.html:26
+#: templates/students/my_package_content.html:58
+#: templates/teachers/create_package.html:84
+#: templates/teachers/edit_package.html:104
+#: templates/teachers/group_detail.html:172
+#: templates/teachers/group_exams.html:4
+#: templates/teachers/includes/group_navbar.html:37
+#: templates/teachers/package_dashboard/content.html:70
+#: templates/teachers/package_dashboard/content.html:202
+msgid "الامتحانات"
+msgstr "Exams"
+
+#: templates/exams/manage.html:34 templates/students/my_package_content.html:37
+msgid "دقيقة"
+msgstr "min"
+
+#: templates/exams/manage.html:35
+msgid "درجة إجمالية"
+msgstr "Total Marks"
+
+#: templates/exams/manage.html:38
+msgid "مفعّل (مفتوح للطلاب)"
+msgstr "Active (Open)"
+
+#: templates/exams/manage.html:40
+msgid "مغلق (مخفي)"
+msgstr "Closed (Hidden)"
+
+#: templates/exams/manage.html:46
+msgid "إغلاق"
+msgstr "Close"
+
+#: templates/exams/manage.html:46
+msgid "تفعيل"
+msgstr "Activate"
+
+#: templates/exams/manage.html:49 templates/teachers/dashboard.html:87
+#: templates/teachers/manage_assistants.html:83
+#: templates/teachers/student_full_log.html:60
+msgid "حذف"
+msgstr "Delete"
+
+#: templates/exams/manage.html:53
+msgid "سؤال جديد"
+msgstr "New Question"
+
+#: templates/exams/manage.html:62
+msgid "الأسئلة"
+msgstr "Questions"
+
+#: templates/exams/manage.html:69
+msgid "س"
+msgstr "Q"
+
+#: templates/exams/manage.html:72 templates/students/take_exam.html:25
+#: templates/students/take_package_exam.html:25
+msgid "درجات"
+msgstr "Marks"
+
+#: templates/exams/manage.html:93
+msgid "لا توجد أسئلة بعد."
+msgstr "No questions yet."
+
+#: templates/exams/manage.html:99
+msgid "نتائج الطلاب"
+msgstr "Student Results"
+
+#: templates/exams/manage.html:103
+msgid "ابحث عن طالب..."
+msgstr "Search student..."
+
+#: templates/exams/manage.html:121 templates/students/group_marks.html:32
+msgid "لا توجد نتائج."
+msgstr "No results."
+
+#: templates/home.html:18
+msgid "منصة"
+msgstr "Platform"
+
+#: templates/home.html:18
+msgid "تعلّم"
+msgstr "Ta3alm"
+
+#: templates/home.html:26
+msgid ""
+"بوابتك لمستقبل تعليمي أفضل. دروس تفاعلية، امتحانات ذكية، ومتابعة فورية "
+"لمستواك الدراسي مع نخبة من أفضل المعلمين."
+msgstr "Your gateway to a better educational future."
+
+#: templates/home.html:33
+msgid "الذهاب للوحة التحكم"
+msgstr "Go to Dashboard"
+
+#: templates/home.html:36
+msgid "مسجل دخول باسم:"
+msgstr "Logged in as:"
+
+#: templates/home.html:42
+msgid "طالب جديد"
+msgstr "New Student"
+
+#: templates/home.html:45
+msgid "انضم كمعلم"
+msgstr "Join as Teacher"
+
+#: templates/home.html:48
+msgid "مساعد معلم"
+msgstr "Teacher Assistant"
+
+#: templates/home.html:68
+msgid "محاضرات HD"
+msgstr "HD Lectures"
+
+#: templates/home.html:69
+msgid "شرح وافي للمناهج بجودة عالية."
+msgstr "High quality explanations."
+
+#: templates/home.html:77
+msgid "امتحانات ذكية"
+msgstr "Smart Exams"
+
+#: templates/home.html:78
+msgid "بنك أسئلة وتصحيح تلقائي."
+msgstr "Question bank and auto grading."
+
+#: templates/home.html:86
+msgid "متابعة دقيقة"
+msgstr "Accurate Tracking"
+
+#: templates/home.html:87
+msgid "تقارير دورية للمستوى."
+msgstr "Periodic reports."
+
+#: templates/home.html:102
+msgid "ابحث عن معلمك المفضل"
+msgstr "Find your favorite teacher"
+
+#: templates/home.html:110 templates/students/search.html:32
+msgid "كل الصفوف"
+msgstr "All Grades"
+
+#: templates/home.html:111 templates/students/search.html:33
+msgid "أولى إعدادي"
+msgstr "1st Prep"
+
+#: templates/home.html:112 templates/students/search.html:34
+msgid "ثانية إعدادي"
+msgstr "2nd Prep"
+
+#: templates/home.html:113 templates/students/search.html:35
+msgid "ثالثة إعدادي"
+msgstr "3rd Prep"
+
+#: templates/home.html:132
+msgid "بحث الآن"
+msgstr "Search Now"
+
+#: templates/home.html:143
+msgid "الأفضل في مصر"
+msgstr "Best in Egypt"
+
+#: templates/home.html:144
+msgid "نخبة من المعلمين المتميزين"
+msgstr "Elite Teachers"
+
+#: templates/home.html:145
+msgid "نتائج البحث:"
+msgstr "Search Results:"
+
+#: templates/home.html:171
+msgid "مدرس متميز."
+msgstr "Distinguished Teacher."
+
+#: templates/home.html:181
+msgid "زميل في المنصة"
+msgstr "Platform Colleague"
+
+#: templates/home.html:191
+msgid "لا يوجد معلمين مطابقين للبحث."
+msgstr "No matching teachers found."
+
+#: templates/socialaccount/signup.html:4
+msgid "إكمال التسجيل"
+msgstr "Complete Signup"
+
+#: templates/socialaccount/signup.html:12
+msgid "إكمال عملية الربط"
+msgstr "Complete Linking"
+
+#: templates/socialaccount/signup.html:13
+msgid "نحن بحاجة لتأكيد بسيط لإكمال التسجيل بحساب جوجل."
+msgstr "We need a simple confirmation."
+
+#: templates/socialaccount/signup.html:37
+msgid "تأكيد والمتابعة"
+msgstr "Confirm & Continue"
+
+#: templates/students/dashboard.html:11
+msgid "مرحباً بك،"
+msgstr "Welcome,"
+
+#: templates/students/dashboard.html:12
+msgid "تابع دروسك وتقدمك الدراسي من هنا"
+msgstr "Track your lessons and progress here"
+
+#: templates/students/dashboard.html:26
+msgid "حزمي التعليمية (Online)"
+msgstr "My Online Packages"
+
+#: templates/students/dashboard.html:28
+msgid "تصفح المزيد"
+msgstr "Browse More"
+
+#: templates/students/dashboard.html:44 templates/teachers/subscription.html:71
+msgid "مشترك"
+msgstr "Subscribed"
+
+#: templates/students/dashboard.html:49 templates/students/dashboard.html:81
+#: templates/students/dashboard.html:111 templates/students/dashboard.html:133
+#: templates/students/package_detail.html:23
+#: templates/teachers/manage_codes.html:76
+#: templates/teachers/package_detail.html:21
+msgid "مستر/"
+msgstr "Mr."
+
+#: templates/students/dashboard.html:53
+msgid "استكمال التعلم"
+msgstr "Continue Learning"
+
+#: templates/students/dashboard.html:60
+msgid "لم تشترك في أي حزم بعد."
+msgstr "You haven't subscribed to any packages yet."
+
+#: templates/students/dashboard.html:67 templates/teachers/dashboard.html:46
+msgid "مجموعاتي الدراسية"
+msgstr "My Study Groups"
+
+#: templates/students/dashboard.html:88 templates/teachers/dashboard.html:102
+msgid "دخول للمجموعة"
+msgstr "Enter Group"
+
+#: templates/students/dashboard.html:95
+msgid "لا توجد مجموعات نشطة."
+msgstr "No active groups."
+
+#: templates/students/dashboard.html:103
+msgid "مجموعات متوقفة مؤقتاً"
+msgstr "Paused Groups"
+
+#: templates/students/dashboard.html:113
+msgid "مغلقة (باقة المعلم)"
+msgstr "Closed (Teacher Plan)"
+
+#: templates/students/dashboard.html:135
+msgid "في انتظار موافقة المعلم"
+msgstr "Waiting for Approval"
+
+#: templates/students/group_contact.html:7
+msgid "فريق العمل والدعم"
+msgstr "Support Team"
+
+#: templates/students/group_contact.html:12
+#, python-format
+msgid "مستر/ %(name)s"
+msgstr "Mr. %(name)s"
+
+#: templates/students/group_contact.html:13
+msgid "معلم المادة"
+msgstr "Subject Teacher"
+
+#: templates/students/group_contact.html:16
+#: templates/students/includes/student_group_navbar.html:59
+msgid "تواصل"
+msgstr "Contact"
+
+#: templates/students/group_contact.html:21
+msgid "المساعدين (الدعم الفني)"
+msgstr "Assistants (Support)"
+
+#: templates/students/group_contact.html:34
+msgid "لا يوجد مساعدين حالياً."
+msgstr "No assistants available."
+
+#: templates/students/group_content.html:17
+msgid "مشاهدة"
+msgstr "Watch"
+
+#: templates/students/group_content.html:21
+msgid "أدخل الكود للمشاهدة"
+msgstr "Enter Code"
+
+#: templates/students/group_content.html:28
+msgid "لا توجد محاضرات حالياً."
+msgstr "No lectures available."
+
+#: templates/students/group_exams.html:13
+#, python-format
+msgid ""
+"\n"
+"                            %(duration)s دقيقة | %(count)s سؤال\n"
+"                        "
+msgstr ""
+
+#: templates/students/group_exams.html:20
+msgid "تم الأداء"
+msgstr "Taken"
+
+#: templates/students/group_exams.html:22
+msgid "ابدأ الامتحان"
+msgstr "Start Exam"
+
+#: templates/students/group_exams.html:26
+msgid "لا توجد امتحانات متاحة."
+msgstr "No exams available."
+
+#: templates/students/group_files.html:3
+#: templates/students/includes/student_group_navbar.html:43
+#: templates/students/my_package_content.html:16
+#: templates/teachers/group_files.html:3
+#: templates/teachers/includes/group_navbar.html:46
+#: templates/teachers/includes/package_navbar.html:32
+#: templates/teachers/package_dashboard/content.html:101
+msgid "الملفات"
+msgstr "Files"
+
+#: templates/students/group_files.html:12
+#: templates/students/watch_package_lecture.html:9
+msgid "عودة للحزمة"
+msgstr "Back to Package"
+
+#: templates/students/group_files.html:18
+msgid "المكتبة والمذكرات"
+msgstr "Library & Notes"
+
+#: templates/students/group_files.html:35
+#: templates/students/package_files.html:27
+msgid "تحميل"
+msgstr "Download"
+
+#: templates/students/group_files.html:41
+msgid "لا توجد ملفات مرفوعة حالياً."
+msgstr "No files uploaded."
+
+#: templates/students/group_locked.html:3
+msgid "مجموعة مغلقة"
+msgstr "Locked Group"
+
+#: templates/students/group_locked.html:14
+msgid "المجموعة مغلقة مؤقتاً"
+msgstr "Group Temporarily Closed"
+
+#: templates/students/group_locked.html:17
+msgid "عفواً، هذه المجموعة غير متاحة حالياً بسبب قيود اشتراك المعلم."
+msgstr "Sorry, this group is unavailable due to teacher subscription limits."
+
+#: templates/students/group_locked.html:24
+msgid "بياناتك محفوظة. يرجى التواصل مع المعلم لحل المشكلة."
+msgstr "Your data is safe. Please contact the teacher."
+
+#: templates/students/group_locked.html:29
+#: templates/students/teacher_unavailable.html:41
+#: templates/teachers/manage_assistants.html:15
+msgid "العودة للرئيسية"
+msgstr "Back to Home"
+
+#: templates/students/group_marks.html:4
+#, python-format
+msgid "درجاتي | %(group_name)s"
+msgstr "My Grades | %(group_name)s"
+
+#: templates/students/group_marks.html:12
+msgid "الامتحانات الإلكترونية"
+msgstr "Electronic Exams"
+
+#: templates/students/group_marks.html:18
+msgid "الامتحان"
+msgstr "Exam"
+
+#: templates/students/group_marks.html:41
+msgid "سجل الحصص والتقييمات"
+msgstr "Session Log"
+
+#: templates/students/group_marks.html:46
+#: templates/teachers/student_full_log.html:31
+msgid "كل الشهور"
+msgstr "All Months"
+
+#: templates/students/group_marks.html:47
+#: templates/teachers/student_full_log.html:32
+msgid "يناير"
+msgstr "Jan"
+
+#: templates/students/group_marks.html:48
+#: templates/teachers/student_full_log.html:33
+msgid "فبراير"
+msgstr "Feb"
+
+#: templates/students/group_marks.html:49
+#: templates/teachers/student_full_log.html:34
+msgid "مارس"
+msgstr "Mar"
+
+#: templates/students/group_marks.html:50
+#: templates/teachers/student_full_log.html:35
+msgid "أبريل"
+msgstr "Apr"
+
+#: templates/students/group_marks.html:51
+#: templates/teachers/student_full_log.html:36
+msgid "مايو"
+msgstr "May"
+
+#: templates/students/group_marks.html:52
+#: templates/teachers/student_full_log.html:37
+msgid "يونيو"
+msgstr "Jun"
+
+#: templates/students/group_marks.html:53
+#: templates/teachers/student_full_log.html:38
+msgid "يوليو"
+msgstr "Jul"
+
+#: templates/students/group_marks.html:54
+#: templates/teachers/student_full_log.html:39
+msgid "أغسطس"
+msgstr "Aug"
+
+#: templates/students/group_marks.html:55
+#: templates/teachers/student_full_log.html:40
+msgid "سبتمبر"
+msgstr "Sep"
+
+#: templates/students/group_marks.html:56
+#: templates/teachers/student_full_log.html:41
+msgid "أكتوبر"
+msgstr "Oct"
+
+#: templates/students/group_marks.html:57
+#: templates/teachers/student_full_log.html:42
+msgid "نوفمبر"
+msgstr "Nov"
+
+#: templates/students/group_marks.html:58
+#: templates/teachers/student_full_log.html:43
+msgid "ديسمبر"
+msgstr "Dec"
+
+#: templates/students/group_marks.html:69
+#: templates/teachers/student_full_log.html:54
+msgid "الحضور"
+msgstr "Attendance"
+
+#: templates/students/group_marks.html:72
+msgid "تسميع"
+msgstr "Recitation"
+
+#: templates/students/group_marks.html:73
+msgid "شامل"
+msgstr "Comprehensive"
+
+#: templates/students/group_marks.html:91 templates/teachers/bulk_log.html:66
+#: templates/teachers/student_full_log.html:77
+msgid "غياب"
+msgstr "Absent"
+
+#: templates/students/group_marks.html:104
+msgid "لا يوجد سجلات لهذا الشهر."
+msgstr "No records for this month."
+
+#: templates/students/group_ranking.html:4
+#, python-format
+msgid "ترتيبي | %(group_name)s"
+msgstr "My Rank | %(group_name)s"
+
+#: templates/students/group_ranking.html:19
+msgid "ترتيبك الحالي في المجموعة"
+msgstr "Your Current Rank"
+
+#: templates/students/group_ranking.html:23
+msgid "شد حيلك يا بطل! 💪"
+msgstr "Keep it up!"
+
+#: templates/students/group_ranking.html:24
+msgid "كل درجة بتفرق في ترتيبك"
+msgstr "Every grade counts"
+
+#: templates/students/group_ranking.html:30
+msgid "قائمة المتصدرين"
+msgstr "Leaderboard"
+
+#: templates/students/group_ranking.html:39
+#: templates/students/package_leaderboard.html:24
+msgid "النقاط"
+msgstr "Points"
+
+#: templates/students/group_ranking.html:58
+msgid "أنت"
+msgstr "You"
+
+#: templates/students/group_ranking.html:66
+msgid "جاري تجميع النقاط..."
+msgstr "Calculating..."
+
+#: templates/students/includes/student_group_navbar.html:6
+#: templates/students/my_package_content.html:24
+#: templates/teachers/includes/package_navbar.html:11
+msgid "خروج"
+msgstr "Exit"
+
+#: templates/students/includes/student_group_navbar.html:34
+#: templates/students/my_package_content.html:19
+msgid "درجاتي"
+msgstr "My Grades"
+
+#: templates/students/includes/student_group_navbar.html:51
+#: templates/students/my_package_content.html:22
+#: templates/teachers/group_ranking.html:4
+#: templates/teachers/includes/group_navbar.html:64
+msgid "الترتيب"
+msgstr "Ranking"
+
+#: templates/students/list_packages.html:3
+msgid "تصفح الحزم"
+msgstr "Browse Packages"
+
+#: templates/students/list_packages.html:10
+msgid "استكشف الكورسات المتاحة"
+msgstr "Explore Courses"
+
+#: templates/students/list_packages.html:15
+msgid "ابحث عن كورس..."
+msgstr "Search course..."
+
+#: templates/students/list_packages.html:63
+#: templates/students/package_detail.html:26
+#: templates/teachers/package_dashboard/content.html:22
+#: templates/teachers/package_detail.html:24
+msgid "محاضرة"
+msgstr "Lecture"
+
+#: templates/students/list_packages.html:64
+#: templates/students/package_detail.html:27
+#: templates/teachers/package_dashboard/content.html:27
+#: templates/teachers/package_detail.html:25
+msgid "امتحان"
+msgstr "Exam"
+
+#: templates/students/list_packages.html:76
+msgid "لا توجد حزم متاحة حالياً."
+msgstr "No packages available."
+
+#: templates/students/my_package_content.html:3
+msgid "محتوى:"
+msgstr "Content:"
+
+#: templates/students/my_package_content.html:12
+msgid "تقدمك الدراسي"
+msgstr "Your Progress"
+
+#: templates/students/my_package_content.html:42
+msgid "شوهد"
+msgstr "Watched"
+
+#: templates/students/my_package_content.html:46
+msgid "ابدأ"
+msgstr "Start"
+
+#: templates/students/my_package_content.html:51
+#: templates/teachers/package_dashboard/content.html:60
+msgid "لا توجد محاضرات."
+msgstr "No lectures."
+
+#: templates/students/my_package_content.html:65
+msgid "بدأ الامتحان"
+msgstr "Start Exam"
+
+#: templates/students/my_package_content.html:70
+#: templates/teachers/group_exams.html:43
+#: templates/teachers/package_dashboard/content.html:91
+msgid "لا توجد امتحانات."
+msgstr "No exams."
+
+#: templates/students/package_detail.html:31
+#: templates/teachers/package_detail.html:30
+#: templates/teachers/subscription.html:48
+msgid "EGP"
+msgstr "EGP"
+
+#: templates/students/package_detail.html:35
+msgid "الدخول للحزمة"
+msgstr "Enter Package"
+
+#: templates/students/package_detail.html:43
+msgid "شراء بالبطاقة"
+msgstr "Buy with Card"
+
+#: templates/students/package_detail.html:49
+msgid "شراء بالمحفظة"
+msgstr "Buy with Wallet"
+
+#: templates/students/package_detail.html:54
+#: templates/teachers/package_detail.html:44
+msgid "دفع آمن عبر Paymob"
+msgstr "Secured by Paymob"
+
+#: templates/students/package_detail.html:66
+msgid "شراء:"
+msgstr "Buy:"
+
+#: templates/students/package_detail.html:72
+#: templates/teachers/subscription.html:97
+msgid "رقم المحفظة"
+msgstr "Wallet Number"
+
+#: templates/students/package_detail.html:74
+msgid "سيصلك طلب دفع على هاتفك."
+msgstr "You will receive a payment request on your phone."
+
+#: templates/students/package_detail.html:77
+msgid "تأكيد ودفع"
+msgstr "Confirm & Pay"
+
+#: templates/students/package_files.html:3
+#: templates/teachers/package_dashboard/files.html:10
+msgid "ملفات الحزمة"
+msgstr "Package Files"
+
+#: templates/students/package_files.html:10
+#: templates/students/package_leaderboard.html:10
+msgid "عودة للمحتوى"
+msgstr "Back to Content"
+
+#: templates/students/package_files.html:31
+msgid "لا توجد ملفات في هذه الحزمة."
+msgstr "No files in this package."
+
+#: templates/students/package_leaderboard.html:3
+msgid "ترتيب الحزمة"
+msgstr "Package Ranking"
+
+#: templates/students/package_leaderboard.html:8
+msgid "لوحة شرف الحزمة"
+msgstr "Package Honor Board"
+
+#: templates/students/package_leaderboard.html:16
+msgid "ترتيبك:"
+msgstr "Your Rank:"
+
+#: templates/students/package_leaderboard.html:24
+#: templates/teachers/group_ranking.html:23
+#: templates/teachers/package_dashboard/ranking.html:19
+msgid "المركز"
+msgstr "Rank"
+
+#: templates/students/package_marks.html:3
+msgid "درجات الحزمة"
+msgstr "Package Grades"
+
+#: templates/students/package_marks.html:8
+msgid "سجل درجات الحزمة:"
+msgstr "Package Grade Log:"
+
+#: templates/students/package_marks.html:16
+msgid "مجموع النقاط المكتسبة"
+msgstr "Total Points Earned"
+
+#: templates/students/package_marks.html:24
+msgid "نتائج الامتحانات"
+msgstr "Exam Results"
+
+#: templates/students/package_marks.html:32
+msgid "لم تمتحن بعد."
+msgstr "Not taken yet."
+
+#: templates/students/package_marks.html:41
+msgid "نقاط المشاهدة"
+msgstr "Watch Points"
+
+#: templates/students/package_marks.html:49
+msgid "لم تشاهد فيديوهات بعد."
+msgstr "No videos watched yet."
+
+#: templates/students/search.html:3
+msgid "البحث عن مجموعات"
+msgstr "Search Groups"
+
+#: templates/students/search.html:12
+msgid "اكتشف المدرسين والمجموعات"
+msgstr "Discover Teachers"
+
+#: templates/students/search.html:13
+msgid "ابحث عن مدرسك المفضل وانضم لمجموعاته الدراسية"
+msgstr "Find your favorite teacher and join their groups"
+
+#: templates/students/search.html:21
+msgid "بحث بالاسم"
+msgstr "Search by Name"
+
+#: templates/students/search.html:24
+msgid "اسم المدرس، المادة..."
+msgstr "Teacher, Subject..."
+
+#: templates/students/search.html:56
+msgid "تصفية"
+msgstr "Filter"
+
+#: templates/students/search.html:98
+msgid "تم إرسال الطلب"
+msgstr "Request Sent"
+
+#: templates/students/search.html:102
+msgid "طلب انضمام"
+msgstr "Join Request"
+
+#: templates/students/search.html:107
+msgid "للمعاينة فقط"
+msgstr "Preview Only"
+
+#: templates/students/search.html:117
+msgid "لم يتم العثور على مجموعات."
+msgstr "No groups found."
+
+#: templates/students/search.html:118
+msgid "جرب تغيير كلمات البحث أو الفلاتر."
+msgstr "Try changing search terms or filters."
+
+#: templates/students/settings.html:9
+msgid "الاسم:"
+msgstr "Name:"
+
+#: templates/students/settings.html:10
+msgid "الكود:"
+msgstr "Code:"
+
+#: templates/students/settings.html:11
+msgid "الهاتف:"
+msgstr "Phone:"
+
+#: templates/students/settings.html:15
+msgid "لتعديل البيانات، يرجى التواصل مع الدعم الفني."
+msgstr "To edit data, contact support."
+
+#: templates/students/take_exam.html:3
+#: templates/students/take_package_exam.html:3
+msgid "امتحان:"
+msgstr "Exam:"
+
+#: templates/students/take_exam.html:59
+#: templates/students/take_package_exam.html:59
+msgid "هل أنت متأكد من تسليم الإجابات؟"
+msgstr "Are you sure you want to submit?"
+
+#: templates/students/take_exam.html:60
+#: templates/students/take_package_exam.html:60
+msgid "تسليم الامتحان"
+msgstr "Submit Exam"
+
+#: templates/students/take_exam.html:90
+#: templates/students/take_package_exam.html:90
+msgid "انتهى الوقت! سيتم تسليم إجاباتك الآن."
+msgstr "Time is up! Answers will be submitted now."
+
+#: templates/students/teacher_unavailable.html:4
+msgid "عفواً"
+msgstr "Sorry"
+
+#: templates/students/teacher_unavailable.html:15
+msgid "هذا المحتوى غير متوفر حالياً"
+msgstr "Content Unavailable"
+
+#: templates/students/teacher_unavailable.html:18
+#, python-format
+msgid ""
+"\n"
+"                نعتذر منك، حساب المعلم \n"
+"                <span class=\"text-primary fw-bold\">%(name)s</span> \n"
+"                متوقف مؤقتاً لأسباب إدارية.\n"
+"            "
+msgstr ""
+"\n"
+"                Teacher \n"
+"                <span class=\"text-primary fw-bold\">%(name)s</span> \n"
+"                account is suspended temporarily.\n"
+"            "
+
+#: templates/students/teacher_unavailable.html:27
+msgid ""
+"لا تقلق، جميع البيانات (الدرجات، الامتحانات، الحضور) محفوظة وآمنة تماماً. "
+"يرجى التواصل مع المعلم أو إدارة السنتر للتنبيه."
+msgstr "Data is safe. Please contact the teacher."
+
+#: templates/students/teacher_unavailable.html:33
+msgid "العودة للوحة الطالب"
+msgstr "Back to Student Dashboard"
+
+#: templates/students/teacher_unavailable.html:37
+msgid "العودة للوحة المساعد"
+msgstr "Back to Assistant Dashboard"
+
+#: templates/students/watch_lecture.html:4
+#, python-format
+msgid "مشاهدة: %(title)s"
+msgstr "Watching: %(title)s"
+
+#: templates/students/watch_lecture.html:49
+#, python-format
+msgid "تم النشر: %(date)s"
+msgstr "Published: %(date)s"
+
+#: templates/students/watch_lecture.html:62
+msgid "محتوى محمي"
+msgstr "Protected Content"
+
+#: templates/students/watch_lecture.html:64
+#, python-format
+msgid "يجب إدخال كود الشراء لمشاهدة محاضرة <strong>\"%(title)s\"</strong>."
+msgstr "Enter code to watch <strong>\"%(title)s\"</strong>."
+
+#: templates/students/watch_lecture.html:78
+msgid "تفعيل ومشاهدة"
+msgstr "Activate & Watch"
+
+#: templates/students/watch_lecture.html:80
+msgid "يمكنك الحصول على الكود من السنتر أو المعلم."
+msgstr "Get code from the center or teacher."
+
+#: templates/students/watch_package_lecture.html:37
+msgid "المشاهدات المستهلكة:"
+msgstr "Views Used:"
+
+#: templates/teachers/bulk_log.html:4 templates/teachers/group_students.html:28
+msgid "رصد جماعي"
+msgstr "Bulk Log"
+
+#: templates/teachers/bulk_log.html:9
+msgid "رصد الدرجات والغياب"
+msgstr "Log Grades & Attendance"
+
+#: templates/teachers/bulk_log.html:21
+msgid "رقم الحصة الحالية"
+msgstr "Current Session No."
+
+#: templates/teachers/bulk_log.html:27
+msgid "الدرجات النهائية (Max Score):"
+msgstr "Max Scores:"
+
+#: templates/teachers/bulk_log.html:68
+msgid "درجة الواجب"
+msgstr "Homework Score"
+
+#: templates/teachers/bulk_log.html:70
+msgid "درجة التسميع"
+msgstr "Recitation Score"
+
+#: templates/teachers/bulk_log.html:71
+#: templates/teachers/group_students.html:153
+msgid "امتحان شامل"
+msgstr "Comprehensive Exam"
+
+#: templates/teachers/bulk_log.html:103
+#: templates/teachers/group_students.html:169
+msgid "حفظ السجل"
+msgstr "Save Log"
+
+#: templates/teachers/confirm_delete_group.html:4
+#: templates/teachers/settings.html:99
+msgid "تأكيد الحذف"
+msgstr "Confirm Deletion"
+
+#: templates/teachers/confirm_delete_group.html:13
+msgid "حذف المجموعة نهائياً؟"
+msgstr "Delete Group Permanently?"
+
+#: templates/teachers/confirm_delete_group.html:15
+#, python-format
+msgid "أنت على وشك حذف مجموعة <strong>\"%(name)s\"</strong>."
+msgstr "You are deleting <strong>\"%(name)s\"</strong>."
+
+#: templates/teachers/confirm_delete_group.html:19
+msgid "تحذير:"
+msgstr "Warning:"
+
+#: templates/teachers/confirm_delete_group.html:19
+msgid "هذا الإجراء سيؤدي إلى:"
+msgstr "This will result in:"
+
+#: templates/teachers/confirm_delete_group.html:21
+msgid "حذف جميع المحاضرات والفيديوهات داخل المجموعة."
+msgstr "Delete all lectures/videos."
+
+#: templates/teachers/confirm_delete_group.html:22
+msgid "حذف جميع الامتحانات ونتائج الطلاب."
+msgstr "Delete all exams/results."
+
+#: templates/teachers/confirm_delete_group.html:23
+msgid "إلغاء اشتراك جميع الطلاب في هذه المجموعة."
+msgstr "Cancel all student subscriptions."
+
+#: templates/teachers/confirm_delete_group.html:30
+#: templates/teachers/settings.html:95
+msgid "تراجع"
+msgstr "Undo"
+
+#: templates/teachers/confirm_delete_group.html:31
+msgid "نعم، احذف المجموعة"
+msgstr "Yes, Delete Group"
+
+#: templates/teachers/dashboard.html:4
+msgid "لوحة المعلم | مجموعاتي"
+msgstr "Teacher Dashboard"
+
+#: templates/teachers/dashboard.html:12
+msgid "تنبيه:"
+msgstr "Alert:"
+
+#: templates/teachers/dashboard.html:12
+#, python-format
+msgid "اشتراكك سينتهي خلال %(days_left)s يوم."
+msgstr "Subscription ends in %(days_left)s days."
+
+#: templates/teachers/dashboard.html:13
+msgid "تجديد الآن"
+msgstr "Renew Now"
+
+#: templates/teachers/dashboard.html:22
+msgid "الاشتراك ساري"
+msgstr "Active Subscription"
+
+#: templates/teachers/dashboard.html:23
+#, python-format
+msgid "متبقي لك <strong>%(days_left)s</strong> يوم"
+msgstr "You have <strong>%(days_left)s</strong> days left"
+
+#: templates/teachers/dashboard.html:26
+msgid "إدارة الباقة"
+msgstr "Manage Plan"
+
+#: templates/teachers/dashboard.html:36
+msgid "الاشتراك منتهي!"
+msgstr "Subscription Expired!"
+
+#: templates/teachers/dashboard.html:37
+msgid "الطلاب لا يمكنهم رؤية المحتوى حالياً."
+msgstr "Content is hidden from students."
+
+#: templates/teachers/dashboard.html:40
+msgid "تجديد الاشتراك"
+msgstr "Renew Subscription"
+
+#: templates/teachers/dashboard.html:47
+msgid "إدارة الصفوف والمجموعات والطلاب"
+msgstr "Manage Groups & Students"
+
+#: templates/teachers/dashboard.html:50
+msgid "إضافة مجموعة"
+msgstr "Add Group"
+
+#: templates/teachers/dashboard.html:54
+msgid "الحزم (Online)"
+msgstr "Packages (Online)"
+
+#: templates/teachers/dashboard.html:61
+msgid "ابحث عن اسم المجموعة..."
+msgstr "Search group..."
+
+#: templates/teachers/dashboard.html:95
+#, python-format
+msgid "%(count)s طالب"
+msgstr "%(count)s Students"
+
+#: templates/teachers/dashboard.html:105
+msgid "تجاوزت حد الباقة"
+msgstr "Plan Limit Exceeded"
+
+#: templates/teachers/dashboard.html:106
+msgid "مغلقة (رقي الباقة)"
+msgstr "Closed (Upgrade Plan)"
+
+#: templates/teachers/dashboard.html:117
+msgid "لا توجد مجموعات مطابقة"
+msgstr "No matching groups"
+
+#: templates/teachers/dashboard.html:118
+msgid "جرب البحث بكلمة أخرى أو أنشئ مجموعة جديدة."
+msgstr "Try another keyword or create a new group."
+
+#: templates/teachers/dashboard.html:128
+msgid "مجموعة جديدة"
+msgstr "New Group"
+
+#: templates/teachers/edit_group.html:4
+msgid "تعديل المجموعة"
+msgstr "Edit Group"
+
+#: templates/teachers/edit_group.html:12
+msgid "تعديل بيانات المجموعة"
+msgstr "Edit Group Info"
+
+#: templates/teachers/edit_package.html:8
+msgid "تعديل الحزمة:"
+msgstr "Edit Package:"
+
+#: templates/teachers/edit_package.html:44
+msgid "الصورة الحالية"
+msgstr "Current Image"
+
+#: templates/teachers/edit_package.html:50
+msgid "حد مشاهدة الفيديو الواحد"
+msgstr "Video View Limit"
+
+#: templates/teachers/edit_package.html:58
+msgid "تعديل المحتوى"
+msgstr "Edit Content"
+
+#: templates/teachers/edit_package.html:77
+#: templates/teachers/edit_package.html:105
+msgid "مختار"
+msgstr "Selected"
+
+#: templates/teachers/group_detail.html:12
+msgid "مكتبة المحاضرات"
+msgstr "Lecture Library"
+
+#: templates/teachers/group_detail.html:18
+#: templates/teachers/group_exams.html:11
+#: templates/teachers/group_requests.html:10
+#: templates/teachers/group_students.html:10
+msgid "بحث..."
+msgstr "Search..."
+
+#: templates/teachers/group_detail.html:25
+#: templates/teachers/package_dashboard/content.html:17
+msgid "استيراد"
+msgstr "Import"
+
+#: templates/teachers/group_detail.html:33
+msgid "محاضرة جديدة"
+msgstr "New Lecture"
+
+#: templates/teachers/group_detail.html:68
+msgid "لا يوجد وصف"
+msgstr "No description"
+
+#: templates/teachers/group_detail.html:73
+msgid "الأكواد"
+msgstr "Codes"
+
+#: templates/teachers/group_detail.html:79
+msgid "إخفاء"
+msgstr "Hide"
+
+#: templates/teachers/group_detail.html:79
+msgid "إظهار"
+msgstr "Show"
+
+#: templates/teachers/group_detail.html:72
+msgid "هل أنت متأكد من حذف هذه المحاضرة؟"
+msgstr "Delete this lecture?"
+
+#: templates/teachers/group_detail.html:84
+msgid "لا توجد محاضرات في هذه المجموعة بعد."
+msgstr "No lectures yet."
+
+#: templates/teachers/group_detail.html:87
+msgid "يمكنك إضافة محاضرة جديدة أو استيراد محتوى من مجموعاتك الأخرى."
+msgstr "You can add a lecture or import content."
+
+#: templates/teachers/group_detail.html:89
+msgid "ابدأ بنشر أول محاضرة للطلاب."
+msgstr "Start publishing content."
+
+#: templates/teachers/group_detail.html:101
+msgid "نشر محاضرة جديدة"
+msgstr "Publish New Lecture"
+
+#: templates/teachers/group_detail.html:119
+msgid "نشر المحاضرة"
+msgstr "Publish"
+
+#: templates/teachers/group_detail.html:131
+msgid "استيراد محتوى مخصص"
+msgstr "Import Custom Content"
+
+#: templates/teachers/group_detail.html:139
+#: templates/teachers/package_dashboard/content.html:169
+msgid "اختر المجموعة المصدر:"
+msgstr "Select Source Group:"
+
+#: templates/teachers/group_detail.html:141
+#: templates/teachers/package_dashboard/content.html:171
+msgid "-- اختر مجموعة --"
+msgstr "-- Select Group --"
+
+#: templates/teachers/group_detail.html:193
+msgid "بدء الاستيراد"
+msgstr "Start Import"
+
+#: templates/teachers/group_exams.html:18
+msgid "بنك الاختبارات"
+msgstr "Exam Bank"
+
+#: templates/teachers/group_exams.html:20
+msgid "امتحان جديد"
+msgstr "New Exam"
+
+#: templates/teachers/group_exams.html:30
+#, python-format
+msgid ""
+"\n"
+"                            %(q_count)s سؤال | %(duration)s دقيقة\n"
+"                        "
+msgstr ""
+"\n"
+"                            %(q_count)s Q | %(duration)s min\n"
+"                        "
+
+#: templates/teachers/group_exams.html:38
+msgid "مغلق"
+msgstr "Closed"
+
+#: templates/teachers/group_exams.html:52
+msgid "إنشاء امتحان جديد"
+msgstr "Create New Exam"
+
+#: templates/teachers/group_exams.html:62
+msgid "حفظ"
+msgstr "Save"
+
+#: templates/teachers/group_files.html:10
+msgid "مكتبة الملفات والمذكرات"
+msgstr "Files & Notes Library"
+
+#: templates/teachers/group_files.html:12
+#: templates/teachers/package_dashboard/files.html:12
+msgid "إضافة ملف"
+msgstr "Add File"
+
+#: templates/teachers/group_files.html:30
+msgid "حذف الملف؟"
+msgstr "Delete File?"
+
+#: templates/teachers/group_files.html:37
+msgid "لم تقم بإضافة ملفات بعد."
+msgstr "No files added yet."
+
+#: templates/teachers/group_files.html:49
+#: templates/teachers/package_dashboard/content.html:134
+#: templates/teachers/package_dashboard/files.html:52
+msgid "إضافة ملف جديد"
+msgstr "Add New File"
+
+#: templates/teachers/group_files.html:56
+#: templates/teachers/package_dashboard/content.html:141
+#: templates/teachers/package_dashboard/files.html:59
+msgid "اسم الملف"
+msgstr "File Name"
+
+#: templates/teachers/group_files.html:60
+msgid "رابط الملف (Drive/MediaFire)"
+msgstr "File Link (Drive/MediaFire)"
+
+#: templates/teachers/group_files.html:65
+#: templates/teachers/package_dashboard/content.html:150
+#: templates/teachers/package_dashboard/files.html:68
+msgid "إضافة"
+msgstr "Add"
+
+#: templates/teachers/group_ranking.html:11
+#: templates/teachers/includes/package_navbar.html:50
+#: templates/teachers/package_dashboard/ranking.html:3
+msgid "لوحة الشرف"
+msgstr "Honor Board"
+
+#: templates/teachers/group_ranking.html:12
+msgid "ترتيب الطلاب بناءً على المجموع التراكمي (واجب + امتحانات + نشاط)"
+msgstr "Student Ranking based on cumulative score."
+
+#: templates/teachers/group_ranking.html:17
+msgid "قائمة الأوائل"
+msgstr "Top List"
+
+#: templates/teachers/group_ranking.html:25
+#: templates/teachers/package_dashboard/ranking.html:21
+msgid "مجموع النقاط"
+msgstr "Total Points"
+
+#: templates/teachers/group_ranking.html:56
+msgid "لا توجد بيانات كافية لحساب الترتيب بعد."
+msgstr "Not enough data for ranking yet."
+
+#: templates/teachers/group_requests.html:4
+msgid "طلبات الانضمام"
+msgstr "Join Requests"
+
+#: templates/teachers/group_requests.html:15
+msgid "طلبات الانضمام المعلقة"
+msgstr "Pending Requests"
+
+#: templates/teachers/group_requests.html:30
+msgid "ولي الأمر:"
+msgstr "Parent:"
+
+#: templates/teachers/group_requests.html:33
+msgid "تم الطلب:"
+msgstr "Requested:"
+
+#: templates/teachers/group_requests.html:44
+#: templates/teachers/manage_assistants.html:42
+msgid "قبول"
+msgstr "Accept"
+
+#: templates/teachers/group_requests.html:52
+msgid "هل أنت متأكد من رفض هذا الطلب وحذفه نهائياً؟"
+msgstr "Are you sure you want to reject?"
+
+#: templates/teachers/group_requests.html:53
+#: templates/teachers/manage_assistants.html:45
+msgid "رفض"
+msgstr "Reject"
+
+#: templates/teachers/group_requests.html:61
+msgid "لا توجد طلبات معلقة حالياً."
+msgstr "No pending requests."
+
+#: templates/teachers/group_requests.html:62
+msgid "جميع الطلاب تم تسكينهم في المجموعة."
+msgstr "All students are assigned."
+
+#: templates/teachers/group_students.html:18
+msgid "قائمة الطلاب"
+msgstr "Student List"
+
+#: templates/teachers/group_students.html:20
+#, python-format
+msgid ""
+"\n"
+"                        إدارة الحضور والدرجات لـ %(count)s طالب\n"
+"                    "
+msgstr ""
+"\n"
+"                        Manage attendance for %(count)s students\n"
+"                    "
+
+#: templates/teachers/group_students.html:32
+#: templates/teachers/includes/group_navbar.html:73
+msgid "الطلبات"
+msgstr "Requests"
+
+#: templates/teachers/group_students.html:49
+#: templates/teachers/package_dashboard/students.html:25
+msgid "اسم الطالب"
+msgstr "Student Name"
+
+#: templates/teachers/group_students.html:53
+#: templates/teachers/manage_assistants.html:69
+msgid "إجراءات"
+msgstr "Actions"
+
+#: templates/teachers/group_students.html:77
+msgid "تقييم"
+msgstr "Evaluate"
+
+#: templates/teachers/group_students.html:80
+msgid "عرض السجل الكامل"
+msgstr "Full Log"
+
+#: templates/teachers/group_students.html:91
+msgid "هل أنت متأكد من حذف الطالب من المجموعة؟ سيتم حذف سجلات حضوره أيضاً."
+msgstr "Delete student from group? Logs will be deleted too."
+
+#: templates/teachers/group_students.html:101
+msgid "تقييم:"
+msgstr "Evaluation:"
+
+#: templates/teachers/group_students.html:116
+msgid "حضور الطالب اليوم؟"
+msgstr "Present Today?"
+
+#: templates/teachers/group_students.html:122
+msgid "التقييمات (اترك الفارغ إذا لم يمتحن)"
+msgstr "Evaluations (Empty if not taken)"
+
+#: templates/teachers/group_students.html:129
+#: templates/teachers/group_students.html:137
+#: templates/teachers/group_students.html:148
+#: templates/teachers/group_students.html:156
+msgid "من"
+msgstr "of"
+
+#: templates/teachers/group_students.html:145
+msgid "التسميع الشفوي"
+msgstr "Oral Recitation"
+
+#: templates/teachers/group_students.html:163
+msgid "ملاحظات سلوكية"
+msgstr "Behavioral Notes"
+
+#: templates/teachers/group_students.html:182
+msgid "لا يوجد طلاب في هذه المجموعة."
+msgstr "No students in this group."
+
+#: templates/teachers/group_students.html:183
+msgid "شارك رابط المنصة مع طلابك ليبدأوا التسجيل."
+msgstr "Share platform link with students."
+
+#: templates/teachers/includes/group_navbar.html:16
+msgid "خروج للرئيسية"
+msgstr "Exit to Home"
+
+#: templates/teachers/includes/modals_content.html:9
+msgid "إضافة محاضرة جديدة"
+msgstr "Add New Lecture"
+
+#: templates/teachers/includes/modals_content.html:17
+msgid "عنوان المحاضرة"
+msgstr "Lecture Title"
+
+#: templates/teachers/includes/modals_content.html:18
+msgid "مثال: شرح الدرس الأول"
+msgstr "Ex: First Lesson"
+
+#: templates/teachers/includes/modals_content.html:23
+msgid "انسخ رابط الفيديو المباشر."
+msgstr "Copy direct video link."
+
+#: templates/teachers/includes/modals_content.html:26
+msgid "الوصف (اختياري)"
+msgstr "Description (Optional)"
+
+#: templates/teachers/includes/modals_content.html:32
+msgid "حفظ وإضافة"
+msgstr "Save & Add"
+
+#: templates/teachers/includes/modals_content.html:45
+msgid "إضافة امتحان جديد"
+msgstr "Add New Exam"
+
+#: templates/teachers/includes/modals_content.html:53
+msgid "عنوان الامتحان"
+msgstr "Exam Title"
+
+#: templates/teachers/includes/modals_content.html:54
+msgid "مثال: امتحان شامل علي الوحدة"
+msgstr "Ex: Unit Exam"
+
+#: templates/teachers/includes/modals_content.html:58
+msgid "المدة (بالدقائق)"
+msgstr "Duration (mins)"
+
+#: templates/teachers/includes/modals_content.html:65
+msgid "بعد الضغط على إنشاء، سيتم توجيهك لصفحة إضافة الأسئلة."
+msgstr "You will be redirected to add questions after creating."
+
+#: templates/teachers/includes/modals_content.html:70
+msgid "إنشاء وإضافة أسئلة"
+msgstr "Create & Add Questions"
+
+#: templates/teachers/includes/package_navbar.html:23
+msgid "المحتوى"
+msgstr "Content"
+
+#: templates/teachers/includes/package_navbar.html:41
+#: templates/teachers/package_dashboard/students.html:3
+msgid "المشتركين"
+msgstr "Subscribers"
+
+#: templates/teachers/manage_assistants.html:4
+msgid "إدارة المساعدين"
+msgstr "Manage Assistants"
+
+#: templates/teachers/manage_assistants.html:11
+msgid "فريق المساعدين"
+msgstr "Assistant Team"
+
+#: templates/teachers/manage_assistants.html:12
+msgid "إدارة صلاحيات المساعدين وطلبات الانضمام"
+msgstr "Manage Permissions & Requests"
+
+#: templates/teachers/manage_assistants.html:22
+msgid "طلبات انضمام جديدة"
+msgstr "New Requests"
+
+#: templates/teachers/manage_assistants.html:57
+#, python-format
+msgid ""
+"\n"
+"                المساعدين الحاليين (%(count)s)\n"
+"                "
+msgstr ""
+"\n"
+"                Current Assistants (%(count)s)\n"
+"                "
+
+#: templates/teachers/manage_assistants.html:68
+msgid "تاريخ التعيين"
+msgstr "Hired Date"
+
+#: templates/teachers/manage_assistants.html:82
+msgid "هل أنت متأكد من حذف هذا المساعد؟ سيفقد صلاحية الوصول لمجموعاتك."
+msgstr "Are you sure you want to remove this assistant?"
+
+#: templates/teachers/manage_assistants.html:90
+msgid "صلاحيات"
+msgstr "Permissions"
+
+#: templates/teachers/manage_assistants.html:100
+msgid "صلاحيات:"
+msgstr "Permissions:"
+
+#: templates/teachers/manage_assistants.html:109
+msgid "حدد ما يمكن لهذا المساعد القيام به:"
+msgstr "Select permissions:"
+
+#: templates/teachers/manage_assistants.html:114
+msgid "إدارة الطلاب والغياب"
+msgstr "Manage Students"
+
+#: templates/teachers/manage_assistants.html:135
+msgid "إدارة الحزم والكورسات"
+msgstr "Manage Packages"
+
+#: templates/teachers/manage_assistants.html:141
+msgid "حفظ الصلاحيات"
+msgstr "Save"
+
+#: templates/teachers/manage_assistants.html:151
+msgid "لا يوجد مساعدين في فريقك حالياً."
+msgstr "No assistants in your team."
+
+#: templates/teachers/manage_codes.html:3
+msgid "أكواد:"
+msgstr "Codes:"
+
+#: templates/teachers/manage_codes.html:19
+msgid "أكواد المشاهدة"
+msgstr "Watch Codes"
+
+#: templates/teachers/manage_codes.html:26
+#: templates/teachers/manage_codes.html:106
+msgid "متاح"
+msgstr "Available"
+
+#: templates/teachers/manage_codes.html:30
+msgid "إجمالي"
+msgstr "Total"
+
+#: templates/teachers/manage_codes.html:43
+msgid "العدد"
+msgstr "Count"
+
+#: templates/teachers/manage_codes.html:44
+msgid "عدد الأكواد"
+msgstr "Number of Codes"
+
+#: templates/teachers/manage_codes.html:48
+msgid "مرات الفتح"
+msgstr "Max Views"
+
+#: templates/teachers/manage_codes.html:51
+msgid "عدد المشاهدات"
+msgstr "View Limit"
+
+#: templates/teachers/manage_codes.html:57
+msgid "توليد"
+msgstr "Generate"
+
+#: templates/teachers/manage_codes.html:63
+msgid "طباعة"
+msgstr "Print"
+
+#: templates/teachers/manage_codes.html:85
+msgid "صلاحية"
+msgstr "Validity"
+
+#: templates/teachers/manage_codes.html:87
+msgid "المستخدم"
+msgstr "User"
+
+#: templates/teachers/manage_codes.html:88
+msgid "تاريخ الاستخدام"
+msgstr "Usage Date"
+
+#: templates/teachers/manage_codes.html:99
+msgid "مرات"
+msgstr "times"
+
+#: templates/teachers/manage_codes.html:103
+#: templates/teachers/manage_codes.html:104
+msgid "مستخدم"
+msgstr "Used"
+
+#: templates/teachers/manage_codes.html:127
+msgid "لا توجد أكواد. قم بتوليد دفعة جديدة."
+msgstr "No codes. Generate new batch."
+
+#: templates/teachers/manage_packages.html:12
+msgid "حزمي التعليمية"
+msgstr "My Packages"
+
+#: templates/teachers/manage_packages.html:14
+msgid "إدارة الكورسات الأونلاين والاشتراكات"
+msgstr "Manage Online Courses"
+
+#: templates/teachers/manage_packages.html:19 templates/teachers/wallet.html:10
+msgid "عودة للرئيسية"
+msgstr "Back to Home"
+
+#: templates/teachers/manage_packages.html:58
+msgid "عدد المحاضرات"
+msgstr "Lectures Count"
+
+#: templates/teachers/manage_packages.html:59
+msgid "عدد الامتحانات"
+msgstr "Exams Count"
+
+#: templates/teachers/manage_packages.html:60
+msgid "عدد المشتركين"
+msgstr "Subscribers Count"
+
+#: templates/teachers/manage_packages.html:71
+msgid "إدارة الحزمة"
+msgstr "Manage Package"
+
+#: templates/teachers/manage_packages.html:98
+msgid "لا توجد حزم تعليمية"
+msgstr "No Packages"
+
+#: templates/teachers/manage_packages.html:99
+msgid "ابدأ بإنشاء أول كورس أونلاين لك وابدأ الربح."
+msgstr "Start creating your first online course."
+
+#: templates/teachers/manage_packages.html:101
+msgid "ابدأ الآن"
+msgstr "Start Now"
+
+#: templates/teachers/package_dashboard/content.html:32
+msgid "ملف"
+msgstr "File"
+
+#: templates/teachers/package_dashboard/content.html:50
+msgid "محتوى خاص"
+msgstr "Private Content"
+
+#: templates/teachers/package_dashboard/content.html:56
+msgid "إزالة"
+msgstr "Remove"
+
+#: templates/teachers/package_dashboard/content.html:78
+msgid "د"
+msgstr "m"
+
+#: templates/teachers/package_dashboard/content.html:119
+#: templates/teachers/package_dashboard/files.html:41
+msgid "لا توجد ملفات."
+msgstr "No files."
+
+#: templates/teachers/package_dashboard/content.html:162
+msgid "استيراد محتوى"
+msgstr "Import Content"
+
+#: templates/teachers/package_dashboard/content.html:221
+msgid "استيراد المحدد"
+msgstr "Import Selected"
+
+#: templates/teachers/package_dashboard/files.html:3
+msgid "إدارة الملفات"
+msgstr "Manage Files"
+
+#: templates/teachers/package_dashboard/files.html:35
+msgid "إزالة الملف من الحزمة؟"
+msgstr "Remove file from package?"
+
+#: templates/teachers/package_dashboard/files.html:63
+msgid "رابط الملف"
+msgstr "File Link"
+
+#: templates/teachers/package_dashboard/ranking.html:10
+msgid "أوائل الحزمة"
+msgstr "Package Top Students"
+
+#: templates/teachers/package_dashboard/ranking.html:11
+msgid "الترتيب بناءً على (نقاط المشاهدة + درجات الامتحانات)"
+msgstr "Ranking based on (Watch Points + Exam Grades)"
+
+#: templates/teachers/package_dashboard/ranking.html:37
+msgid "لا توجد بيانات كافية للترتيب."
+msgstr "Not enough data for ranking."
+
+#: templates/teachers/package_dashboard/students.html:14
+msgid "إجمالي مبيعات هذه الحزمة:"
+msgstr "Total Package Sales:"
+
+#: templates/teachers/package_dashboard/students.html:27
+msgid "تاريخ الشراء"
+msgstr "Purchase Date"
+
+#: templates/teachers/package_dashboard/students.html:40
+msgid "مدفوع"
+msgstr "Paid"
+
+#: templates/teachers/package_dashboard/students.html:43
+msgid "لا يوجد مشتركين حتى الآن."
+msgstr "No subscribers yet."
+
+#: templates/teachers/package_detail.html:34
+msgid "الدخول للحزمة (ابدأ التعلم)"
+msgstr "Enter Package (Start Learning)"
+
+#: templates/teachers/package_detail.html:40
+msgid "شراء الآن"
+msgstr "Buy Now"
+
+#: templates/teachers/payment_failed.html:7
+msgid "فشلت العملية"
+msgstr "Transaction Failed"
+
+#: templates/teachers/payment_failed.html:8
+msgid "لم يتم خصم المبلغ. يرجى التأكد من رصيد البطاقة."
+msgstr "Amount not deducted. Check card balance."
+
+#: templates/teachers/payment_failed.html:9
+msgid "حاول مرة أخرى"
+msgstr "Try Again"
+
+#: templates/teachers/payment_success.html:7
+msgid "تم الدفع بنجاح!"
+msgstr "Payment Successful!"
+
+#: templates/teachers/payment_success.html:8
+msgid "تم تجديد اشتراكك لمدة 30 يوم."
+msgstr "Subscription renewed for 30 days."
+
+#: templates/teachers/payment_success.html:9
+msgid "العودة للوحة التحكم"
+msgstr "Back to Dashboard"
+
+#: templates/teachers/settings.html:4 templates/teachers/settings.html:11
+msgid "إعدادات الحساب"
+msgstr "Account Settings"
+
+#: templates/teachers/settings.html:26
+msgid "تغيير الصورة الشخصية"
+msgstr "Change Profile Picture"
+
+#: templates/teachers/settings.html:46
+msgid "نبذة عنك (تظهر للطلاب)"
+msgstr "About You (Visible to Students)"
+
+#: templates/teachers/settings.html:51
+msgid "حفظ التغييرات"
+msgstr "Save Changes"
+
+#: templates/teachers/settings.html:59
+msgid "منطقة الخطر"
+msgstr "Danger Zone"
+
+#: templates/teachers/settings.html:62
+msgid "حذف الحساب نهائياً"
+msgstr "Delete Account Permanently"
+
+#: templates/teachers/settings.html:64
+msgid "عند حذف حسابك، سيتم مسح جميع بياناتك بما في ذلك:"
+msgstr "Deleting your account will erase all data including:"
+
+#: templates/teachers/settings.html:66
+msgid "المجموعات والطلاب المسجلين."
+msgstr "Groups and Students."
+
+#: templates/teachers/settings.html:67
+msgid "الفيديوهات والمحاضرات والامتحانات."
+msgstr "Videos and Exams."
+
+#: templates/teachers/settings.html:68
+msgid "سجلات الاشتراكات والمدفوعات."
+msgstr "Subscription Logs."
+
+#: templates/teachers/settings.html:70
+msgid "هذا الإجراء نهائي ولا يمكن التراجع عنه."
+msgstr "This is irreversible."
+
+#: templates/teachers/settings.html:74
+msgid "نعم، أريد حذف حسابي"
+msgstr "Yes, Delete Account"
+
+#: templates/teachers/settings.html:87
+msgid "تأكيد الحذف النهائي"
+msgstr "Confirm Deletion"
+
+#: templates/teachers/settings.html:91
+msgid "هل أنت متأكد تماماً؟"
+msgstr "Are you sure?"
+
+#: templates/teachers/settings.html:92
+msgid "سنفتقدك، وسيتم إزالة كل مجهودك من المنصة."
+msgstr "We'll miss you. All data will be removed."
+
+#: templates/teachers/student_full_log.html:5
+#, python-format
+msgid "سجل: %(name)s"
+msgstr "Log: %(name)s"
+
+#: templates/teachers/student_full_log.html:15
+msgid "السجل الكامل"
+msgstr "Full Log"
+
+#: templates/teachers/student_full_log.html:18
+#, python-format
+msgid ""
+"\n"
+"                        الطالب: <span class=\"fw-bold text-dark\">%(f_name)s "
+"%(l_name)s</span>\n"
+"                    "
+msgstr ""
+"\n"
+"                        Student: <span class=\"fw-bold text-"
+"dark\">%(f_name)s %(l_name)s</span>\n"
+"                    "
+
+#: templates/teachers/student_full_log.html:29
+msgid "تصفية:"
+msgstr "Filter:"
+
+#: templates/teachers/student_full_log.html:52
+msgid "الحصة"
+msgstr "Session"
+
+#: templates/teachers/student_full_log.html:98
+msgid "حذف هذا السجل نهائياً؟"
+msgstr "Delete this log?"
+
+#: templates/teachers/student_full_log.html:107
+msgid "لا توجد سجلات مطابقة."
+msgstr "No matching logs."
+
+#: templates/teachers/subscription.html:3
+msgid "إدارة الاشتراك"
+msgstr "Manage Subscription"
+
+#: templates/teachers/subscription.html:13
+msgid "حالة الاشتراك الحالي"
+msgstr "Current Subscription Status"
+
+#: templates/teachers/subscription.html:20
+msgid "اشتراكك ساري"
+msgstr "Active Subscription"
+
+#: templates/teachers/subscription.html:21
+msgid "الباقة الحالية:"
+msgstr "Current Plan:"
+
+#: templates/teachers/subscription.html:22
+#, python-format
+msgid ""
+"متبقي لك <strong>%(days_left)s</strong> يوم (ينتهي في "
+"%(teacher.subscription_end_date|date:\"d/m/Y\")s)"
+msgstr ""
+"You have <strong>%(days_left)s</strong> days left (Expires on "
+"%(teacher.subscription_end_date|date:\"d/m/Y\")s)"
+
+#: templates/teachers/subscription.html:27
+msgid "الاشتراك منتهي"
+msgstr "Subscription Expired"
+
+#: templates/teachers/subscription.html:28
+msgid "يرجى التجديد لاستعادة الوصول."
+msgstr "Please renew to access."
+
+#: templates/teachers/subscription.html:36
+msgid "خطط الأسعار"
+msgstr "Pricing Plans"
+
+#: templates/teachers/subscription.html:43
+msgid "الحالية"
+msgstr "Current"
+
+#: templates/teachers/subscription.html:52
+msgid "مجموعة"
+msgstr "Group"
+
+#: templates/teachers/subscription.html:55
+#: templates/teachers/subscription.html:57
+msgid "حزم أونلاين"
+msgstr "Online Packages"
+
+#: templates/teachers/subscription.html:74
+msgid "فيزا"
+msgstr "Visa"
+
+#: templates/teachers/subscription.html:77
+msgid "محفظة"
+msgstr "Wallet"
+
+#: templates/teachers/subscription.html:90
+msgid "دفع بالمحفظة"
+msgstr "Pay with Wallet"
+
+#: templates/teachers/subscription.html:99
+msgid "سيصلك إشعار على تطبيق المحفظة للدفع."
+msgstr "You'll receive a payment request on your wallet app."
+
+#: templates/teachers/subscription.html:102 templates/teachers/wallet.html:67
+msgid "إرسال الطلب"
+msgstr "Send Request"
+
+#: templates/teachers/wallet.html:3
+msgid "محفظتي"
+msgstr "My Wallet"
+
+#: templates/teachers/wallet.html:9
+msgid "المحفظة المالية"
+msgstr "Financial Wallet"
+
+#: templates/teachers/wallet.html:18
+msgid "الرصيد الحالي (القابل للسحب)"
+msgstr "Current Balance (Withdrawable)"
+
+#: templates/teachers/wallet.html:26
+msgid "إجمالي الأرباح (التاريخي)"
+msgstr "Total Earnings (History)"
+
+#: templates/teachers/wallet.html:36
+msgid "طلب سحب رصيد"
+msgstr "Withdrawal Request"
+
+#: templates/teachers/wallet.html:43
+msgid "المبلغ المطلوب"
+msgstr "Amount Required"
+
+#: templates/teachers/wallet.html:48
+msgid "الحد الأدنى للسحب 50 جنيه."
+msgstr "Minimum withdrawal is 50 EGP."
+
+#: templates/teachers/wallet.html:52
+msgid "طريقة التحويل"
+msgstr "Transfer Method"
+
+#: templates/teachers/wallet.html:54
+msgid "فودافون كاش"
+msgstr "Vodafone Cash"
+
+#: templates/teachers/wallet.html:55
+msgid "InstaPay"
+msgstr "InstaPay"
+
+#: templates/teachers/wallet.html:56
+msgid "تحويل بنكي"
+msgstr "Bank Transfer"
+
+#: templates/teachers/wallet.html:62
+msgid "اكتب رقم المحفظة أو عنوان الدفع (IPA) أو رقم الحساب..."
+msgstr "Enter Wallet Number or IPA or Bank Account..."
+
+#: templates/teachers/wallet.html:77
+msgid "سجل السحوبات"
+msgstr "Withdrawal History"
+
+#: templates/teachers/wallet.html:98
+msgid "قيد المراجعة"
+msgstr "Pending Review"
+
+#: templates/teachers/wallet.html:103
+msgid "لا توجد عمليات سحب سابقة."
+msgstr "No previous withdrawals."

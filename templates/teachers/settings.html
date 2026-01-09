@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "إعدادات الحساب" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            
+            <h3 class="fw-bold mb-4">⚙️ {% trans "إعدادات الحساب" %}</h3>
+
+            <div class="card shadow-sm border-0 mb-5">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0 fw-bold text-primary">{% trans "البيانات الشخصية" %}</h5>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="mb-4 text-center">
+                            {% if form.instance.image %}
+                                <img src="{{ form.instance.image.url }}" class="rounded-circle shadow mb-3" style="width: 120px; height: 120px; object-fit: cover;">
+                            {% endif %}
+                            
+                            <label class="form-label d-block fw-bold">{% trans "تغيير الصورة الشخصية" %}</label>
+                            {{ form.image }}
+                        </div>                        
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">{% trans "الاسم الأول" %}</label>
+                                {{ form.first_name }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">{% trans "الاسم الأخير" %}</label>
+                                {{ form.last_name }}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">{% trans "المادة الدراسية" %}</label>
+                            {{ form.subject }}
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">{% trans "نبذة عنك (تظهر للطلاب)" %}</label>
+                            {{ form.bio }}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-save me-2"></i> {% trans "حفظ التغييرات" %}
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card border-danger shadow-sm">
+                <div class="card-header bg-danger text-white py-3">
+                    <h5 class="mb-0 fw-bold"><i class="bi bi-exclamation-triangle-fill me-2"></i> {% trans "منطقة الخطر" %}</h5>
+                </div>
+                <div class="card-body p-4">
+                    <h5 class="card-title fw-bold text-danger">{% trans "حذف الحساب نهائياً" %}</h5>
+                    <div class="card-text text-muted">
+                        {% trans "عند حذف حسابك، سيتم مسح جميع بياناتك بما في ذلك:" %}
+                        <ul>
+                            <li>{% trans "المجموعات والطلاب المسجلين." %}</li>
+                            <li>{% trans "الفيديوهات والمحاضرات والامتحانات." %}</li>
+                            <li>{% trans "سجلات الاشتراكات والمدفوعات." %}</li>
+                        </ul>
+                        <strong>{% trans "هذا الإجراء نهائي ولا يمكن التراجع عنه." %}</strong>
+                    </div>
+                    
+                    <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+                        {% trans "نعم، أريد حذف حسابي" %}
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteAccountModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title fw-bold">{% trans "تأكيد الحذف النهائي" %}</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p class="lead text-center">{% trans "هل أنت متأكد تماماً؟" %}</p>
+                <p class="text-center text-muted small">{% trans "سنفتقدك، وسيتم إزالة كل مجهودك من المنصة." %}</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "تراجع" %}</button>
+                
+                <form action="{% url 'delete_teacher_account' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger fw-bold px-4">{% trans "تأكيد الحذف" %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

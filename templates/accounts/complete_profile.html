@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "إعداد الحساب" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="row g-0">
+                    <div class="col-md-4 bg-primary text-white d-flex flex-column justify-content-center align-items-center p-4 text-center">
+                        <div class="mb-3 p-3 bg-white bg-opacity-25 rounded-circle">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="bi bi-person-badge" viewBox="0 0 16 16">
+                                <path d="M6.5 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1h-3zM11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                                <path d="M4.5 0A2.5 2.5 0 0 0 2 2.5V14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2.5A2.5 2.5 0 0 0 11.5 0h-7zM3 2.5A1.5 1.5 0 0 1 4.5 1h7A1.5 1.5 0 0 1 13 2.5v10.795a4.2 4.2 0 0 0-.776-.492C11.392 12.387 10.063 12 8 12s-3.392.387-4.224.803a4.2 4.2 0 0 0-.776.492V2.5z"/>
+                            </svg>
+                        </div>
+                        <h4 class="fw-bold">{% blocktrans with name=user.first_name %}مرحباً {{ name }}{% endblocktrans %}</h4>
+                        <p class="small opacity-75">
+                            {% trans "أنت تسجل الآن بصفتك:" %} <br>
+                            <span class="badge bg-white text-primary mt-2 fs-6">{{ user.get_role_display }}</span>
+                        </p>
+                    </div>
+
+                    <div class="col-md-8 bg-white p-5">
+                        <h3 class="mb-2 fw-bold text-dark">{% trans "خطوة أخيرة للبدء" %}</h3>
+                        <p class="text-muted mb-4 small">{% trans "  يرجى ملء البيانات التالية بدقة لتوثيق حسابك في المنصة. ( سيتم حظرك لو البيانات غلط)" %}</p>
+
+                        <form method="POST" novalidate>
+                            {% csrf_token %}
+                            
+                            {% if form.non_field_errors %}
+                                <div class="alert alert-danger shadow-sm border-0 mb-4">
+                                    {% for error in form.non_field_errors %}
+                                        <i class="bi bi-exclamation-circle me-2"></i>{{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            <div class="row g-3">
+                                {% for field in form %}
+                                    <div class="col-12">
+                                        <div class="form-floating">
+                                            {{ field }}
+                                            <label for="{{ field.id_for_label }}" class="text-muted">{{ field.label }} </label>
+                                            
+                                            {% if field.help_text %}
+                                                <div class="form-text small text-muted ps-2">{{ field.help_text }}</div>
+                                            {% endif %}
+                                            
+                                            {% if field.errors %}
+                                                <div class="text-danger small mt-1 ps-2 fw-bold">
+                                                    {{ field.errors.0 }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="d-grid mt-5">
+                                <button type="submit" class="btn btn-primary btn-lg shadow hover-elevate">
+                                    {% trans "حفظ البيانات والدخول للوحة التحكم" %}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* تنسيقات إضافية لتحسين شكل الفورم */
+    .form-control {
+        border: 2px solid #f0f0f0;
+        border-radius: 10px;
+        padding-top: 1.625rem;
+        padding-bottom: 0.625rem;
+    }
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+        background-color: #fcfcfc;
+    }
+    .form-floating > label {
+        padding-right: 1.5rem; /* ضبط المحاذاة في العربي */
+    }
+    .hover-elevate {
+        transition: transform 0.2s;
+    }
+    .hover-elevate:hover {
+        transform: translateY(-3px);
+    }
+</style>
+{% endblock %}

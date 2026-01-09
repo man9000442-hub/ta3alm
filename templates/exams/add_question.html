@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "إضافة سؤال جديد" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="mb-0 fw-bold">{% trans "إضافة سؤال جديد للامتحان:" %} {{ exam.title }}</h4>
+                </div>
+                
+                <div class="card-body p-5">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- 1. نص السؤال -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">{% trans "نص السؤال" %}</label>
+                            {{ form.text }}
+                        </div>
+
+                        <!-- 2. الصورة (حسب الباقة) -->
+                        <div class="mb-4 bg-light p-3 rounded border {% if not allow_images %}border-warning{% endif %}">
+                            <label class="form-label fw-bold text-dark"><i class="bi bi-image"></i> {% trans "صورة توضيحية" %}</label>
+                            
+                            {% if allow_images %}
+                                <input type="file" name="image" class="form-control" accept="image/*">
+                                <div class="form-text">{% trans "اختياري. الصور المسموحة: JPG, PNG." %}</div>
+                            {% else %}
+                                <div class="alert alert-warning small mb-0 d-flex align-items-center">
+                                    <i class="bi bi-lock-fill me-2 fs-5"></i>
+                                    <div>
+                                        <strong>{% trans "غير متاح:" %}</strong> 
+                                        {% trans "رفع الصور غير متوفر في باقتك الحالية. يرجى الترقية لتفعيل هذه الميزة." %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- 3. الاختيارات -->
+                        <h5 class="fw-bold text-secondary mb-3">{% trans "الاختيارات" %}</h5>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="small text-muted">{% trans "اختيار A" %}</label>
+                                {{ form.option_a }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small text-muted">{% trans "اختيار B" %}</label>
+                                {{ form.option_b }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small text-muted">{% trans "اختيار C" %}</label>
+                                {{ form.option_c }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small text-muted">{% trans "اختيار D" %}</label>
+                                {{ form.option_d }}
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- 4. الإجابة والدرجة -->
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">{% trans "الإجابة الصحيحة" %}</label>
+                                {{ form.correct_answer }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">{% trans "درجة السؤال" %}</label>
+                                {{ form.marks }}
+                            </div>
+                        </div>
+
+                        <!-- 5. الأزرار -->
+                        <div class="d-flex justify-content-between mt-5">
+                            <a href="{% url 'exam_manage' exam.id %}" class="btn btn-outline-secondary px-4">{% trans "إلغاء وعودة" %}</a>
+                            <button type="submit" class="btn btn-success btn-lg px-5 fw-bold shadow">
+                                <i class="bi bi-check-lg"></i> {% trans "حفظ السؤال" %}
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

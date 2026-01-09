@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "لوحة الشرف" %}{% endblock %}
+
+{% block content %}
+    {% include 'teachers/includes/package_navbar.html' %}
+
+    <div class="container py-3">
+        <div class="text-center mb-4">
+            <h4 class="fw-bold text-warning"><i class="bi bi-trophy-fill"></i> {% trans "أوائل الحزمة" %}</h4>
+            <p class="text-muted">{% trans "الترتيب بناءً على (نقاط المشاهدة + درجات الامتحانات)" %}</p>
+        </div>
+
+        <div class="card shadow border-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th style="width: 15%">{% trans "المركز" %}</th>
+                            <th style="width: 50%" class="text-start">{% trans "الطالب" %}</th>
+                            <th style="width: 35%">{% trans "مجموع النقاط" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in leaderboard %}
+                        <tr class="{% if forloop.counter <= 3 %}table-warning fw-bold{% endif %}">
+                            <td class="fs-5">
+                                {% if forloop.counter == 1 %}🥇
+                                {% elif forloop.counter == 2 %}🥈
+                                {% elif forloop.counter == 3 %}🥉
+                                {% else %}{{ forloop.counter }}{% endif %}
+                            </td>
+                            <td class="text-start">{{ item.student.user.first_name }} {{ item.student.user.last_name }}</td>
+                            <td><span class="badge bg-primary fs-6">{{ item.score }}</span></td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="3" class="py-5 text-muted">{% trans "لا توجد بيانات كافية للترتيب." %}</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

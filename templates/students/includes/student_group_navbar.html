@@ -1,0 +1,65 @@
+{% load i18n %}
+<div class="bg-white shadow-sm border-bottom mb-4">
+    <div class="container">
+        <div class="d-flex align-items-center py-3 border-bottom">
+            <a href="{% url 'student_dashboard' %}" class="btn btn-sm btn-outline-secondary me-3">
+                <i class="bi bi-arrow-right"></i> {% trans "خروج" %}
+            </a>
+            <h4 class="mb-0 fw-bold text-primary">{{ group.name }}</h4>
+            <span class="badge bg-light text-dark ms-2 border">{{ group.teacher.subject }}</span>
+        </div>
+
+        <ul class="nav nav-tabs border-bottom-0 mt-3">
+            
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'content' %}active fw-bold border-bottom-0{% endif %} px-4 py-3" 
+                   href="{% url 'student_group_content' group.id %}"
+                   style="{% if active_tab == 'content' %}border-top: 3px solid #0d6efd; color: #000;{% endif %}">
+                    <i class="bi bi-youtube me-2"></i> {% trans "المحاضرات" %}
+                </a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'exams' %}active fw-bold border-bottom-0{% endif %} px-4 py-3" 
+                   href="{% url 'student_group_exams' group.id %}"
+                   style="{% if active_tab == 'exams' %}border-top: 3px solid #ffc107; color: #000;{% endif %}">
+                    <i class="bi bi-pencil-square me-2"></i> {% trans "الامتحانات" %}
+                </a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'marks' %}active fw-bold border-bottom-0{% endif %} px-4 py-3" 
+                   href="{% url 'student_group_marks' group.id %}"
+                   style="{% if active_tab == 'marks' %}border-top: 3px solid #198754; color: #000;{% endif %}">
+                    <i class="bi bi-bar-chart-fill me-2"></i> {% trans "درجاتي" %}
+                </a>
+            </li>
+
+                        <!-- تبويب الملفات -->
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'files' %}active fw-bold border-bottom-0{% endif %} px-4 py-3" 
+                   href="{% url 'student_group_files' group.id %}"
+                   style="{% if active_tab == 'files' %}border-top: 3px solid #dc3545; color: #000;{% endif %}">
+                    <i class="bi bi-file-earmark-pdf-fill me-2 text-danger"></i> {% trans "الملفات" %}
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'ranking' %}active fw-bold border-bottom-0{% endif %} px-4 py-3" 
+                   href="{% url 'student_group_ranking' group.id %}"
+                   style="{% if active_tab == 'ranking' %}border-top: 3px solid #fd7e14; color: #000;{% endif %}">
+                    <i class="bi bi-trophy-fill me-2"></i> {% trans "الترتيب" %}
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'contact' %}active fw-bold border-bottom-0{% endif %} px-4 py-3" 
+                   href="{% url 'student_group_contact' group.id %}"
+                   style="{% if active_tab == 'contact' %}border-top: 3px solid #25d366; color: #000;{% endif %}">
+                    <i class="bi bi-whatsapp me-2"></i> {% trans "تواصل" %}
+                </a>
+            </li>
+
+        </ul>
+    </div>
+</div>

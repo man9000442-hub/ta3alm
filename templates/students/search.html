@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "البحث عن مجموعات" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <!-- مربع البحث والفلترة -->
+    <div class="row justify-content-center mb-5">
+        <div class="col-lg-10">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold mb-2">{% trans "اكتشف المدرسين والمجموعات" %}</h2>
+                <p class="text-muted">{% trans "ابحث عن مدرسك المفضل وانضم لمجموعاته الدراسية" %}</p>
+            </div>
+
+            <div class="card shadow-sm border-0 p-4 bg-white rounded-4">
+                <form method="GET" class="row g-3 align-items-end">
+                    
+                    <!-- بحث بالاسم -->
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold small text-muted">{% trans "بحث بالاسم" %}</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
+                            <input type="text" name="q" class="form-control border-start-0" placeholder="{% trans 'اسم المدرس، المادة...' %}" value="{{ query|default:'' }}">
+                        </div>
+                    </div>
+
+                    <!-- فلتر الصف -->
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold small text-muted">{% trans "الصف الدراسي" %}</label>
+                        <select name="grade" class="form-select">
+                            <option value="">{% trans "كل الصفوف" %}</option>
+                            <option value="1_prep" {% if request.GET.grade == '1_prep' %}selected{% endif %}>{% trans "أولى إعدادي" %}</option>
+                            <option value="2_prep" {% if request.GET.grade == '2_prep' %}selected{% endif %}>{% trans "ثانية إعدادي" %}</option>
+                            <option value="3_prep" {% if request.GET.grade == '3_prep' %}selected{% endif %}>{% trans "ثالثة إعدادي" %}</option>
+                            <option value="1_sec" {% if request.GET.grade == '1_sec' %}selected{% endif %}>{% trans "أولى ثانوي" %}</option>
+                            <option value="2_sec" {% if request.GET.grade == '2_sec' %}selected{% endif %}>{% trans "ثانية ثانوي" %}</option>
+                            <option value="3_sec" {% if request.GET.grade == '3_sec' %}selected{% endif %}>{% trans "ثالثة ثانوي" %}</option>
+                        </select>
+                    </div>
+
+                    <!-- فلتر المادة (جديد) -->
+                    <!-- لاحظ: نحتاج لتمرير subjects في الفيو -->
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold small text-muted">{% trans "المادة" %}</label>
+                        <select name="subject" class="form-select">
+                            <option value="">{% trans "كل المواد" %}</option>
+                            {% for sub in subjects %} <!-- تأكد من تمرير subjects -->
+                                <option value="{{ sub.id }}" {% if request.GET.subject|add:"0" == sub.id %}selected{% endif %}>{{ sub.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- زر البحث -->
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100 fw-bold">{% trans "تصفية" %}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- نتائج البحث -->
+    <div class="row g-4">
+        {% for group in groups %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm hover-up overflow-hidden">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <!-- صورة المدرس -->
+                        <div class="me-3 position-relative">
+                            {% if group.teacher.image %}
+                                <img src="{{ group.teacher.image.url }}" class="rounded-circle shadow-sm object-fit-cover" style="width: 60px; height: 60px;">
+                            {% else %}
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                                    {{ group.teacher.user.first_name|slice:":1" }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div>
+                            <h5 class="fw-bold mb-0 text-dark">{{ group.teacher.user.first_name }} {{ group.teacher.user.last_name }}</h5>
+                            
+                            <div class="d-flex align-items-center gap-2 mt-1">
+                                <span class="badge bg-light text-dark border">{{ group.teacher.subject }}</span>
+                                <small class="text-muted"><i class="bi bi-telephone-fill me-1"></i> {{ group.teacher.user.phone }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h5 class="card-title fw-bold text-primary mb-2">{{ group.name }}</h5>
+                    <span class="badge bg-warning text-dark mb-3">{{ group.get_grade_display }}</span>
+                    
+                    <div class="d-grid mt-3">
+                        {% if user.role == 'student' %}
+                            {% if group.id in my_enrollment_ids %}
+                                <button class="btn btn-secondary disabled opacity-75">
+                                    <i class="bi bi-check2"></i> {% trans "تم إرسال الطلب" %}
+                                </button>
+                            {% else %}
+                                <a href="{% url 'join_group' group.id %}" class="btn btn-outline-primary fw-bold">
+                                    <i class="bi bi-person-plus"></i> {% trans "طلب انضمام" %}
+                                </a>
+                            {% endif %}
+                        {% else %}
+                            <button class="btn btn-light text-muted disabled border">
+                                <i class="bi bi-eye"></i> {% trans "للمعاينة فقط" %}
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <div class="mb-3 opacity-25"><i class="bi bi-search display-1 text-secondary"></i></div>
+            <h4 class="text-muted">{% trans "لم يتم العثور على مجموعات." %}</h4>
+            <p class="text-secondary small">{% trans "جرب تغيير كلمات البحث أو الفلاتر." %}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .hover-up { transition: transform 0.3s ease; }
+    .hover-up:hover { transform: translateY(-5px); }
+</style>
+{% endblock %}

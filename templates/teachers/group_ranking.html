@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "الترتيب" %} | {{ group.name }}{% endblock %}
+
+{% block content %}
+    {% include 'teachers/includes/group_navbar.html' %}
+
+    <div class="container py-3">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold text-dark"><i class="bi bi-trophy-fill text-warning me-2"></i> {% trans "لوحة الشرف" %}</h2>
+            <p class="text-muted">{% trans "ترتيب الطلاب بناءً على المجموع التراكمي (واجب + امتحانات + نشاط)" %}</p>
+        </div>
+
+        <div class="card shadow border-0">
+            <div class="card-header bg-dark text-white py-3">
+                <h5 class="mb-0 fw-bold">{% trans "قائمة الأوائل" %}</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0 text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 15%">{% trans "المركز" %}</th>
+                            <th style="width: 50%" class="text-start">{% trans "الطالب" %}</th>
+                            <th style="width: 35%">{% trans "مجموع النقاط" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in leaderboard %}
+                        <tr class="{% if item.rank == 1 %}table-warning fw-bold{% elif item.rank == 2 %}table-secondary{% elif item.rank == 3 %}table-light{% endif %}">
+                            
+                            <td class="fs-5">
+                                {% if item.rank == 1 %}🥇{% elif item.rank == 2 %}🥈{% elif item.rank == 3 %}🥉{% else %}<span class="badge bg-light text-dark border rounded-pill">{{ item.rank }}</span>{% endif %}
+                            </td>
+                            
+                            <td class="text-start">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-white rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm" style="width: 40px; height: 40px;">
+                                        <span class="text-primary fw-bold">{{ item.student.user.first_name|slice:":1" }}</span>
+                                    </div>
+                                    <div>
+                                        {{ item.student.user.first_name }} {{ item.student.user.last_name }}
+                                        <div class="small text-muted">{{ item.student.user.phone }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            
+                            <td>
+                                <span class="badge bg-primary fs-6 px-3">{{ item.total_score }}</span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="py-5 text-muted">
+                                <i class="bi bi-bar-chart-steps display-4 opacity-25 mb-3 d-block"></i>
+                                {% trans "لا توجد بيانات كافية لحساب الترتيب بعد." %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

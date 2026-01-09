@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "لوحة الطالب" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <!-- رأس الصفحة -->
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h2 class="fw-bold mb-1">{% trans "مرحباً بك،" %} <span class="text-primary">{{ user.first_name }}</span></h2>
+            <p class="text-muted mb-0">{% trans "تابع دروسك وتقدمك الدراسي من هنا" %}</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{% url 'search_groups' %}" class="btn btn-primary shadow-sm">
+                <i class="bi bi-search me-2"></i> {% trans "بحث عن مدرس" %}
+            </a>
+            <a href="{% url 'student_settings' %}" class="btn btn-outline-secondary" title="{% trans 'بياناتي' %}">
+                <i class="bi bi-person-gear"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- 1. قسم الحزم (Online Courses) -->
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+        <h4 class="fw-bold text-dark"><i class="bi bi-box-seam-fill text-warning me-2"></i> {% trans "حزمي التعليمية (Online)" %}</h4>
+        <a href="{% url 'list_packages' %}" class="btn btn-sm btn-outline-warning text-dark fw-bold">
+            {% trans "تصفح المزيد" %} <i class="bi bi-arrow-left"></i>
+        </a>
+    </div>
+
+    <div class="row g-4 mb-5">
+        {% for enroll in my_packages %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm hover-up">
+                <div class="position-relative">
+                    {% if enroll.package.image %}
+                        <img src="{{ enroll.package.image.url }}" class="card-img-top" style="height: 160px; object-fit: cover;">
+                    {% else %}
+                        <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 160px;">
+                            <i class="bi bi-box-seam display-1 opacity-25"></i>
+                        </div>
+                    {% endif %}
+                    <span class="position-absolute top-0 end-0 m-2 badge bg-success">{% trans "مشترك" %}</span>
+                </div>
+                
+                <div class="card-body">
+                    <h5 class="fw-bold mb-1">{{ enroll.package.title }}</h5>
+                    <p class="text-muted small mb-1">{% trans "مستر/" %} {{ enroll.package.teacher.user.first_name }}</p>
+                    <p class="text-muted small mb-3"><i class="bi bi-whatsapp text-success me-1"></i> {{ enroll.package.teacher.user.phone }}</p>
+                    
+                    <a href="{% url 'my_package_content' enroll.package.id %}" class="btn btn-primary w-100 fw-bold stretched-link">
+                        {% trans "استكمال التعلم" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-4 bg-light rounded">
+            <p class="text-muted mb-0">{% trans "لم تشترك في أي حزم بعد." %}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- 2. قسم المجموعات النشطة (Offline/Center) -->
+    <h4 class="fw-bold text-dark mb-4 border-bottom pb-2">
+        <i class="bi bi-people-fill text-success me-2"></i> {% trans "مجموعاتي الدراسية" %}
+    </h4>
+    
+    <div class="row g-4 mb-5">
+        {% for enroll in my_groups %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm border-start border-4 border-success hover-scale">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title fw-bold mb-0">{{ enroll.group.name }}</h5>
+                        <span class="badge bg-light text-dark border">{{ enroll.group.teacher.subject }}</span>
+                    </div>
+                    
+                    <p class="text-muted mb-1 small">
+                        <i class="bi bi-person-circle me-1"></i> {% trans "مستر/" %} {{ enroll.group.teacher.user.first_name }}
+                    </p>
+                    <p class="text-muted mb-3 small">
+                        <i class="bi bi-whatsapp text-success me-1"></i> {{ enroll.group.teacher.user.phone }}
+                    </p>
+                    
+                    <a href="{% url 'student_group_content' enroll.group.id %}" class="btn btn-success w-100 fw-bold">
+                        {% trans "دخول للمجموعة" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-4 bg-light rounded">
+            <p class="text-muted mb-0">{% trans "لا توجد مجموعات نشطة." %}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- 3. المجموعات المغلقة (بسبب الباقة) -->
+    {% if locked_groups %}
+    <h5 class="fw-bold text-secondary mb-3 border-bottom pb-2">
+        <i class="bi bi-lock-fill me-2"></i> {% trans "مجموعات متوقفة مؤقتاً" %}
+    </h5>
+    <div class="row g-4 mb-5">
+        {% for enroll in locked_groups %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm opacity-75 bg-light">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">{{ enroll.group.name }}</h5>
+                    <p class="small mb-0">{% trans "مستر/" %} {{ enroll.group.teacher.user.first_name }}</p>
+                    <div class="alert alert-secondary py-1 px-2 mt-3 small text-center mb-0">
+                        <i class="bi bi-exclamation-circle me-1"></i> {% trans "مغلقة (باقة المعلم)" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- 4. الطلبات المعلقة -->
+    {% if pending_groups %}
+    <h5 class="fw-bold text-warning mb-4 border-bottom pb-2">
+        <i class="bi bi-hourglass-split me-2"></i> {% trans "طلبات قيد الانتظار" %}
+    </h5>
+    <div class="row g-4">
+        {% for enroll in pending_groups %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm opacity-75">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">{{ enroll.group.name }}</h5>
+                    <p class="small mb-0">{% trans "مستر/" %} {{ enroll.group.teacher.user.first_name }}</p>
+                    <div class="alert alert-warning py-1 px-2 mt-3 small text-center mb-0">
+                        <i class="bi bi-clock"></i> {% trans "في انتظار موافقة المعلم" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+</div>
+
+<style>
+    .hover-up { transition: transform 0.3s; }
+    .hover-up:hover { transform: translateY(-5px); }
+    .hover-scale { transition: transform 0.2s; }
+    .hover-scale:hover { transform: scale(1.02); }
+</style>
+{% endblock %}

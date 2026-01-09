@@ -1,0 +1,75 @@
+{% load i18n %}
+
+<!-- 1. Modal إضافة محاضرة يدوية -->
+<div class="modal fade" id="addLectureModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title fw-bold">
+                    <i class="bi bi-youtube me-2"></i> {% trans "إضافة محاضرة جديدة" %}
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{% url 'add_lecture_to_package' package.id %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">{% trans "عنوان المحاضرة" %}</label>
+                        <input type="text" name="title" class="form-control" placeholder="{% trans 'مثال: شرح الدرس الأول' %}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">{% trans "رابط الفيديو" %}</label>
+                        <input type="url" name="video_link" class="form-control" placeholder="Youtube, Vimeo, etc..." required>
+                        <div class="form-text">{% trans "انسخ رابط الفيديو المباشر." %}</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">{% trans "الوصف (اختياري)" %}</label>
+                        <textarea name="description" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "إلغاء" %}</button>
+                    <button type="submit" class="btn btn-danger px-4">{% trans "حفظ وإضافة" %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 2. Modal إضافة امتحان يدوي -->
+<div class="modal fade" id="addExamModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-dark">
+                <h5 class="modal-title fw-bold">
+                    <i class="bi bi-pencil-square me-2"></i> {% trans "إضافة امتحان جديد" %}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form action="{% url 'add_exam_to_package' package.id %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">{% trans "عنوان الامتحان" %}</label>
+                        <input type="text" name="title" class="form-control" placeholder="{% trans 'مثال: امتحان شامل علي الوحدة' %}" required>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">{% trans "المدة (بالدقائق)" %}</label>
+                            <input type="number" name="duration" class="form-control" value="30" min="5" required>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info small mt-3 mb-0 border-0 bg-opacity-10 bg-info text-primary">
+                        <i class="bi bi-info-circle-fill me-1"></i> 
+                        {% trans "بعد الضغط على إنشاء، سيتم توجيهك لصفحة إضافة الأسئلة." %}
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "إلغاء" %}</button>
+                    <button type="submit" class="btn btn-warning px-4 fw-bold">{% trans "إنشاء وإضافة أسئلة" %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

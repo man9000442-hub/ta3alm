@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "لوحة المساعد" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <!-- رأس الصفحة -->
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h2 class="fw-bold mb-1">
+                <span class="text-primary">👋 {% trans "مرحباً كابتن" %}</span> {{ user.first_name }}
+            </h2>
+            <p class="text-muted mb-0">{% trans "لوحة التحكم الخاصة بالمساعدين" %}</p>
+        </div>
+        <a href="{% url 'find_teacher' %}" class="btn btn-primary shadow-sm px-4">
+            <i class="bi bi-search me-2"></i> {% trans "البحث عن عمل جديد" %}
+        </a>
+    </div>
+
+    <!-- 1. المعلمون الحاليون -->
+    <div class="mb-5">
+        <h5 class="fw-bold text-success border-start border-4 border-success ps-3 mb-4">
+            <i class="bi bi-briefcase-fill me-2"></i> {% trans "المعلمون الحاليون" %}
+        </h5>
+        
+        <div class="row g-4">
+            {% for job in active_jobs %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm border-0 h-100 hover-card">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                <span class="fw-bold fs-4 text-primary">{{ job.teacher.user.first_name|slice:":1" }}</span>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-0 text-dark">{{ job.teacher.user.first_name }} {{ job.teacher.user.last_name }}</h5>
+                                <small class="text-muted">{{ job.teacher.subject }}</small>
+                            </div>
+                        </div>
+                        
+                        <!-- رقم الهاتف -->
+                        <div class="mb-3">
+                            <a href="tel:{{ job.teacher.user.phone }}" class="text-decoration-none text-secondary d-flex align-items-center small">
+                                <i class="bi bi-phone me-2"></i> {{ job.teacher.user.phone }}
+                            </a>
+                        </div>
+                        
+                        <div class="bg-light rounded p-2 mb-3 small text-muted">
+                            <i class="bi bi-calendar3 me-1"></i> {% trans "تاريخ الانضمام:" %} {{ job.joined_at|date:"d/m/Y" }}
+                        </div>
+
+                        <hr class="my-3 opacity-25">
+                        
+                        <div class="d-grid gap-2">
+                            <!-- زر المجموعات -->
+                            <a href="{% url 'view_teacher_groups' job.teacher.id %}" class="btn btn-outline-success fw-bold">
+                                <i class="bi bi-grid-fill me-2"></i> {% trans "عرض المجموعات" %}
+                            </a>
+                            
+                            <!-- زر الحزم (يظهر فقط لو عنده صلاحية) -->
+                            {% if job.can_manage_packages %}
+                            <a href="{% url 'assistant_view_packages' job.teacher.id %}" class="btn btn-outline-primary fw-bold">
+                                <i class="bi bi-box-seam-fill me-2"></i> {% trans "عرض الحزم" %}
+                            </a>
+                            {% else %}
+                            <button class="btn btn-light text-muted disabled border">
+                                <i class="bi bi-lock me-1"></i> {% trans "لا تملك صلاحية الحزم" %}
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5 bg-light rounded-3">
+                <i class="bi bi-person-x display-4 text-muted opacity-50 mb-3 d-block"></i>
+                <h5 class="text-muted">{% trans "لا تعمل مع أي معلم حالياً." %}</h5>
+                <p class="text-secondary small">{% trans "اضغط على 'البحث عن عمل جديد' لإرسال طلبات انضمام." %}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- 2. الطلبات المعلقة -->
+    {% if pending_jobs %}
+    <div class="mb-4">
+        <h5 class="fw-bold text-warning border-start border-4 border-warning ps-3 mb-4">
+            <i class="bi bi-hourglass-split me-2"></i> {% trans "طلبات قيد الانتظار" %}
+        </h5>
+        
+        <div class="row g-4">
+            {% for job in pending_jobs %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card border-0 shadow-sm opacity-75">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="fw-bold mb-1">{{ job.teacher.user.first_name }} {{ job.teacher.user.last_name }}</h6>
+                                <small class="text-muted">{{ job.teacher.subject }}</small>
+                            </div>
+                            <span class="badge bg-warning text-dark rounded-pill">
+                                <i class="bi bi-clock"></i> {% trans "في الانتظار" %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+<style>
+    .hover-card { transition: transform 0.2s; }
+    .hover-card:hover { transform: translateY(-5px); }
+</style>
+{% endblock %}

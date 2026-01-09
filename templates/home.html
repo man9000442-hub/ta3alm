@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "الرئيسية" %}{% endblock %}
+
+{% block content %}
+
+<!-- 1. Hero Section -->
+<section class="hero-section text-white text-center py-5 mb-5 position-relative overflow-hidden" 
+         style="background: linear-gradient(135deg, #800000 0%, #4a0000 100%); border-radius: 0 0 60px 60px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+    
+    <div class="position-absolute top-0 start-0 translate-middle rounded-circle bg-white opacity-10" style="width: 400px; height: 400px; filter: blur(50px);"></div>
+    <div class="position-absolute bottom-0 end-0 translate-middle rounded-circle bg-warning opacity-10" style="width: 300px; height: 300px; filter: blur(40px);"></div>
+
+    <div class="container position-relative py-5">
+        <h1 class="display-3 fw-bold mb-3 animate-fade-down">
+            {% trans "منصة" %} <span class="text-warning position-relative">{% trans "تعلّم" %}
+                <svg class="position-absolute start-0 bottom-0 w-100" viewBox="0 0 100 10" style="height: 10px; transform: translateY(10px);">
+                    <path d="M0 5 Q 50 10 100 5" stroke="#FFD700" stroke-width="3" fill="none" />
+                </svg>
+            </span>
+        </h1>
+        
+        <p class="lead mb-5 opacity-75 mx-auto animate-fade-up" style="max-width: 700px; font-size: 1.2rem;">
+            {% trans "بوابتك لمستقبل تعليمي أفضل. دروس تفاعلية، امتحانات ذكية، ومتابعة فورية لمستواك الدراسي مع نخبة من أفضل المعلمين." %}
+        </p>
+
+        {% if user.is_authenticated %}
+            <div class="animate-zoom-in">
+                <a href="{% if user.is_superuser %}{% url 'owner_dashboard' %}{% elif user.role == 'teacher' %}{% url 'teacher_dashboard' %}{% elif user.role == 'assistant' %}{% url 'assistant_dashboard' %}{% else %}{% url 'student_dashboard' %}{% endif %}" 
+                   class="btn btn-warning btn-lg fw-bold px-5 py-3 rounded-pill shadow-lg hover-scale text-dark border-0">
+                    <i class="bi bi-speedometer2 me-2"></i> {% trans "الذهاب للوحة التحكم" %}
+                </a>
+                <p class="mt-3 text-white-50 small">
+                    <i class="bi bi-person-circle me-1"></i> {% trans "مسجل دخول باسم:" %} {{ user.first_name }}
+                </p>
+            </div>
+        {% else %}
+            <div class="d-flex flex-wrap justify-content-center gap-3 animate-zoom-in">
+                <a href="{% url 'signup_redirect' 'student' %}" class="btn btn-light btn-lg fw-bold px-4 py-3 rounded-pill shadow hover-scale text-primary border-0">
+                    <i class="bi bi-mortarboard-fill me-2"></i> {% trans "طالب جديد" %}
+                </a>
+                <a href="{% url 'signup_redirect' 'teacher' %}" class="btn btn-outline-light btn-lg fw-bold px-4 py-3 rounded-pill shadow hover-scale border-2">
+                    <i class="bi bi-person-video3 me-2"></i> {% trans "انضم كمعلم" %}
+                </a>
+                <a href="{% url 'signup_redirect' 'assistant' %}" class="btn btn-warning btn-lg fw-bold px-4 py-3 rounded-pill shadow hover-scale text-dark border-0">
+                    <i class="bi bi-person-workspace me-2"></i> {% trans "مساعد معلم" %}
+                </a>
+            </div>
+            <div class="mt-4 animate-fade-up delay-2">
+                <a href="{% url 'account_login' %}" class="text-white text-decoration-none fw-bold small">
+                    {% trans "لديك حساب بالفعل؟" %} <span class="text-warning text-decoration-underline">{% trans "تسجيل الدخول" %}</span>
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- 2. قسم المميزات (Features) -->
+<section class="container mb-5 position-relative" style="top: -60px;">
+    <div class="row g-4 text-center">
+        <div class="col-md-4">
+            <div class="p-4 bg-white shadow-sm rounded-4 h-100 hover-up border-top border-5 border-primary feature-card">
+                <div class="icon-box bg-primary bg-opacity-10 text-primary mb-3 mx-auto">
+                    <i class="bi bi-play-circle-fill display-5"></i>
+                </div>
+                <h4 class="fw-bold mb-2">{% trans "محاضرات HD" %}</h4>
+                <p class="text-muted small">{% trans "شرح وافي للمناهج بجودة عالية." %}</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-4 bg-white shadow-sm rounded-4 h-100 hover-up border-top border-5 border-warning feature-card">
+                <div class="icon-box bg-warning bg-opacity-10 text-warning mb-3 mx-auto">
+                    <i class="bi bi-clipboard-check-fill display-5"></i>
+                </div>
+                <h4 class="fw-bold mb-2">{% trans "امتحانات ذكية" %}</h4>
+                <p class="text-muted small">{% trans "بنك أسئلة وتصحيح تلقائي." %}</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="p-4 bg-white shadow-sm rounded-4 h-100 hover-up border-top border-5 border-success feature-card">
+                <div class="icon-box bg-success bg-opacity-10 text-success mb-3 mx-auto">
+                    <i class="bi bi-graph-up-arrow display-5"></i>
+                </div>
+                <h4 class="fw-bold mb-2">{% trans "متابعة دقيقة" %}</h4>
+                <p class="text-muted small">{% trans "تقارير دورية للمستوى." %}</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 3. قسم البحث المتقدم (تحت المميزات) -->
+<section class="container mb-5">
+    <div class="card shadow-lg border-0 p-4 rounded-4 bg-white position-relative overflow-hidden">
+        <!-- خلفية خفيفة -->
+        <div class="position-absolute end-0 top-0 p-3 opacity-10">
+            <i class="bi bi-search display-1 text-secondary"></i>
+        </div>
+
+        <h4 class="fw-bold text-dark mb-4 border-start border-4 border-primary ps-3">
+            {% trans "ابحث عن معلمك المفضل" %}
+        </h4>
+
+        <form method="GET" action="{% url 'home' %}" class="row g-3 align-items-end">
+            
+            <div class="col-md-4">
+                <label class="form-label fw-bold text-muted small">{% trans "الصف الدراسي" %}</label>
+                <select name="grade" class="form-select border-primary fw-bold py-2">
+                    <option value="">{% trans "كل الصفوف" %}</option>
+                    <option value="1_prep" {% if request.GET.grade == '1_prep' %}selected{% endif %}>{% trans "أولى إعدادي" %}</option>
+                    <option value="2_prep" {% if request.GET.grade == '2_prep' %}selected{% endif %}>{% trans "ثانية إعدادي" %}</option>
+                    <option value="3_prep" {% if request.GET.grade == '3_prep' %}selected{% endif %}>{% trans "ثالثة إعدادي" %}</option>
+                    <option value="1_sec" {% if request.GET.grade == '1_sec' %}selected{% endif %}>{% trans "أولى ثانوي" %}</option>
+                    <option value="2_sec" {% if request.GET.grade == '2_sec' %}selected{% endif %}>{% trans "ثانية ثانوي" %}</option>
+                    <option value="3_sec" {% if request.GET.grade == '3_sec' %}selected{% endif %}>{% trans "ثالثة ثانوي" %}</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label fw-bold text-muted small">{% trans "المادة الدراسية" %}</label>
+                <select name="subject" class="form-select border-primary fw-bold py-2">
+                    <option value="">{% trans "كل المواد" %}</option>
+                    {% for sub in subjects %}
+                        <option value="{{ sub.id }}" {% if request.GET.subject|add:"0" == sub.id %}selected{% endif %}>{{ sub.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary w-100 fw-bold py-2 shadow-sm">
+                    <i class="bi bi-search me-2"></i> {% trans "بحث الآن" %}
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- 4. قسم المعلمين -->
+<section class="bg-light py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill mb-2">{% trans "الأفضل في مصر" %}</span>
+            <h2 class="fw-bold text-dark display-6">{% trans "نخبة من المعلمين المتميزين" %}</h2>
+            <p class="text-muted">{% trans "نتائج البحث:" %} {{ teachers.count }} {% trans "معلم" %}</p>
+        </div>
+
+        <div class="row g-4">
+            {% for teacher in teachers %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm border-0 hover-up text-center overflow-hidden">
+                    <div class="bg-gradient-primary h-25 position-absolute w-100 top-0" style="background: linear-gradient(to right, #800000, #a00000); opacity: 0.1;"></div>
+
+                    <div class="card-body p-4 position-relative">
+                        <div class="mb-3 d-inline-block position-relative">
+                            {% if teacher.image %}
+                                <img src="{{ teacher.image.url }}" class="rounded-circle shadow border border-4 border-white" style="width: 120px; height: 120px; object-fit: cover;">
+                            {% else %}
+                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow border border-4 border-white" style="width: 120px; height: 120px; font-size: 2.5rem;">
+                                    {{ teacher.user.first_name|slice:":1" }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <h4 class="fw-bold mb-1 text-dark">{{ teacher.user.first_name }} {{ teacher.user.last_name }}</h4>
+                        <span class="badge bg-light text-dark border mb-3">
+                            {{ teacher.subject.name|default:teacher.subject }}
+                        </span>
+                        
+                        <p class="text-muted small mt-2 px-2">
+                            {{ teacher.bio|truncatewords:12|default:_("مدرس متميز.") }}
+                        </p>
+
+                        <div class="d-grid mt-4">
+                            {% if not user.is_authenticated or user.role == 'student' %}
+                                <a href="{% url 'search_groups' %}?q={{ teacher.user.first_name }}" class="btn btn-outline-primary fw-bold rounded-pill py-2 hover-fill">
+                                    {% trans "عرض المجموعات" %}
+                                </a>
+                            {% else %}
+                                <button class="btn btn-light text-muted disabled border-0 rounded-pill small">
+                                    <i class="bi bi-person-check-fill"></i> {% trans "زميل في المنصة" %}
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="text-muted mt-3">{% trans "لا يوجد معلمين مطابقين للبحث." %}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<style>
+    .icon-box { width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+    .hover-scale { transition: transform 0.3s ease; }
+    .hover-scale:hover { transform: scale(1.05); }
+    .hover-up { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .hover-up:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important; }
+    .hover-fill:hover { background-color: #0d6efd; color: white; }
+    .animate-fade-down { animation: fadeDown 1s ease-out; }
+    .animate-fade-up { animation: fadeUp 1s ease-out; }
+    .animate-zoom-in { animation: zoomIn 0.8s ease-out; }
+    .delay-2 { animation-delay: 0.2s; }
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes zoomIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+</style>
+
+{% endblock %}
