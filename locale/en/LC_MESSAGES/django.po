@@ -1627,6 +1627,9 @@ msgid ""
 "                            %(duration)s دقيقة | %(count)s سؤال\n"
 "                        "
 msgstr ""
+"\n"
+"                            %(duration)s Minutes | %(count)s Questions\n"
+"                        "
 
 #: templates/students/group_exams.html:20
 msgid "تم الأداء"
