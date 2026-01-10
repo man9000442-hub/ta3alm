@@ -80,38 +80,44 @@ def list_packages(request):
 # 2. صفحة البحث عن مجموعات جديدة
 @login_required
 def search_groups(request):
+    # 1. التعريف الأولي (الأساسي)
+    # نضمن أن المتغير groups موجود دائماً حتى لو لم يدخل في أي if
+    groups = Group.objects.select_related('teacher__user', 'teacher__subject').order_by('-created_at')
     
     query = request.GET.get('q')
     grade = request.GET.get('grade')
-    if grade:
-        groups = groups.filter(grade=grade)
-        query = request.GET.get('q')
-    
-    # 1. جلب المجموعات
-    groups = Group.objects.all().order_by('-created_at')
-    subjects = Subject.objects.all()
-    
+    subject_id = request.GET.get('subject')
+
+    # 2. الفلاتر (تعديل المتغير الموجود)
     if query:
         groups = groups.filter(
             Q(name__icontains=query) | 
             Q(teacher__user__first_name__icontains=query) |
-            # أضف __name بعد subject
+            Q(teacher__user__last_name__icontains=query) |
+            # لاحظ: teacher__subject__name لأن subject أصبح ForeignKey
             Q(teacher__subject__name__icontains=query)
         )
-
-    # 2. جلب الاشتراكات (فقط للطالب)
-    my_enrollment_ids = []
     
-    # هذا الشرط هو الحل: نتأكد أن المستخدم طالب قبل طلب البروفايل
+    if grade:
+        groups = groups.filter(grade=grade)
+        
+    if subject_id:
+        groups = groups.filter(teacher__subject__id=subject_id)
+
+    # 3. بيانات الطالب (لزر الانضمام)
+    my_enrollment_ids = []
     if request.user.role == 'student':
         try:
             student = request.user.student_profile
             my_enrollment_ids = student.enrollments.values_list('group_id', flat=True)
         except:
-            pass # في حالة نادرة لو الطالب ملوش بروفايل نتجاهل الخطأ
+            pass
+
+    # 4. قائمة المواد للفلتر
+    subjects = Subject.objects.all()
 
     context = {
-        'groups': groups,
+        'groups': groups, # الآن هو موجود ومفلتر
         'my_enrollment_ids': my_enrollment_ids,
         'query': query,
         'subjects': subjects
