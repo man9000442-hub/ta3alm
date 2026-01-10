@@ -199,14 +199,29 @@ AWS_S3_ENDPOINT_URL = 'https://ubejysbctkxloejgjomp.storage.supabase.co/storage/
 
 # 2. إعدادات البوكت
 AWS_STORAGE_BUCKET_NAME = 'media' # اسم البوكت الذي أنشأته
-AWS_S3_REGION_NAME = 'us-east-1'  # لا يهم المنطقة مع سوبا بيز، لكن المكتبة تطلبها
+AWS_S3_REGION_NAME = 'eu-central-1'  # لا يهم المنطقة مع سوبا بيز، لكن المكتبة تطلبها
 AWS_DEFAULT_ACL = 'public-read'   # لجعل الصور عامة
 AWS_S3_FILE_OVERWRITE = False     # عدم مسح الملفات القديمة عند رفع ملف بنفس الاسم
 
 # 3. تفعيل التخزين
 # أي ملف يتم رفعه (ImageField) سيذهب لهذا النظام
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        "OPTIONS": {
+            "access_key": AWS_ACCESS_KEY_ID,
+            "secret_key": AWS_SECRET_ACCESS_KEY,
+            "bucket_name": AWS_STORAGE_BUCKET_NAME,
+            "endpoint_url": AWS_S3_ENDPOINT_URL,
+            "region_name": AWS_S3_REGION_NAME,
+            "default_acl": "public-read",
+            "file_overwrite": False,
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 # رابط الصور للقراءة
 MEDIA_URL = f'{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/'
 
