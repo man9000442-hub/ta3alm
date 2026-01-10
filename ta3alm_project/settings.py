@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google', # لدخول جوجل
-
+    'storages',
     # Local Apps
     'core',
     'accounts',
@@ -177,9 +177,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
-
+#-----------------------------------------------------------------------------------
 STATIC_URL = '/static/'
 import os
 STATICFILES_DIRS = [
@@ -187,8 +185,34 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#-----------------------------------------------------------------------------------
+
+
+# ==========================================
+# إعدادات تخزين الصور (Supabase Storage)
+# ==========================================
+
+# 1. إعدادات الاتصال
+AWS_ACCESS_KEY_ID = '20750f9351a768ba4f8cd15ba06b6cb7'
+AWS_SECRET_ACCESS_KEY = 'df5c743ef99d478c1698123db2a35a49dfe6587895c81b7190e830cd5d68b9bf'
+AWS_S3_ENDPOINT_URL = 'https://ubejysbctkxloejgjomp.storage.supabase.co/storage/v1/s3' # (Endpoint)
+
+# 2. إعدادات البوكت
+AWS_STORAGE_BUCKET_NAME = 'media' # اسم البوكت الذي أنشأته
+AWS_S3_REGION_NAME = 'us-east-1'  # لا يهم المنطقة مع سوبا بيز، لكن المكتبة تطلبها
+AWS_DEFAULT_ACL = 'public-read'   # لجعل الصور عامة
+AWS_S3_FILE_OVERWRITE = False     # عدم مسح الملفات القديمة عند رفع ملف بنفس الاسم
+
+# 3. تفعيل التخزين
+# أي ملف يتم رفعه (ImageField) سيذهب لهذا النظام
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# رابط الصور للقراءة
+MEDIA_URL = f'{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/'
+
+
+
+
 
 # ==========================================
 # إعدادات AllAuth (Google Only Strict Mode)
