@@ -126,6 +126,7 @@
                 </tr>
 
                 <!-- Modal التعديل -->
+                <!-- Modal التعديل -->
                 <div class="modal fade" id="editModal{{ p.id }}" tabindex="-1">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -139,10 +140,10 @@
                                     <input type="hidden" name="action" value="edit">
                                     <input type="hidden" name="plan_id" value="{{ p.id }}">
                                     
-                                    <label class="form-label">{% trans "الاسم" %}</label>
+                                    <label class="form-label fw-bold">{% trans "الاسم" %}</label>
                                     <input type="text" name="name" value="{{ p.name }}" class="form-control mb-2" required>
                                     
-                                    <label class="form-label">{% trans "السعر" %}</label>
+                                    <label class="form-label fw-bold">{% trans "السعر" %}</label>
                                     <input type="number" name="price" value="{{ p.price }}" class="form-control mb-2" required>
                                     
                                     <div class="row">
@@ -160,22 +161,31 @@
                                         </div>
                                     </div>
 
-                                    <div class="mt-3">
-                                        <div class="form-check">
+                                    <div class="mt-3 bg-light p-3 rounded border">
+                                        <div class="form-check mb-2">
                                             <input class="form-check-input" type="checkbox" name="allow_online" {% if p.allow_online_packages %}checked{% endif %}>
                                             <label class="form-check-label">{% trans "أونلاين (حزم)" %}</label>
                                         </div>
-                                        <div class="form-check">
+                                        <div class="form-check mb-2">
                                             <input class="form-check-input" type="checkbox" name="allow_images" {% if p.allow_question_images %}checked{% endif %}>
                                             <label class="form-check-label">{% trans "صور أسئلة" %}</label>
                                         </div>
+                                        
+                                        <!-- +++++ الخانة الجديدة في التعديل +++++ -->
+                                        <div class="form-check form-switch pt-2 border-top mt-2">
+                                            <input class="form-check-input" type="checkbox" name="is_default" id="defEdit{{ p.id }}" {% if p.is_default %}checked{% endif %}>
+                                            <label class="form-check-label fw-bold text-success" for="defEdit{{ p.id }}">
+                                                {% trans "تعيين كباقة افتراضية (للشهر المجاني)" %}
+                                            </label>
+                                        </div>
+                                        <!-- +++++++++++++++++++++++++++++++++++ -->
                                     </div>
                                     
-                                    <label class="mt-2">{% trans "الوصف" %}</label>
-                                    <textarea name="desc" class="form-control">{{ p.description }}</textarea>
+                                    <label class="mt-3 fw-bold">{% trans "الوصف" %}</label>
+                                    <textarea name="desc" class="form-control" rows="2">{{ p.description }}</textarea>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-success">{% trans "حفظ التعديلات" %}</button>
+                                    <button type="submit" class="btn btn-success fw-bold">{% trans "حفظ التعديلات" %}</button>
                                 </div>
                             </form>
                         </div>

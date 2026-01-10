@@ -355,14 +355,17 @@ def manage_plans(request):
                 price=clean_int(request.POST.get('price')),
                 description=request.POST.get('desc'),
                 
-                # القيم الجديدة (مع Defaults)
+                # القيم الجديدة
                 student_limit=clean_int(request.POST.get('student_limit'), 1000),
                 group_limit=clean_int(request.POST.get('group_limit'), 5),
                 assistant_limit=clean_int(request.POST.get('assistant_limit'), 2),
                 
-                # Checkboxes (ترجع 'on' أو None)
+                # Checkboxes
                 allow_online_packages=(request.POST.get('allow_online') == 'on'),
-                allow_question_images=(request.POST.get('allow_images') == 'on')
+                allow_question_images=(request.POST.get('allow_images') == 'on'),
+                
+                # الحقل الجديد
+                is_default=(request.POST.get('is_default') == 'on')
             )
             messages.success(request, "تم إضافة الباقة بنجاح.")
             
@@ -374,17 +377,17 @@ def manage_plans(request):
             plan.price = clean_int(request.POST.get('price'))
             plan.description = request.POST.get('desc')
             
-            # تحديث القيم الجديدة
+            # تحديث القيم
             plan.student_limit = clean_int(request.POST.get('student_limit'), 1000)
             plan.group_limit = clean_int(request.POST.get('group_limit'), 5)
             plan.assistant_limit = clean_int(request.POST.get('assistant_limit'), 2)
             
             plan.allow_online_packages = (request.POST.get('allow_online') == 'on')
             plan.allow_question_images = (request.POST.get('allow_images') == 'on')
+            plan.is_default = (request.POST.get('is_default') == 'on') # <--- الحقل الجديد
             
             plan.save()
-            messages.success(request, "تم تعديل الباقة.")
-            
+            messages.success(request, "تم تعديل الباقة.")            
         elif action == 'delete':
             p_id = request.POST.get('plan_id')
             SubscriptionPlan.objects.get(id=p_id).delete()
