@@ -95,7 +95,8 @@ def search_groups(request):
         groups = groups.filter(
             Q(name__icontains=query) | 
             Q(teacher__user__first_name__icontains=query) |
-            Q(teacher__subject__icontains=query)
+            # أضف __name بعد subject
+            Q(teacher__subject__name__icontains=query)
         )
 
     # 2. جلب الاشتراكات (فقط للطالب)

@@ -131,7 +131,8 @@ def find_teacher(request):
             Q(user__last_name__icontains=query) |
             Q(user__phone__icontains=query) |
             Q(user__custom_id__icontains=query) | 
-            Q(subject__icontains=query)
+            # أضف __name
+            Q(subject__name__icontains=query)
         )
 
     # منطق إرسال الطلب (POST)
