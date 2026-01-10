@@ -1,0 +1,24 @@
+# Python compile files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django specific
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Media files (صور المستخدمين لا ترفع على جيت)
+media/
+staticfiles/
+
+# Virtual Environment (بيئة العمل لا ترفع)
+venv/
+env/
+.env
+.venv/
+
+# Editor directories
+.idea/
+.vscode/
