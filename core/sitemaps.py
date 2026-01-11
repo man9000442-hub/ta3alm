@@ -7,7 +7,8 @@ class StaticViewSitemap(Sitemap):
     changefreq = 'daily'
 
     def items(self):
-        return ['home', 'account_login', 'account_signup', 'list_packages']
+        # تأكد أن هذه الأسماء موجودة في urls.py لديك
+        return ['home'] 
 
     def location(self, item):
         return reverse(item)
@@ -19,9 +20,9 @@ class TeacherSitemap(Sitemap):
     def items(self):
         return TeacherProfile.objects.all()
 
+    # هذه الدالة كانت تسبب مشكلة لو لم تعرف كيف تبني الرابط
     def location(self, obj):
-        # سنحتاج لعمل صفحة بروفايل عامة للمدرس لاحقاً (Public Profile)
-        # حالياً سنوجه لصفحة البحث باسمه
+        # بناء الرابط يدوياً للبحث
         return f"/student/search/?q={obj.user.first_name}"
 
 class PackageSitemap(Sitemap):
@@ -31,5 +32,6 @@ class PackageSitemap(Sitemap):
     def items(self):
         return CoursePackage.objects.filter(is_active=True)
 
+    # تستخدم get_absolute_url لو موجودة في الموديل، أو نحددها هنا
     def location(self, obj):
         return reverse('package_detail', args=[obj.id])
