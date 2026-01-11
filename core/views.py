@@ -452,3 +452,6 @@ def all_notifications(request):
     notifs.filter(is_read=False).update(is_read=True)
     
     return render(request, 'core/notifications.html', {'notifs': notifs})
+
+def platform_guide(request):
+    return render(request, 'core/guide.html')

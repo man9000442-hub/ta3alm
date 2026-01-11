@@ -1,6 +1,15 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% block title %}{{ package.title }}{% endblock %}
+
+{% block meta_title %}{{ package.title }} | مستر {{ package.teacher.user.first_name }}{% endblock %}
+
+{% block meta_description %}اشترك الآن في كورس {{ package.title }} مع مستر {{ package.teacher.user.first_name }} {{ package.teacher.user.last_name }} للصف {{ package.get_grade_display }}. شرح وامتحانات شاملة.{% endblock %}
+
+{% block meta_keywords %}{{ package.teacher.subject.name }}, {{ package.get_grade_display }}, كورس اونلاين{% endblock %}
+
+{% block og_title %}{{ package.title }} - {{ package.price }} EGP{% endblock %}
+{% block og_description %}{{ package.description|truncatewords:20 }}{% endblock %}
+{% block og_image %}{{ package.image.url }}{% endblock %}
 
 {% block content %}
 <div class="container py-5">
@@ -80,4 +89,33 @@
         </div>
     </div>
 </div>
+
+<!-- بيانات مهيكلة لجوجل (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "{{ package.title }}",
+  "description": "{{ package.description }}",
+  "provider": {
+    "@type": "Organization",
+    "name": "منصة تعلّم",
+    "sameAs": "https://ta3alm.online"
+  },
+  "offers": {
+    "@type": "Offer",
+    "category": "Paid",
+    "priceCurrency": "EGP",
+    "price": "{{ package.price }}"
+  },
+  "hasCourseInstance": {
+    "@type": "CourseInstance",
+    "courseMode": "Online",
+    "instructor": {
+      "@type": "Person",
+      "name": "{{ package.teacher.user.first_name }} {{ package.teacher.user.last_name }}"
+    }
+  }
+}
+</script>
 {% endblock %}

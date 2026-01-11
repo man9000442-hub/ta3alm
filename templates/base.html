@@ -5,8 +5,26 @@
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}">
 <head>
+    <!-- الأساسيات -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- العنوان المتغير -->
+    <title>{% block meta_title %}منصة تعلّم | أقوى منصة تعليمية في مصر{% endblock %}</title>
+    
+    <!-- الوصف المتغير (مهم جداً لجوجل) -->
+    <meta name="description" content="{% block meta_description %}منصة تعلّم هي وجهتك الأولى للثانوية العامة. دروس أونلاين، امتحانات إلكترونية، ومتابعة مع أفضل المدرسين في مصر.{% endblock %}">
+    
+    <!-- الكلمات الدلالية (Keywords) -->
+    <meta name="keywords" content="ثانوية عامة, تعليم اونلاين, منصة تعليمية, امتحانات الكترونية, {% block meta_keywords %}{% endblock %}">
+
+    <!-- Open Graph (عشان لما تشير اللينك على فيسبوك وواتساب يظهر بشكل حلو) -->
+    <meta property="og:title" content="{% block og_title %}منصة تعلّم التعليمية{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}سجل الآن وابدأ رحلة التفوق.{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}https://ta3alm.online/static/images/logo_share.png{% endblock %}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ar_EG"> <!-- استهداف مصر -->    
     <title>{% trans "منصة تعلّم" %} | {% block title %}{% endblock %}</title>
 
     <!-- CSS -->
@@ -156,7 +174,16 @@
                 {% elif user.is_superuser %}
                     <a href="{% url 'owner_dashboard' %}" class="sidebar-link"><i class="bi bi-shield-lock"></i> {% trans "لوحة المالك" %}</a>
                 {% endif %}
+                <!-- ... (بعد روابط المستخدمين وقبل الـ hr) ... -->
 
+                <!-- رابط الدليل (للجميع) -->
+                <a href="{% url 'platform_guide' %}" class="sidebar-link mt-2">
+                    <i class="bi bi-info-circle-fill text-primary"></i> {% trans "دليل المنصة" %}
+                </a>
+
+            <hr class="my-3">
+            
+            <h6 class="text-muted small fw-bold px-3 mb-2">{% trans "الإعدادات العامة" %}</h6>
                 <hr class="my-3">
                 
                 <!-- الإشعارات -->

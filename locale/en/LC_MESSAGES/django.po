@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ta3alm Platform\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-10 22:37+0200\n"
+"POT-Creation-Date: 2026-01-11 14:43+0200\n"
 "PO-Revision-Date: 2026-01-09 19:00+0200\n"
 "Last-Translator: Abdelrahman Tarek\n"
 "Language-Team: English\n"
@@ -406,7 +406,7 @@ msgid "المبلغ"
 msgstr "Amount"
 
 #: .\templates\account\login.html:3 .\templates\account\signup.html:27
-#: .\templates\base.html:180 .\templates\home.html:53
+#: .\templates\base.html:189 .\templates\home.html:53
 msgid "تسجيل الدخول"
 msgstr "Login"
 
@@ -448,7 +448,7 @@ msgstr "Click below to continue with Google"
 msgid "تغيير الاختيار والعودة للرئيسية"
 msgstr "Change choice and return Home"
 
-#: .\templates\account\signup.html:5 .\templates\base.html:181
+#: .\templates\account\signup.html:5 .\templates\base.html:190
 msgid "إنشاء حساب"
 msgstr "Create Account"
 
@@ -754,7 +754,8 @@ msgstr "Profile"
 msgid "لوحة الطالب"
 msgstr "Student Dashboard"
 
-#: .\templates\base.html:148 .\templates\students\dashboard.html:16
+#: .\templates\base.html:148 .\templates\core\guide.html:136
+#: .\templates\students\dashboard.html:16
 msgid "بحث عن مدرس"
 msgstr "Find Teacher"
 
@@ -775,32 +776,38 @@ msgstr "Find Job"
 msgid "لوحة المالك"
 msgstr "Owner Dashboard"
 
-#: .\templates\base.html:164 .\templates\core\notifications.html:3
+#: .\templates\base.html:163
+#, fuzzy
+#| msgid "زميل في المنصة"
+msgid "دليل المنصة"
+msgstr "Platform Colleague"
+
+#: .\templates\base.html:168 .\templates\base.html:195
+msgid "الإعدادات العامة"
+msgstr "General Settings"
+
+#: .\templates\base.html:173 .\templates\core\notifications.html:3
 msgid "الإشعارات"
 msgstr "Notifications"
 
-#: .\templates\base.html:174 .\templates\core\banned.html:41
+#: .\templates\base.html:183 .\templates\core\banned.html:41
 msgid "تسجيل الخروج"
 msgstr "Logout"
 
-#: .\templates\base.html:179 .\templates\exams\manage.html:21
+#: .\templates\base.html:188 .\templates\exams\manage.html:21
 #: .\templates\home.html:5
 msgid "الرئيسية"
 msgstr "Home"
 
-#: .\templates\base.html:186
-msgid "الإعدادات العامة"
-msgstr "General Settings"
-
-#: .\templates\base.html:201 .\templates\base.html:275
+#: .\templates\base.html:210 .\templates\base.html:284
 msgid "الوضع الليلي"
 msgstr "Dark Mode"
 
-#: .\templates\base.html:229
+#: .\templates\base.html:238
 msgid "جميع الحقوق محفوظة لمنصة"
 msgstr "All rights reserved to"
 
-#: .\templates\base.html:265 .\templates\base.html:272
+#: .\templates\base.html:274 .\templates\base.html:281
 msgid "الوضع النهاري"
 msgstr "Light Mode"
 
@@ -832,6 +839,463 @@ msgstr "If you think this is a mistake, please contact support."
 #: .\templates\core\banned.html:47
 msgid "منصة تعلّم - قسم الأمن والحماية - انقر للتواصل"
 msgstr "Ta3alm Security Dept - Click to contact"
+
+#: .\templates\core\guide.html:3
+#, fuzzy
+#| msgid "زميل في المنصة"
+msgid "دليل استخدام المنصة"
+msgstr "Platform Colleague"
+
+#: .\templates\core\guide.html:9
+msgid "الدليل الشامل لاستخدام منصة تعلّم"
+msgstr "The Comprehensive Guide to Using the Ta3alm Platform"
+
+#: .\templates\core\guide.html:10
+msgid "كل ما تحتاج معرفته عن الأزرار والوظائف والخصائص"
+msgstr "Everything you need to know about buttons, functions, and features"
+
+#: .\templates\core\guide.html:20
+#, fuzzy
+#| msgid "لوحة المعلم"
+msgid "دليل المعلم"
+msgstr "Teacher Dashboard"
+
+#: .\templates\core\guide.html:27
+#, fuzzy
+#| msgid "لوحة الطالب"
+msgid "دليل الطالب"
+msgstr "Student Dashboard"
+
+#: .\templates\core\guide.html:34
+#, fuzzy
+#| msgid "لوحة المساعد"
+msgid "دليل المساعد"
+msgstr "Assistant Dashboard"
+
+#: .\templates\core\guide.html:40
+#, fuzzy
+#| msgid "الطلاب والغياب"
+msgid "الأمان والخصوصية"
+msgstr "Students & Attendance"
+
+#: .\templates\core\guide.html:50
+#, fuzzy
+#| msgid "رصد الدرجات والغياب"
+msgid "شرح الأزرار والوظائف"
+msgstr "Log Grades & Attendance"
+
+#: .\templates\core\guide.html:56
+#, fuzzy
+#| msgid "إدارة المجموعات والطلاب"
+msgid "إدارة المجموعات (Offline)"
+msgstr "Manage Groups & Students"
+
+#: .\templates\core\guide.html:62
+#, fuzzy
+#| msgid "إضافة مجموعة"
+msgid "إضافة مجموعة:"
+msgstr "Add Group"
+
+#: .\templates\core\guide.html:62
+msgid "لإنشاء فصل جديد (مثلاً: سنتر الأقصى - السبت)."
+msgstr "To create a new class (e.g., Al-Aqsa Center - Saturday)."
+
+#: .\templates\core\guide.html:63 .\templates\core\manage_plans.html:136
+#: .\templates\teachers\edit_package.html:3
+msgid "تعديل:"
+msgstr "Edit:"
+
+#: .\templates\core\guide.html:63
+#, fuzzy
+#| msgid "جرب تغيير كلمات البحث أو الفلاتر."
+msgid "لتغيير اسم المجموعة أو الصف الدراسي."
+msgstr "Try changing search terms or filters."
+
+#: .\templates\core\guide.html:64
+msgid "حذف:"
+msgstr "delete:"
+
+#: .\templates\core\guide.html:64
+msgid "لإلغاء المجموعة نهائياً (احذر: يحذف الطلاب والامتحانات بداخلها)."
+msgstr "To permanently delete the group (Warning: This will delete all students and exams within it)."
+
+#: .\templates\core\guide.html:65
+#, fuzzy
+#| msgid "استيراد محتوى"
+msgid "استيراد محتوى:"
+msgstr "Import Content"
+
+#: .\templates\core\guide.html:65
+msgid "لنسخ المحاضرات والامتحانات من مجموعة قديمة لمجموعة جديدة بضغطة واحدة."
+msgstr "To copy lectures and exams from an old group to a new one with a single click."
+
+#: .\templates\core\guide.html:74
+#, fuzzy
+#| msgid "إدارة الفيديوهات"
+msgid "إدارة المحتوى (فيديو / PDF / امتحان)"
+msgstr "Manage Videos"
+
+#: .\templates\core\guide.html:80
+#, fuzzy
+#| msgid "إضافة محاضرة جديدة"
+msgid "إضافة محاضرة:"
+msgstr "Add New Lecture"
+
+#: .\templates\core\guide.html:80
+msgid "ضع رابط الفيديو (يوتيوب) وسيتم حمايته تلقائياً."
+msgstr "Paste the video link (YouTube) and it will be automatically protected."
+
+#: .\templates\core\guide.html:81
+#, fuzzy
+#| msgid "إدارة الطلاب"
+msgid "إدارة الأكواد:"
+msgstr "Manage Students"
+
+#: .\templates\core\guide.html:81
+msgid "لتوليد أكواد المشاهدة (عدد لا نهائي) وطباعتها للبيع."
+msgstr "To generate viewing codes (unlimited) and print them for sale."
+
+#: .\templates\core\guide.html:82
+#, fuzzy
+#| msgid "إخفاء"
+msgid "إخفاء/إظهار:"
+msgstr "Hide"
+
+#: .\templates\core\guide.html:82
+msgid "لإخفاء المحاضرة مؤقتاً عن الطلاب دون حذفها."
+msgstr "To temporarily hide the lecture from students without deleting it."
+
+#: .\templates\core\guide.html:83
+#, fuzzy
+#| msgid "إضافة ملف"
+msgid "إضافة ملف:"
+msgstr "Add File"
+
+#: .\templates\core\guide.html:83
+msgid "لرفع مذكرات PDF أو واجبات."
+msgstr "To upload PDF notes or assignments."
+
+#: .\templates\core\guide.html:84
+#, fuzzy
+#| msgid "إنشاء امتحان جديد"
+msgid "إنشاء امتحان:"
+msgstr "Create New Exam"
+
+#: .\templates\core\guide.html:84
+msgid "لعمل اختبار إلكتروني وتحديد وقته (Timer)."
+msgstr "To create an online exam and set its duration (Timer)."
+
+#: .\templates\core\guide.html:93
+#, fuzzy
+#| msgid "الطلاب والغياب"
+msgid "الطلاب والتقييم"
+msgstr "Students & Attendance"
+
+#: .\templates\core\guide.html:99
+#, fuzzy
+#| msgid "الطلبات"
+msgid "الطلبات:"
+msgstr "Requests"
+
+#: .\templates\core\guide.html:99
+msgid "للموافقة على انضمام الطلاب الجدد أو رفضهم."
+msgstr "To approve or reject join requests from new students."
+
+#: .\templates\core\guide.html:100
+#, fuzzy
+#| msgid "رصد جماعي"
+msgid "الرصد الجماعي:"
+msgstr "Bulk Log"
+
+#: .\templates\core\guide.html:100
+msgid "صفحة إكسيل لتسجيل درجات وغياب كل الطلاب مرة واحدة."
+msgstr "An Excel-style page to record grades and attendance for all students at once."
+
+#: .\templates\core\guide.html:101
+#, fuzzy
+#| msgid "غياب"
+msgid "غياب:"
+msgstr "Absent"
+
+#: .\templates\core\guide.html:101
+msgid "عند تحديد غياب، يتم تصفير درجات الطالب في تلك الحصة تلقائياً."
+msgstr "When marking attendance as 'Absent', the student's grades for that session are automatically set to zero."
+
+#: .\templates\core\guide.html:102
+#, fuzzy
+#| msgid "السجل الكامل"
+msgid "السجل الكامل:"
+msgstr "Full Log"
+
+#: .\templates\core\guide.html:102
+msgid "لعرض تاريخ طالب معين وتعديل أي درجة سابقة."
+msgstr "To view a specific student's history and edit any previous grade."
+
+#: .\templates\core\guide.html:111
+#, fuzzy
+#| msgid "حزمي التعليمية (Online)"
+msgid "الحزم والمالية (Online)"
+msgstr "My Online Packages"
+
+#: .\templates\core\guide.html:117
+#, fuzzy
+#| msgid "إنشاء حساب"
+msgid "إنشاء حزمة:"
+msgstr "Create Account"
+
+#: .\templates\core\guide.html:117
+#, fuzzy
+#| msgid "الفيديوهات والمحاضرات والامتحانات."
+msgid "لتجميع فيديوهات وامتحانات وبيعها كـ كورس بسعر محدد."
+msgstr "Videos and Exams."
+
+#: .\templates\core\guide.html:118
+#, fuzzy
+#| msgid "المحفظة"
+msgid "المحفظة:"
+msgstr "Wallet"
+
+#: .\templates\core\guide.html:118
+msgid "لمتابعة أرباحك من بيع الحزم وطلب سحب الرصيد (فودافون كاش)."
+msgstr "To track your earnings from package sales and request a balance withdrawal (Vodafone Cash)."
+
+#: .\templates\core\guide.html:119
+#, fuzzy
+#| msgid "الاشتراك"
+msgid "الاشتراك:"
+msgstr "Subscription"
+
+#: .\templates\core\guide.html:119
+#, fuzzy
+#| msgid "تم تجديد اشتراكك لمدة 30 يوم."
+msgid "لتجديد اشتراكك في المنصة ودفع الرسوم شهرياً."
+msgstr "Subscription renewed for 30 days."
+
+#: .\templates\core\guide.html:128
+msgid "كيف تدرس بذكاء؟"
+msgstr "How to study smart?"
+
+#: .\templates\core\guide.html:134
+#, fuzzy
+#| msgid "طلبات الانضمام"
+msgid "البحث والانضمام"
+msgstr "Join Requests"
+
+#: .\templates\core\guide.html:136
+#, fuzzy
+#| msgid "المستخدم"
+msgid "استخدم زر"
+msgstr "User"
+
+#: .\templates\core\guide.html:136
+#, fuzzy
+#| msgid "إدارة الصفوف والمجموعات والطلاب"
+msgid "اختر الصف والمادة، واضغط"
+msgstr "Manage Groups & Students"
+
+#: .\templates\core\guide.html:136
+#, fuzzy
+#| msgid "طلب انضمام"
+msgid "انضمام"
+msgstr "Join Request"
+
+#: .\templates\core\guide.html:136
+#, fuzzy
+#| msgid "مجموعات مستر"
+msgid "لمجموعة السنتر، أو"
+msgstr "Mr. Groups"
+
+#: .\templates\core\guide.html:136
+#, fuzzy
+#| msgid "شراء:"
+msgid "شراء"
+msgstr "Buy:"
+
+#: .\templates\core\guide.html:136
+#, fuzzy
+#| msgid "حزم أونلاين"
+msgid "لحزم الأونلاين."
+msgstr "Online Packages"
+
+#: .\templates\core\guide.html:144
+#, fuzzy
+#| msgid "المادة الدراسية"
+msgid "مشاهدة الدروس"
+msgstr "Subject"
+
+#: .\templates\core\guide.html:146
+msgid ""
+"ادخل للمجموعة، اضغط على المحاضرة. إذا طلب منك كوداً، اشترِ الكود من السنتر "
+"وأدخله لمرة واحدة وسيفتح الفيديو للأبد (أو حسب الحد)."
+msgstr ""
+"Enter the group, then click on the lecture. If a code is required, purchase "
+"it from the center and enter it once; the video will then be unlocked "
+"permanently (or according to the set limit)."
+
+#: .\templates\core\guide.html:154
+#, fuzzy
+#| msgid "بدأ الامتحان"
+msgid "أداء الامتحان"
+msgstr "Start Exam"
+
+#: .\templates\core\guide.html:156
+msgid "اضغط"
+msgstr "press"
+
+#: .\templates\core\guide.html:156
+#, fuzzy
+#| msgid "بدأ الامتحان"
+msgid "بدء الامتحان"
+msgstr "Start Exam"
+
+#: .\templates\core\guide.html:156
+msgid "سيظهر عداد وقت في الأعلى. عند الانتهاء اضغط"
+msgstr "A timer will appear at the top. When finished, press"
+
+#: .\templates\core\guide.html:156
+msgid "تسليم"
+msgstr "Submit"
+
+#: .\templates\core\guide.html:156
+msgid "لتعرف نتيجتك فوراً."
+msgstr "to see your result instantly."
+
+#: .\templates\core\guide.html:164
+#, fuzzy
+#| msgid "متابعة دقيقة"
+msgid "متابعة مستواك"
+msgstr "Accurate Tracking"
+
+#: .\templates\core\guide.html:166
+#, fuzzy
+#| msgid "صور"
+msgid "زر"
+msgstr "Images"
+
+#: .\templates\core\guide.html:166
+#: .\templates\students\includes\student_group_navbar.html:34
+#: .\templates\students\my_package_content.html:19
+msgid "درجاتي"
+msgstr "My Grades"
+
+#: .\templates\core\guide.html:166
+msgid "يعرض كل تاريخك. وزر"
+msgstr "displays your entire history. And the"
+
+#: .\templates\core\guide.html:166
+#: .\templates\students\includes\student_group_navbar.html:51
+#: .\templates\students\my_package_content.html:22
+#: .\templates\teachers\group_ranking.html:4
+#: .\templates\teachers\includes\group_navbar.html:64
+msgid "الترتيب"
+msgstr "Ranking"
+
+#: .\templates\core\guide.html:166
+msgid "يخبرك بمركزك وسط زملائك."
+msgstr "tells you your rank among your peers."
+
+#: .\templates\core\guide.html:175
+#, fuzzy
+#| msgid "لوحة المساعد"
+msgid "لوحة تحكم المساعد"
+msgstr "Assistant Dashboard"
+
+#: .\templates\core\guide.html:179
+msgid "صلاحياتك يحددها المعلم (قد ترى بعض الأزرار ولا ترى الأخرى)."
+msgstr ""
+"Your permissions are determined by the teacher (you may see some buttons and "
+"not others)."
+
+#: .\templates\core\guide.html:184
+#, fuzzy
+#| msgid "البحث عن عمل"
+msgid "البحث عن عمل:"
+msgstr "Find Job"
+
+#: .\templates\core\guide.html:184
+#, fuzzy
+#| msgid "ابحث عن معلم للعمل معه"
+msgid "ابحث عن كود المعلم وأرسل له طلب توظيف."
+msgstr "Find a Teacher to Work With"
+
+#: .\templates\core\guide.html:187
+#, fuzzy
+#| msgid "عرض المجموعات"
+msgid "عرض المجموعات:"
+msgstr "View Groups"
+
+#: .\templates\core\guide.html:187
+msgid "للدخول لصفحات الطلاب والغياب (مثل المعلم تماماً)."
+msgstr "To access student and attendance pages (just like the teacher)."
+
+#: .\templates\core\guide.html:190
+#, fuzzy
+#| msgid "عرض الحزم"
+msgid "عرض الحزم:"
+msgstr "View Packages"
+
+#: .\templates\core\guide.html:190
+msgid "لإدارة المحتوى الأونلاين (رفع فيديوهات، امتحانات) إذا كان لديك صلاحية."
+msgstr "To manage online content (upload videos, exams) if you have the required permission."
+
+#: .\templates\core\guide.html:193
+#, fuzzy
+#| msgid "إنشاء"
+msgid "إنشاء:"
+msgstr "Create"
+
+#: .\templates\core\guide.html:193
+#, fuzzy
+#| msgid "يمكنك الحصول على الكود من السنتر أو المعلم."
+msgid "يمكنك إنشاء مجموعات وحزم نيابة عن المعلم."
+msgstr "Get code from the center or teacher."
+
+#: .\templates\core\guide.html:201
+msgid "أمانك أولويتنا"
+msgstr "Your security is our priority"
+
+#: .\templates\core\guide.html:208
+#, fuzzy
+#| msgid "تعديل البيانات"
+msgid "تشفير البيانات"
+msgstr "Edit Data"
+
+#: .\templates\core\guide.html:213
+msgid ""
+"جميع كلمات المرور والبيانات الحساسة مشفرة بأحدث التقنيات ولا يمكن لأي شخص "
+"الاطلاع عليها."
+msgstr ""
+"All passwords and sensitive information are protected by industry-standard "
+"encryption, ensuring they remain strictly confidential and inaccessible to "
+"unauthorized parties"
+
+#: .\templates\core\guide.html:220
+#, fuzzy
+#| msgid "إدارة المحتوى"
+msgid "حماية المحتوى"
+msgstr "Manage Content"
+
+#: .\templates\core\guide.html:225
+msgid ""
+"نظام أكواد ذكي ومشغل فيديو محمي يمنع تشغيل المحاضرات خارج المنصة أو مشاركتها "
+"بشكل غير قانوني."
+msgstr ""
+"Smart encryption and a secure video player to prevent unauthorized playback "
+"and illegal sharing."
+
+#: .\templates\core\guide.html:232
+#, fuzzy
+#| msgid "بحث بالبيانات"
+msgid "حفظ البيانات"
+msgstr "Search by Data"
+
+#: .\templates\core\guide.html:237
+msgid ""
+"في حالة انتهاء اشتراك المعلم، تظل جميع بيانات الطلاب ودرجاتهم محفوظة وآمنة "
+"تماماً لحين التجديد."
+msgstr ""
+"In the event of a teacher's subscription expiry, all student data and grades "
+"remain fully saved and secure until renewal."
 
 #: .\templates\core\maintenance.html:7
 msgid "تحت الصيانة"
@@ -934,11 +1398,6 @@ msgstr "Control"
 #: .\templates\teachers\group_detail.html:82
 msgid "حذف؟"
 msgstr "Delete?"
-
-#: .\templates\core\manage_plans.html:136
-#: .\templates\teachers\edit_package.html:3
-msgid "تعديل:"
-msgstr "Edit:"
 
 #: .\templates\core\manage_plans.html:151
 msgid "طلاب"
@@ -1893,18 +2352,6 @@ msgstr "Calculating..."
 #: .\templates\teachers\includes\package_navbar.html:11
 msgid "خروج"
 msgstr "Exit"
-
-#: .\templates\students\includes\student_group_navbar.html:34
-#: .\templates\students\my_package_content.html:19
-msgid "درجاتي"
-msgstr "My Grades"
-
-#: .\templates\students\includes\student_group_navbar.html:51
-#: .\templates\students\my_package_content.html:22
-#: .\templates\teachers\group_ranking.html:4
-#: .\templates\teachers\includes\group_navbar.html:64
-msgid "الترتيب"
-msgstr "Ranking"
 
 #: .\templates\students\list_packages.html:3
 msgid "تصفح الحزم"

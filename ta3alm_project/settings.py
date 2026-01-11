@@ -54,6 +54,8 @@ INSTALLED_APPS = [
     'exams',
     'centers',
     'assistants',
+    'django.contrib.sitemaps',
+    'robots',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'

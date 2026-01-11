@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "دليل استخدام المنصة" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-primary mb-2">{% trans "الدليل الشامل لاستخدام منصة تعلّم" %}</h2>
+        <p class="text-muted">{% trans "كل ما تحتاج معرفته عن الأزرار والوظائف والخصائص" %}</p>
+    </div>
+
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+        <div class="card-header bg-white p-0 border-bottom-0">
+            <ul class="nav nav-tabs nav-fill" id="guideTabs" role="tablist">
+                
+                <li class="nav-item">
+                    <button class="nav-link py-3 fw-bold text-primary {% if user.role == 'teacher' or not user.is_authenticated %}active{% endif %}" 
+                            id="teacher-tab" data-bs-toggle="tab" data-bs-target="#teacher">
+                        <i class="bi bi-person-video3 fs-5 me-2"></i> {% trans "دليل المعلم" %}
+                    </button>
+                </li>
+                
+                <li class="nav-item">
+                    <button class="nav-link py-3 fw-bold text-success {% if user.role == 'student' %}active{% endif %}" 
+                            id="student-tab" data-bs-toggle="tab" data-bs-target="#student">
+                        <i class="bi bi-mortarboard-fill fs-5 me-2"></i> {% trans "دليل الطالب" %}
+                    </button>
+                </li>
+                
+                <li class="nav-item">
+                    <button class="nav-link py-3 fw-bold text-warning text-dark {% if user.role == 'assistant' %}active{% endif %}" 
+                            id="assistant-tab" data-bs-toggle="tab" data-bs-target="#assistant">
+                        <i class="bi bi-person-workspace fs-5 me-2"></i> {% trans "دليل المساعد" %}
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link py-3 fw-bold text-danger" id="security-tab" data-bs-toggle="tab" data-bs-target="#security">
+                        <i class="bi bi-shield-check fs-5 me-2"></i> {% trans "الأمان والخصوصية" %}
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="card-body p-4 p-md-5 bg-light">
+            <div class="tab-content">
+                
+                <div class="tab-pane fade {% if user.role == 'teacher' or not user.is_authenticated %}show active{% endif %}" id="teacher">
+                    <h4 class="fw-bold mb-4 border-start border-4 border-primary ps-3">{% trans "شرح الأزرار والوظائف" %}</h4>
+                    
+                    <div class="accordion" id="accTeacher">
+                        <div class="accordion-item mb-3 border-0 shadow-sm">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#t1">
+                                    <i class="bi bi-grid-fill me-2 text-primary"></i> {% trans "إدارة المجموعات (Offline)" %}
+                                </button>
+                            </h2>
+                            <div id="t1" class="accordion-collapse collapse" data-bs-parent="#accTeacher">
+                                <div class="accordion-body">
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><strong><i class="bi bi-plus-lg text-success"></i> {% trans "إضافة مجموعة:" %}</strong> {% trans "لإنشاء فصل جديد (مثلاً: سنتر الأقصى - السبت)." %}</li>
+                                        <li class="mb-2"><strong><i class="bi bi-pencil-square text-warning"></i> {% trans "تعديل:" %}</strong> {% trans "لتغيير اسم المجموعة أو الصف الدراسي." %}</li>
+                                        <li class="mb-2"><strong><i class="bi bi-trash text-danger"></i> {% trans "حذف:" %}</strong> {% trans "لإلغاء المجموعة نهائياً (احذر: يحذف الطلاب والامتحانات بداخلها)." %}</li>
+                                        <li class="mb-2"><strong><i class="bi bi-arrow-repeat"></i> {% trans "استيراد محتوى:" %}</strong> {% trans "لنسخ المحاضرات والامتحانات من مجموعة قديمة لمجموعة جديدة بضغطة واحدة." %}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item mb-3 border-0 shadow-sm">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#t2">
+                                    <i class="bi bi-youtube me-2 text-danger"></i> {% trans "إدارة المحتوى (فيديو / PDF / امتحان)" %}
+                                </button>
+                            </h2>
+                            <div id="t2" class="accordion-collapse collapse" data-bs-parent="#accTeacher">
+                                <div class="accordion-body">
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><strong><i class="bi bi-youtube"></i> {% trans "إضافة محاضرة:" %}</strong> {% trans "ضع رابط الفيديو (يوتيوب) وسيتم حمايته تلقائياً." %}</li>
+                                        <li class="mb-2"><strong><i class="bi bi-qr-code"></i> {% trans "إدارة الأكواد:" %}</strong> {% trans "لتوليد أكواد المشاهدة (عدد لا نهائي) وطباعتها للبيع." %}</li>
+                                        <li class="mb-2"><strong><i class="bi bi-eye-slash"></i> {% trans "إخفاء/إظهار:" %}</strong> {% trans "لإخفاء المحاضرة مؤقتاً عن الطلاب دون حذفها." %}</li>
+                                        <li class="mb-2"><strong><i class="bi bi-file-earmark-pdf"></i> {% trans "إضافة ملف:" %}</strong> {% trans "لرفع مذكرات PDF أو واجبات." %}</li>
+                                        <li class="mb-2"><strong><i class="bi bi-pencil-square"></i> {% trans "إنشاء امتحان:" %}</strong> {% trans "لعمل اختبار إلكتروني وتحديد وقته (Timer)." %}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item mb-3 border-0 shadow-sm">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#t3">
+                                    <i class="bi bi-people-fill me-2 text-success"></i> {% trans "الطلاب والتقييم" %}
+                                </button>
+                            </h2>
+                            <div id="t3" class="accordion-collapse collapse" data-bs-parent="#accTeacher">
+                                <div class="accordion-body">
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><strong><i class="bi bi-person-plus"></i> {% trans "الطلبات:" %}</strong> {% trans "للموافقة على انضمام الطلاب الجدد أو رفضهم." %}</li>
+                                        <li class="mb-2"><strong><i class="bi bi-grid-3x3-gap"></i> {% trans "الرصد الجماعي:" %}</strong> {% trans "صفحة إكسيل لتسجيل درجات وغياب كل الطلاب مرة واحدة." %}</li>
+                                        <li class="mb-2"><strong><i class="bi bi-check-square"></i> {% trans "غياب:" %}</strong> {% trans "عند تحديد غياب، يتم تصفير درجات الطالب في تلك الحصة تلقائياً." %}</li>
+                                        <li class="mb-2"><strong><i class="bi bi-journal-text"></i> {% trans "السجل الكامل:" %}</strong> {% trans "لعرض تاريخ طالب معين وتعديل أي درجة سابقة." %}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accordion-item mb-3 border-0 shadow-sm">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#t4">
+                                    <i class="bi bi-box-seam-fill me-2 text-warning"></i> {% trans "الحزم والمالية (Online)" %}
+                                </button>
+                            </h2>
+                            <div id="t4" class="accordion-collapse collapse" data-bs-parent="#accTeacher">
+                                <div class="accordion-body">
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2"><strong><i class="bi bi-plus-circle"></i> {% trans "إنشاء حزمة:" %}</strong> {% trans "لتجميع فيديوهات وامتحانات وبيعها كـ كورس بسعر محدد." %}</li>
+                                        <li class="mb-2"><strong><i class="bi bi-wallet2"></i> {% trans "المحفظة:" %}</strong> {% trans "لمتابعة أرباحك من بيع الحزم وطلب سحب الرصيد (فودافون كاش)." %}</li>
+                                        <li class="mb-2"><strong><i class="bi bi-credit-card"></i> {% trans "الاشتراك:" %}</strong> {% trans "لتجديد اشتراكك في المنصة ودفع الرسوم شهرياً." %}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade {% if user.role == 'student' %}show active{% endif %}" id="student">
+                    <h4 class="fw-bold mb-4 border-start border-4 border-success ps-3">{% trans "كيف تدرس بذكاء؟" %}</h4>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h6 class="fw-bold text-success"><i class="bi bi-search me-2"></i> {% trans "البحث والانضمام" %}</h6>
+                                    <p class="text-muted small">
+                                        {% trans "استخدم زر" %} <strong>"{% trans "بحث عن مدرس" %}"</strong>، {% trans "اختر الصف والمادة، واضغط" %} <strong>"{% trans "انضمام" %}"</strong> {% trans "لمجموعة السنتر، أو" %} <strong>"{% trans "شراء" %}"</strong> {% trans "لحزم الأونلاين." %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h6 class="fw-bold text-primary"><i class="bi bi-play-btn me-2"></i> {% trans "مشاهدة الدروس" %}</h6>
+                                    <p class="text-muted small">
+                                        {% trans "ادخل للمجموعة، اضغط على المحاضرة. إذا طلب منك كوداً، اشترِ الكود من السنتر وأدخله لمرة واحدة وسيفتح الفيديو للأبد (أو حسب الحد)." %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h6 class="fw-bold text-warning text-dark"><i class="bi bi-pencil-square me-2"></i> {% trans "أداء الامتحان" %}</h6>
+                                    <p class="text-muted small">
+                                        {% trans "اضغط" %} <strong>"{% trans "بدء الامتحان" %}"</strong>. {% trans "سيظهر عداد وقت في الأعلى. عند الانتهاء اضغط" %} <strong>"{% trans "تسليم" %}"</strong> {% trans "لتعرف نتيجتك فوراً." %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h6 class="fw-bold text-danger"><i class="bi bi-bar-chart me-2"></i> {% trans "متابعة مستواك" %}</h6>
+                                    <p class="text-muted small">
+                                        {% trans "زر" %} <strong>"{% trans "درجاتي" %}"</strong> {% trans "يعرض كل تاريخك. وزر" %} <strong>"{% trans "الترتيب" %}"</strong> {% trans "يخبرك بمركزك وسط زملائك." %}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade {% if user.role == 'assistant' %}show active{% endif %}" id="assistant">
+                    <h4 class="fw-bold mb-4 border-start border-4 border-warning ps-3">{% trans "لوحة تحكم المساعد" %}</h4>
+                    
+                    <div class="alert alert-info border-0 text-dark">
+                        <i class="bi bi-lightbulb-fill me-2"></i> 
+                        {% trans "صلاحياتك يحددها المعلم (قد ترى بعض الأزرار ولا ترى الأخرى)." %}
+                    </div>
+
+                    <ul class="list-group list-group-flush rounded shadow-sm">
+                        <li class="list-group-item p-3">
+                            <strong><i class="bi bi-search text-primary"></i> {% trans "البحث عن عمل:" %}</strong> {% trans "ابحث عن كود المعلم وأرسل له طلب توظيف." %}
+                        </li>
+                        <li class="list-group-item p-3">
+                            <strong><i class="bi bi-grid-fill text-success"></i> {% trans "عرض المجموعات:" %}</strong> {% trans "للدخول لصفحات الطلاب والغياب (مثل المعلم تماماً)." %}
+                        </li>
+                        <li class="list-group-item p-3">
+                            <strong><i class="bi bi-box-seam text-warning"></i> {% trans "عرض الحزم:" %}</strong> {% trans "لإدارة المحتوى الأونلاين (رفع فيديوهات، امتحانات) إذا كان لديك صلاحية." %}
+                        </li>
+                        <li class="list-group-item p-3">
+                            <strong><i class="bi bi-plus-lg text-danger"></i> {% trans "إنشاء:" %}</strong> {% trans "يمكنك إنشاء مجموعات وحزم نيابة عن المعلم." %}
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="tab-pane fade" id="security" role="tabpanel">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-shield-lock-fill display-1 text-danger"></i>
+                        <h4 class="fw-bold mt-3">{% trans "أمانك أولويتنا" %}</h4>
+                    </div>
+
+                    <div class="accordion" id="accordionSecurity">
+                        <div class="accordion-item border-0 mb-2 shadow-sm rounded">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#sec1">
+                                    <i class="bi bi-lock-fill me-2 text-danger"></i> {% trans "تشفير البيانات" %}
+                                </button>
+                            </h2>
+                            <div id="sec1" class="accordion-collapse collapse" data-bs-parent="#accordionSecurity">
+                                <div class="accordion-body text-muted">
+                                    {% trans "جميع كلمات المرور والبيانات الحساسة مشفرة بأحدث التقنيات ولا يمكن لأي شخص الاطلاع عليها." %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0 mb-2 shadow-sm rounded">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#sec2">
+                                    <i class="bi bi-eye-slash-fill me-2 text-danger"></i> {% trans "حماية المحتوى" %}
+                                </button>
+                            </h2>
+                            <div id="sec2" class="accordion-collapse collapse" data-bs-parent="#accordionSecurity">
+                                <div class="accordion-body text-muted">
+                                    {% trans "نظام أكواد ذكي ومشغل فيديو محمي يمنع تشغيل المحاضرات خارج المنصة أو مشاركتها بشكل غير قانوني." %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item border-0 mb-2 shadow-sm rounded">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#sec3">
+                                    <i class="bi bi-cloud-check-fill me-2 text-danger"></i> {% trans "حفظ البيانات" %}
+                                </button>
+                            </h2>
+                            <div id="sec3" class="accordion-collapse collapse" data-bs-parent="#accordionSecurity">
+                                <div class="accordion-body text-muted">
+                                    {% trans "في حالة انتهاء اشتراك المعلم، تظل جميع بيانات الطلاب ودرجاتهم محفوظة وآمنة تماماً لحين التجديد." %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .nav-tabs .nav-link { border: none; border-bottom: 3px solid transparent; transition: 0.3s; color: #6c757d; }
+    .nav-tabs .nav-link:hover { color: #000; }
+    .nav-tabs .nav-link.active { background: transparent; color: #000; border-bottom-color: currentColor; }
+    
+    #teacher-tab.active { border-bottom-color: #0d6efd !important; color: #0d6efd !important; }
+    #student-tab.active { border-bottom-color: #198754 !important; color: #198754 !important; }
+    #assistant-tab.active { border-bottom-color: #ffc107 !important; color: #000 !important; }
+    #security-tab.active { border-bottom-color: #dc3545 !important; color: #dc3545 !important; }
+</style>
+{% endblock %}

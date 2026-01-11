@@ -20,7 +20,17 @@ from accounts import views as account_views # استيراد فيوز الحسا
 from django.conf import settings # <--- جديد
 from django.conf.urls.static import static # <--- جديد
 from django.conf.urls.i18n import i18n_patterns # <--- استيراد
-
+from django.contrib.sitemaps.views import sitemap
+# استيراد الكلاسات التي أنشأناها في sitemaps.py
+from core.sitemaps import StaticViewSitemap, TeacherSitemap, PackageSitemap
+from core.sitemaps import StaticViewSitemap, TeacherSitemap, PackageSitemap
+from django.contrib.sitemaps.views import sitemap
+from django.views.generic.base import TemplateView
+sitemaps = {
+    'static': StaticViewSitemap,
+    'teachers': TeacherSitemap,
+    'packages': PackageSitemap,
+}
 urlpatterns = [
     path('admin/', admin.site.urls),
     
@@ -38,6 +48,9 @@ urlpatterns = [
     path('assistants/', include('assistants.urls')),    
     path('', include('core.urls')), 
     path('i18n/', include('django.conf.urls.i18n')),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")), # سننشئه الآن
+
 
 
 
@@ -63,3 +76,4 @@ urlpatterns += i18n_patterns(
     path('assistants/', include('assistants.urls')),    
     path('', include('core.urls')),     
 )
+
