@@ -29,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['straight-moselle-ta3almm-0d26e76e.koyeb.app','https://ta3alm.online', 'https://www.ta3alm.online','ta3alm.online', 'www.ta3alm.online','192.168.1.5', 'localhost', '127.0.0.1','inclined-chameleon-ta3alm-733d150d.koyeb.app']
 
 
-#PREPEND_WWW = True 
+PREPEND_WWW = False 
 # Application definition
 
 INSTALLED_APPS = [
