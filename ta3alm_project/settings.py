@@ -174,7 +174,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://ta3alm.online',
     'https://www.ta3alm.online',
     # أضف رابط railway الأصلي أيضاً للاحتياط
-    'https://straight-moselle-ta3almm-0d26e76e.koyeb.app/', 
+    'https://ta3alm-production.up.railway.app', 
 ]
 
 
