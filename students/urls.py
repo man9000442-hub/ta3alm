@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+from . import api_views
 
 urlpatterns = [
     path('dashboard/', views.student_dashboard, name='student_dashboard'),
@@ -24,4 +24,7 @@ urlpatterns = [
     path('package/<int:package_id>/ranking/', views.package_leaderboard, name='package_leaderboard'),
     path('group/<int:group_id>/files/', views.student_group_files, name='student_group_files'),
     path('package/<int:package_id>/files/', views.student_package_files, name='student_package_files'),
+    path('api/my-groups/', api_views.my_groups_api),
+    path('api/my-packages/', api_views.my_packages_api),
+    path('api/group/<int:group_id>/content/', api_views.group_content_api),
 ]

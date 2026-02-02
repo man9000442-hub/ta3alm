@@ -42,4 +42,6 @@ urlpatterns = [
     path('group/<int:group_id>/files/', views.group_files_teacher, name='group_files_teacher'),
     path('package/<int:package_id>/files/', views.package_files_teacher, name='package_files_teacher'),
     path('group/<int:group_id>/student/<int:student_id>/remove/', views.remove_student_from_group, name='remove_student_from_group'),
+    path('api/teachers/', views.api_all_teachers),
+    path('api/packages/', views.api_all_packages),
 ]

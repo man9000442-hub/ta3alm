@@ -26,10 +26,10 @@ SECRET_KEY = 'django-insecure-kimtwe+10w1p73-o5@o$+kg7mztvreg#_ey#@c9jd!eo%@wyh9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://ta3alm.online', 'https://www.ta3alm.online','ta3alm.online', 'www.ta3alm.online','192.168.1.5', 'localhost', '127.0.0.1','inclined-chameleon-ta3alm-733d150d.koyeb.app']
+ALLOWED_HOSTS = ['ta3alm-production.up.railway.app','https://ta3alm.online', 'https://www.ta3alm.online','ta3alm.online', 'www.ta3alm.online','192.168.1.5', 'localhost', '127.0.0.1','inclined-chameleon-ta3alm-733d150d.koyeb.app','*', '10.0.2.2',]
 
 
-PREPEND_WWW = True 
+PREPEND_WWW = not DEBUG 
 # Application definition
 
 INSTALLED_APPS = [
@@ -56,15 +56,28 @@ INSTALLED_APPS = [
     'assistants',
     'django.contrib.sitemaps',
     'robots',
+    'rest_framework',
+    'rest_framework.authtoken',  # <--- جديد
+    'corsheaders',
+    'bot_api',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "bot-cache",
+    }
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',  # يجب أن يكون تحت Security مباشرة
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'ta3alm_project.middleware.TokenAuthMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -74,6 +87,26 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
     'ta3alm_project.middleware.MaintenanceMiddleware',
 ]
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication', # عشان الموبايل
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+}
+
+# السماح للكل بالاتصال (مؤقتاً عشان فلاتر يشتغل)
+CORS_ALLOW_ALL_ORIGINS = True
+
+# اجعلها False وأنت تعمل محلياً
+SECURE_SSL_REDIRECT = False 
+SECURE_HSTS_SECONDS = 0
+SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+SECURE_HSTS_PRELOAD = False
 
 AUTHENTICATION_BACKENDS = [
     # يسمح بتسجيل الدخول بالطريقة العادية (اسم مستخدم وباسورد)
@@ -131,6 +164,16 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
+
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://ta3alm.online',
+    'https://www.ta3alm.online',
+    # أضف رابط railway الأصلي أيضاً للاحتياط
+    'https://straight-moselle-ta3almm-0d26e76e.koyeb.app/', 
+]
+
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -276,3 +319,7 @@ PAYMOB_IFRAME_ID = 991968
 
 PAYMOB_WALLET_INTEGRATION_ID = 5462707     
 # PAYMOB_WALLET_IFRAME_ID = 
+
+
+import os
+BOT_API_KEY ="CHANGE_ME_TO_A_LONG_RANDOM_SECRET_32_CHARS"

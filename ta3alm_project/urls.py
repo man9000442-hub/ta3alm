@@ -26,6 +26,7 @@ from core.sitemaps import StaticViewSitemap, TeacherSitemap, PackageSitemap
 from core.sitemaps import StaticViewSitemap, TeacherSitemap, PackageSitemap
 from django.contrib.sitemaps.views import sitemap
 from django.views.generic.base import TemplateView
+from teachers import views
 sitemaps = {
     'static': StaticViewSitemap,
     'teachers': TeacherSitemap,
@@ -49,7 +50,10 @@ urlpatterns = [
     path('', include('core.urls')), 
     path('i18n/', include('django.conf.urls.i18n')),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
-    path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")), # سننشئه الآن
+    path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")), 
+    path('api/v1/', include('teachers.api_urls')),
+    path('api/auth/', include('accounts.api_urls')),
+    path("api/bot/", include("bot_api.urls")),# سننشئه الآن
 
 
 
