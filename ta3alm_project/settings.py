@@ -145,25 +145,25 @@ WSGI_APPLICATION = 'ta3alm_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres.ubejysbctkxloejgjomp',  # اسم المستخدم من سوبابيز
-        'PASSWORD': 'ta3alm.db.ENG.bod2', 
-        'HOST': 'aws-1-eu-central-1.pooler.supabase.com',
-        'PORT': '6543',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',
+#         'USER': 'postgres.ubejysbctkxloejgjomp',  # اسم المستخدم من سوبابيز
+#         'PASSWORD': 'ta3alm.db.ENG.bod2', 
+#         'HOST': 'aws-1-eu-central-1.pooler.supabase.com',
+#         'PORT': '6543',
+#     }
+# }
 
 # settings.py
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+DATABASES = {
+     'default': {
+         'ENGINE': 'django.db.backends.sqlite3',
+         'NAME': BASE_DIR / 'db.sqlite3',
+     }
+ }
 
 
 # Password validation
