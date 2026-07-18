@@ -18,9 +18,14 @@ load_dotenv(BASE_DIR / '.env')
 # ==========================================================
 # الإعدادات الأساسية (Core Settings)
 # ==========================================================
+import sys
+
 SECRET_KEY = os.environ.get('SECRET_KEY')
 if not SECRET_KEY:
-    raise ValueError("SECRET_KEY environment variable is not set. Check your .env file.")
+    if 'collectstatic' in sys.argv:
+        SECRET_KEY = 'dummy-key-for-build-phase'
+    else:
+        raise ValueError("SECRET_KEY environment variable is not set. Check your .env file.")
 
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
@@ -312,7 +317,7 @@ PAYMOB_WALLET_INTEGRATION_ID = int(os.environ.get('PAYMOB_WALLET_INTEGRATION_ID'
 # Bot API Key
 # ==========================================================
 BOT_API_KEY = os.environ.get('BOT_API_KEY', '')
-if not BOT_API_KEY and not DEBUG:
+if not BOT_API_KEY and not DEBUG and 'collectstatic' not in sys.argv:
     raise ValueError("BOT_API_KEY environment variable is not set.")
 
 # ==========================================================
