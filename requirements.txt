@@ -17,3 +17,5 @@ tzdata==2024.1
 setuptools==72.1.0
 urllib3==2.2.2
 pillow==10.4.0
+PyJWT==2.8.0
+cryptography==42.0.8
