@@ -382,6 +382,10 @@
            class="sidebar-link {% block nav_sp %}{% endblock %}">
             <i class="bi bi-cart-check-fill"></i> مبيعات الحزم
         </a>
+        <a href="{% url 'admin_panel:manual_payments' %}"
+           class="sidebar-link {% block nav_mp %}{% endblock %}">
+            <i class="bi bi-wallet2"></i> طلبات الدفع اليدوي
+        </a>
         {% endif %}
 
         {% if can_manage_plans %}

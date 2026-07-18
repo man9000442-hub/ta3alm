@@ -21,6 +21,7 @@ urlpatterns = [
     path('finance/',            views.finance_report,     name='finance_report'),
     path('finance/withdrawals/',views.withdrawals,        name='withdrawals'),
     path('finance/student-payments/', views.student_payments, name='student_payments'),
+    path('finance/manual-payments/', views.manual_payments, name='manual_payments'),
 
     # الباقات
     path('plans/',              views.manage_plans,       name='manage_plans'),

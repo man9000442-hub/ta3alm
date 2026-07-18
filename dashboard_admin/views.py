@@ -492,3 +492,37 @@ def manage_staff(request):
         'admin_roles':   AdminRole.choices,
     })
     return render(request, 'admin_panel/manage_staff.html', ctx)
+
+# ==========================================================
+# 12. طلبات الدفع اليدوي
+# ==========================================================
+@finance_required
+def manual_payments(request):
+    from core.models import ManualPayment
+    ctx = _base_context(request)
+
+    payments = ManualPayment.objects.select_related('user').order_by('-created_at')
+
+    if request.method == 'POST':
+        payment_id = request.POST.get('payment_id')
+        action = request.POST.get('action')
+        payment = get_object_or_404(ManualPayment, id=payment_id)
+
+        if action == 'approve':
+            payment.status = 'approved'
+            payment.save()
+            AuditLog.log(request, AuditLog.ACTION_EDIT_USER,
+                         target_label=f"دفع يدوي {payment.id}",
+                         target_id=payment.id,
+                         details={'status': 'approved'})
+            messages.success(request, "تم قبول طلب الدفع بنجاح وتفعيل الاشتراك/الحزمة.")
+        elif action == 'reject':
+            payment.status = 'rejected'
+            payment.save()
+            messages.warning(request, "تم رفض طلب الدفع.")
+
+        return redirect('admin_panel:manual_payments')
+
+    ctx['payments'] = payments
+    return render(request, 'admin_panel/manual_payments.html', ctx)
+
