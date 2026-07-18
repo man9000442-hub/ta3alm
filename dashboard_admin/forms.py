@@ -35,8 +35,13 @@ class AdminUserEditForm(forms.ModelForm):
             'phone':       forms.TextInput(attrs={'class': 'form-control'}),
             'national_id': forms.TextInput(attrs={'class': 'form-control'}),
             'custom_id':   forms.TextInput(attrs={'class': 'form-control'}),
-            'role':        forms.Select(attrs={'class': 'form-select'}),
+            'role':        forms.Select(attrs={'class': 'form-select', 'disabled': True}),
         }
+
+    def clean_role(self):
+        # Prevent role change through this form to avoid profile conflicts
+        return self.instance.role
+
 
 
 class AdminTeacherEditForm(forms.ModelForm):

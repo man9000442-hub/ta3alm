@@ -28,16 +28,16 @@
     </p>
 </div>
 
-<div class="row g-4">
-    <!-- بيانات أساسية -->
-    <div class="col-lg-6">
-        <div class="admin-card">
-            <div class="admin-card-header">
-                <span class="admin-card-title"><i class="bi bi-person-fill me-2"></i>البيانات الأساسية</span>
-            </div>
-            <div class="p-4">
-                <form method="POST">
-                    {% csrf_token %}
+<form method="POST">
+    {% csrf_token %}
+    <div class="row g-4">
+        <!-- بيانات أساسية -->
+        <div class="col-lg-6">
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <span class="admin-card-title"><i class="bi bi-person-fill me-2"></i>البيانات الأساسية</span>
+                </div>
+                <div class="p-4">
                     {% for field in user_form %}
                     <div class="mb-3">
                         <label class="form-label fw-bold small text-muted">{{ field.label }}</label>
@@ -49,25 +49,22 @@
                     {% endfor %}
                     <div class="d-flex gap-2 mt-4">
                         <button type="submit" class="btn btn-primary fw-bold px-4">
-                            <i class="bi bi-check-circle me-1"></i>حفظ
+                            <i class="bi bi-check-circle me-1"></i>حفظ جميع التغييرات
                         </button>
                         <a href="{% url 'admin_panel:manage_users' %}" class="btn btn-light fw-bold">إلغاء</a>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- بيانات فرعية -->
-    <div class="col-lg-6">
-        {% if teacher_form %}
-        <div class="admin-card">
-            <div class="admin-card-header">
-                <span class="admin-card-title"><i class="bi bi-person-video3 me-2 text-primary"></i>بيانات المعلم</span>
-            </div>
-            <div class="p-4">
-                <form method="POST">
-                    {% csrf_token %}
+        <!-- بيانات فرعية -->
+        <div class="col-lg-6">
+            {% if teacher_form %}
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <span class="admin-card-title"><i class="bi bi-person-video3 me-2 text-primary"></i>بيانات المعلم</span>
+                </div>
+                <div class="p-4">
                     {% for field in teacher_form %}
                     <div class="mb-3">
                         <label class="form-label fw-bold small text-muted">{{ field.label }}</label>
@@ -75,55 +72,45 @@
                         {% if field.errors %}<div class="text-danger small">{{ field.errors|join:", " }}</div>{% endif %}
                     </div>
                     {% endfor %}
-                    <button type="submit" class="btn btn-primary fw-bold px-4">
-                        <i class="bi bi-check-circle me-1"></i>حفظ بيانات المعلم
-                    </button>
-                </form>
+                </div>
             </div>
-        </div>
-        {% endif %}
+            {% endif %}
 
-        {% if student_form %}
-        <div class="admin-card">
-            <div class="admin-card-header">
-                <span class="admin-card-title"><i class="bi bi-mortarboard me-2 text-success"></i>بيانات الطالب</span>
-            </div>
-            <div class="p-4">
-                <form method="POST">
-                    {% csrf_token %}
+            {% if student_form %}
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <span class="admin-card-title"><i class="bi bi-mortarboard me-2 text-success"></i>بيانات الطالب</span>
+                </div>
+                <div class="p-4">
                     {% for field in student_form %}
                     <div class="mb-3">
                         <label class="form-label fw-bold small text-muted">{{ field.label }}</label>
                         {{ field }}
+                        {% if field.errors %}<div class="text-danger small">{{ field.errors|join:", " }}</div>{% endif %}
                     </div>
                     {% endfor %}
-                    <button type="submit" class="btn btn-success fw-bold px-4">حفظ</button>
-                </form>
+                </div>
             </div>
-        </div>
-        {% endif %}
+            {% endif %}
 
-        {% if assistant_form %}
-        <div class="admin-card">
-            <div class="admin-card-header">
-                <span class="admin-card-title"><i class="bi bi-person-badge me-2" style="color:var(--admin-gold);"></i>بيانات المساعد</span>
-            </div>
-            <div class="p-4">
-                <form method="POST">
-                    {% csrf_token %}
+            {% if assistant_form %}
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <span class="admin-card-title"><i class="bi bi-person-badge me-2" style="color:var(--admin-gold);"></i>بيانات المساعد</span>
+                </div>
+                <div class="p-4">
                     {% for field in assistant_form %}
                     <div class="mb-3">
                         <label class="form-label fw-bold small text-muted">{{ field.label }}</label>
                         {{ field }}
+                        {% if field.errors %}<div class="text-danger small">{{ field.errors|join:", " }}</div>{% endif %}
                     </div>
                     {% endfor %}
-                    <button type="submit" class="btn fw-bold px-4" style="background:var(--admin-gold); color:white;">حفظ</button>
-                </form>
+                </div>
             </div>
-        </div>
-        {% endif %}
+            {% endif %}
 
-        <!-- معلومات إضافية (read-only) -->
+            <!-- معلومات إضافية (read-only) -->
         <div class="admin-card mt-3">
             <div class="admin-card-header">
                 <span class="admin-card-title"><i class="bi bi-info-circle me-2"></i>معلومات إضافية</span>
@@ -146,5 +133,6 @@
             </div>
         </div>
     </div>
+    </form>
 </div>
 {% endblock %}
