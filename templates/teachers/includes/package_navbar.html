@@ -1,0 +1,56 @@
+{% load i18n %}
+<div class="bg-white shadow-sm border-bottom mb-4">
+    <div class="container">
+        <!-- العنوان -->
+        <div class="d-flex align-items-center justify-content-between py-3 border-bottom">
+            <div class="d-flex align-items-center gap-3">
+                <h4 class="mb-0 fw-bold text-primary">{{ package.title }}</h4>
+                <span class="badge bg-light text-dark border">{{ package.get_grade_display }}</span>
+            </div>
+            <a href="{% url 'teacher_packages' %}" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-arrow-right me-1"></i> {% trans "خروج" %}
+            </a>
+        </div>
+        
+        <!-- التبويبات -->
+        <ul class="nav nav-tabs border-bottom-0 mt-3">
+            
+            <!-- 1. المحتوى -->
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'content' %}active fw-bold border-bottom-0{% endif %} px-4 py-3" 
+                   href="{% url 'teacher_package_detail' package.id %}"
+                   style="{% if active_tab == 'content' %}border-top: 3px solid #0d6efd; color: #000;{% endif %}">
+                    <i class="bi bi-collection-play me-2"></i> {% trans "المحتوى" %}
+                </a>
+            </li>
+
+            <!-- 2. الملفات (جديد) -->
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'files' %}active fw-bold border-bottom-0{% endif %} px-4 py-3" 
+                   href="{% url 'package_files_teacher' package.id %}"
+                   style="{% if active_tab == 'files' %}border-top: 3px solid #dc3545; color: #000;{% endif %}">
+                    <i class="bi bi-file-earmark-pdf-fill me-2"></i> {% trans "الملفات" %}
+                </a>
+            </li>
+
+            <!-- 3. المشتركين -->
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'students' %}active fw-bold border-bottom-0{% endif %} px-4 py-3" 
+                   href="{% url 'teacher_package_students' package.id %}"
+                   style="{% if active_tab == 'students' %}border-top: 3px solid #198754; color: #000;{% endif %}">
+                    <i class="bi bi-people-fill me-2"></i> {% trans "المشتركين" %}
+                </a>
+            </li>
+
+            <!-- 4. لوحة الشرف -->
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'ranking' %}active fw-bold border-bottom-0{% endif %} px-4 py-3" 
+                   href="{% url 'teacher_package_ranking' package.id %}"
+                   style="{% if active_tab == 'ranking' %}border-top: 3px solid #ffc107; color: #000;{% endif %}">
+                    <i class="bi bi-trophy-fill me-2"></i> {% trans "لوحة الشرف" %}
+                </a>
+            </li>
+
+        </ul>
+    </div>
+</div>

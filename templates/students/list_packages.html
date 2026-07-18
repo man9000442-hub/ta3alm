@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "تصفح الحزم" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <!-- هيدر وبحث -->
+    <div class="text-center mb-5">
+        <h2 class="fw-bold text-primary mb-3">{% trans "استكشف الكورسات المتاحة" %}</h2>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <!-- فورم بحث بسيط (يمكنك تفعيله في الفيو لاحقاً) -->
+                <form method="GET" class="d-flex shadow-sm rounded-pill p-1 border">
+                    <input type="text" name="q" class="form-control border-0 rounded-pill shadow-none px-3" placeholder="{% trans 'ابحث عن كورس...' %}">
+                    <button class="btn btn-primary rounded-pill px-4">{% trans "بحث" %}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- شبكة الحزم -->
+    <div class="row g-4">
+        {% for pkg in packages %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm hover-up overflow-hidden">
+                
+                <!-- صورة الغلاف -->
+                <div class="position-relative">
+                    {% if pkg.image %}
+                        <img src="{{ pkg.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                    {% else %}
+                        <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <i class="bi bi-mortarboard-fill display-1 opacity-25"></i>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- السعر -->
+                    <span class="position-absolute top-0 end-0 m-3 badge bg-success fs-6 shadow">
+                        {{ pkg.price }} EGP
+                    </span>
+                    
+                    <!-- الصف -->
+                    <span class="position-absolute bottom-0 start-0 m-3 badge bg-dark bg-opacity-75 backdrop-blur">
+                        {{ pkg.get_grade_display }}
+                    </span>
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 30px; height: 30px; font-size: 0.8rem;">
+                            {{ pkg.teacher.user.first_name|slice:":1" }}
+                        </div>
+                        <small class="text-muted fw-bold">{{ pkg.teacher.user.first_name }} {{ pkg.teacher.user.last_name }}</small>
+                    </div>
+
+                    <h5 class="card-title fw-bold mb-2">{{ pkg.title }}</h5>
+                    <p class="card-text text-muted small text-truncate">{{ pkg.description }}</p>
+                    
+                    <hr class="opacity-25">
+                    
+                    <div class="d-flex justify-content-between text-muted small mb-3">
+                        <span><i class="bi bi-play-btn me-1"></i> {{ pkg.lectures.count }} {% trans "محاضرة" %}</span>
+                        <span><i class="bi bi-pencil-square me-1"></i> {{ pkg.exams.count }} {% trans "امتحان" %}</span>
+                    </div>
+
+                    <a href="{% url 'package_detail' pkg.id %}" class="btn btn-outline-primary w-100 fw-bold stretched-link">
+                        {% trans "عرض التفاصيل" %} <i class="bi bi-arrow-left"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <div class="mb-3 opacity-25"><i class="bi bi-search display-1"></i></div>
+            <h4 class="text-muted">{% trans "لا توجد حزم متاحة حالياً." %}</h4>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .hover-up { transition: transform 0.3s; }
+    .hover-up:hover { transform: translateY(-5px); }
+    .backdrop-blur { backdrop-filter: blur(5px); }
+</style>
+{% endblock %}

@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "الطلاب" %} | {{ group.name }}{% endblock %}
+
+{% block content %}
+    {% include 'teachers/includes/group_navbar.html' %}
+    <form method="GET" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="{% trans 'بحث...' %}" value="{{ request.GET.q }}">
+            <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
+        </div>
+    </form>
+
+    <div class="container py-3">
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+            <div>
+                <h4 class="fw-bold text-dark border-start border-4 border-info ps-3">{% trans "قائمة الطلاب" %}</h4>
+                <p class="text-muted small mb-0 ps-3">
+                    {% blocktrans with count=enrollments.count %}
+                        إدارة الحضور والدرجات لـ {{ count }} طالب
+                    {% endblocktrans %}
+                </p>
+            </div>
+            
+            <div class="d-flex gap-2">
+                <a href="{% url 'bulk_log' group.id %}" class="btn btn-primary shadow-sm px-3">
+                    <i class="bi bi-grid-3x3-gap-fill me-1"></i> {% trans "رصد جماعي" %}
+                </a>
+
+                <a href="{% url 'group_requests' group.id %}" class="btn btn-warning position-relative shadow-sm px-3">
+                    <i class="bi bi-person-plus-fill me-1"></i> {% trans "الطلبات" %}
+                    {% if pending_count > 0 %}
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        {{ pending_count }}
+                    </span>
+                    {% endif %}
+                </a>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0 text-center">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="py-3">#</th>
+                                <th class="py-3 text-start">{% trans "اسم الطالب" %}</th>
+                                <th class="py-3">{% trans "رقم الهاتف" %}</th>
+                                <th class="py-3">{% trans "ولي الأمر" %}</th>
+                                <th class="py-3">{% trans "الحالة" %}</th>
+                                <th class="py-3">{% trans "إجراءات" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for enroll in enrollments %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td class="fw-bold text-start">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 35px; height: 35px;">
+                                            {{ enroll.student.user.first_name|slice:":1" }}
+                                        </div>
+                                        {{ enroll.student.user.first_name }} {{ enroll.student.user.last_name }}
+                                    </div>
+                                </td>
+                                <td><a href="tel:{{ enroll.student.user.phone }}" class="text-decoration-none text-dark">{{ enroll.student.user.phone }}</a></td>
+                                <td><a href="tel:{{ enroll.student.parent_phone }}" class="text-decoration-none text-dark">{{ enroll.student.parent_phone }}</a></td>
+                                <td>
+                                    <span class="badge bg-success bg-opacity-10 text-success border border-success rounded-pill px-3">{% trans "نشط" %}</span>
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#logModal{{ enroll.student.id }}">
+                                        <i class="bi bi-pencil-square"></i> {% trans "تقييم" %}
+                                    </button>
+                                    
+                                    <a href="{% url 'student_full_log' group.id enroll.student.id %}" class="btn btn-sm btn-light border" title="{% trans 'عرض السجل الكامل' %}">
+                                        <i class="bi bi-bar-chart"></i>
+                                    </a>
+                                </td>
+                                <!-- داخل Loop الطلاب -->
+                                <td>
+                                    <!-- ... الأزرار القديمة ... -->
+                                    
+                                    <!-- زر الحذف -->
+                                    <a href="{% url 'remove_student_from_group' group.id enroll.student.id %}" 
+                                    class="btn btn-sm btn-outline-danger" 
+                                    onclick="return confirm('{% trans "هل أنت متأكد من حذف الطالب من المجموعة؟ سيتم حذف سجلات حضوره أيضاً." %}')">
+                                        <i class="bi bi-person-x-fill"></i>
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <div class="modal fade" id="logModal{{ enroll.student.id }}" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-primary text-white">
+                                            <h5 class="modal-title fw-bold">{% trans "تقييم:" %} {{ enroll.student.user.first_name }}</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                        </div>
+                                        
+                                        <form method="POST">
+                                            {% csrf_token %}
+                                            <div class="modal-body text-start">
+                                                <input type="hidden" name="student_id" value="{{ enroll.student.id }}">
+
+                                                <div class="mb-3">
+                                                    <label class="fw-bold">{% trans "رقم الحصة" %}</label>
+                                                    {{ form.session_number }}
+                                                </div> 
+                                                
+                                                <div class="mb-3 p-3 bg-light rounded border d-flex justify-content-between align-items-center">
+                                                    <label class="form-check-label fw-bold mb-0 text-dark">{% trans "حضور الطالب اليوم؟" %}</label>
+                                                    <div class="form-check form-switch m-0">
+                                                        {{ form.is_present }}
+                                                    </div>
+                                                </div>
+
+                                                <h6 class="fw-bold border-bottom pb-2 mb-3 text-primary mt-4">{% trans "التقييمات (اترك الفارغ إذا لم يمتحن)" %}</h6>
+
+                                                <div class="row g-3 mb-3">
+                                                    <div class="col-6">
+                                                        <label class="small text-muted mb-1 fw-bold">{% trans "الواجب" %}</label>
+                                                        <div class="input-group input-group-sm">
+                                                            {{ form.homework_score }}
+                                                            <span class="input-group-text bg-white">{% trans "من" %}</span>
+                                                            {{ form.homework_max }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <label class="small text-muted mb-1 fw-bold">{% trans "امتحان الحصة" %}</label>
+                                                        <div class="input-group input-group-sm">
+                                                            {{ form.class_exam_score }}
+                                                            <span class="input-group-text bg-white">{% trans "من" %}</span>
+                                                            {{ form.class_exam_max }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row g-3 mb-3">
+                                                    <div class="col-6">
+                                                        <label class="small text-muted mb-1 fw-bold">{% trans "التسميع الشفوي" %}</label>
+                                                        <div class="input-group input-group-sm">
+                                                            {{ form.recitation_score }}
+                                                            <span class="input-group-text bg-white">{% trans "من" %}</span>
+                                                            {{ form.recitation_max }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <label class="small text-muted mb-1 fw-bold">{% trans "امتحان شامل" %}</label>
+                                                        <div class="input-group input-group-sm">
+                                                            {{ form.comprehensive_exam_score }}
+                                                            <span class="input-group-text bg-white">{% trans "من" %}</span>
+                                                            {{ form.comprehensive_exam_max }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="mb-2 mt-4">
+                                                    <label class="form-label small text-muted fw-bold">{% trans "ملاحظات سلوكية" %}</label>
+                                                    {{ form.note }}
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer bg-light">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "إلغاء" %}</button>
+                                                <button type="submit" class="btn btn-primary px-4">{% trans "حفظ السجل" %}</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% empty %}
+                            <tr>
+                                <td colspan="6" class="py-5 text-muted">
+                                    <div class="mb-3 opacity-50">
+                                        <i class="bi bi-people display-4 text-secondary"></i>
+                                    </div>
+                                    <h5 class="text-muted">{% trans "لا يوجد طلاب في هذه المجموعة." %}</h5>
+                                    <p class="text-secondary small">{% trans "شارك رابط المنصة مع طلابك ليبدأوا التسجيل." %}</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,46 @@
+<!-- Partial: حقول فورم الباقة (يُستخدم في Add + Edit) -->
+<div class="row g-3">
+    <div class="col-12">
+        <label class="form-label fw-bold small text-muted">اسم الباقة</label>
+        <input type="text" name="name" class="form-control" value="{{ obj.name|default:'' }}" required>
+    </div>
+    <div class="col-6">
+        <label class="form-label fw-bold small text-muted">السعر (EGP/شهر)</label>
+        <input type="number" name="price" class="form-control" value="{{ obj.price|default:'0' }}" min="0" required>
+    </div>
+    <div class="col-6">
+        <label class="form-label fw-bold small text-muted">حد الطلاب</label>
+        <input type="number" name="student_limit" class="form-control" value="{{ obj.student_limit|default:'1000' }}" min="1">
+    </div>
+    <div class="col-6">
+        <label class="form-label fw-bold small text-muted">حد المجموعات</label>
+        <input type="number" name="group_limit" class="form-control" value="{{ obj.group_limit|default:'5' }}" min="1">
+    </div>
+    <div class="col-6">
+        <label class="form-label fw-bold small text-muted">حد المساعدين</label>
+        <input type="number" name="assistant_limit" class="form-control" value="{{ obj.assistant_limit|default:'2' }}" min="0">
+    </div>
+    <div class="col-12">
+        <label class="form-label fw-bold small text-muted">وصف</label>
+        <textarea name="desc" class="form-control" rows="2">{{ obj.description|default:'' }}</textarea>
+    </div>
+    <div class="col-12">
+        <div class="d-flex gap-4">
+            <div class="form-check form-switch">
+                <input type="checkbox" name="allow_online" class="form-check-input" id="online_{{ obj.id|default:'new' }}"
+                       {% if obj.allow_online_packages %}checked{% endif %}>
+                <label class="form-check-label fw-bold" for="online_{{ obj.id|default:'new' }}">حزم أونلاين</label>
+            </div>
+            <div class="form-check form-switch">
+                <input type="checkbox" name="allow_images" class="form-check-input" id="images_{{ obj.id|default:'new' }}"
+                       {% if obj.allow_question_images %}checked{% endif %}>
+                <label class="form-check-label fw-bold" for="images_{{ obj.id|default:'new' }}">صور الأسئلة</label>
+            </div>
+            <div class="form-check form-switch">
+                <input type="checkbox" name="is_default" class="form-check-input" id="default_{{ obj.id|default:'new' }}"
+                       {% if obj.is_default %}checked{% endif %}>
+                <label class="form-check-label fw-bold" for="default_{{ obj.id|default:'new' }}">باقة افتراضية</label>
+            </div>
+        </div>
+    </div>
+</div>

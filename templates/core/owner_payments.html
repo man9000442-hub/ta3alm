@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "التقارير المالية" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold"><i class="bi bi-wallet2 text-success"></i> {% trans "التقارير المالية" %}</h2>
+        <a href="{% url 'owner_dashboard' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-right"></i> {% trans "عودة" %}
+        </a>
+    </div>
+
+    <div class="card bg-success text-white mb-4 border-0 shadow">
+        <div class="card-body text-center p-4">
+            <h5 class="opacity-75">{% trans "إجمالي الإيرادات (Paymob)" %}</h5>
+            <h1 class="display-3 fw-bold">{{ total_revenue }} <span class="fs-4">EGP</span></h1>
+        </div>
+    </div>
+        <div class="row justify-content-center mb-4">
+        <div class="col-md-6">
+            <form method="GET" class="d-flex shadow-sm">
+                <input type="text" name="q" class="form-control border-0" placeholder="{% trans 'ابحث عن معلم أو طالب (اسم، رقم، كود)...' %}" value="{{ query|default:'' }}">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i></button>
+                {% if query %}
+                    <a href="{% url 'owner_dashboard' %}" class="btn btn-light border-0" title="{% trans 'إلغاء البحث' %}"><i class="bi bi-x-lg"></i></a>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3">
+            <h5 class="mb-0 fw-bold">{% trans "سجل العمليات (Transactions)" %}</h5>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0 text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th>{% trans "المعلم" %}</th>
+                        <th>{% trans "المبلغ" %}</th>
+                        <th>{% trans "التاريخ" %}</th>
+                        <th>{% trans "رقم العملية (ID)" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for trans in transactions %}
+                    <tr>
+                        <td class="fw-bold">{{ trans.teacher.user.first_name }} {{ trans.teacher.user.last_name }}</td>
+                        <td class="text-success fw-bold">{{ trans.amount }} EGP</td>
+                        <td class="text-muted">{{ trans.date|date:"Y-m-d h:i A" }}</td>
+                        <td class="font-monospace small">{{ trans.transaction_id|default:"-" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="4" class="py-4 text-muted">{% trans "لا توجد عمليات دفع مسجلة حتى الآن." %}</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

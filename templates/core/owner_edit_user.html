@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}
+    {% blocktrans with name=target_user.first_name %}تعديل: {{ name }}{% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0">
+                <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold">
+                        {% blocktrans with name=target_user.first_name role=target_user.get_role_display %}تعديل بيانات: {{ name }} ({{ role }}){% endblocktrans %}
+                    </h5>
+                    <a href="{% url 'owner_dashboard' %}" class="btn btn-sm btn-outline-light">{% trans "عودة" %}</a>
+                </div>
+                
+                <div class="card-body p-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        <h6 class="text-primary fw-bold border-bottom pb-2 mb-3">{% trans "البيانات الشخصية" %}</h6>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">{% trans "الاسم الأول" %}</label>
+                                {{ user_form.first_name }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">{% trans "الاسم الأخير" %}</label>
+                                {{ user_form.last_name }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">{% trans "البريد الإلكتروني" %}</label>
+                                {{ user_form.email }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">{% trans "رقم الهاتف" %}</label>
+                                {{ user_form.phone }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">{% trans "الرقم القومي" %}</label>
+                                {{ user_form.national_id }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">{% trans "الكود التعريفي (Custom ID)" %}</label>
+                                {{ user_form.custom_id }}
+                            </div>
+                        </div>
+
+                        {% if teacher_form %}
+                        <h6 class="text-success fw-bold border-bottom pb-2 mb-3">{% trans "بيانات المعلم والاشتراك" %}</h6>
+                        <div class="mb-3">
+                            <label class="form-label">{% trans "المادة الدراسية" %}</label>
+                            {{ teacher_form.subject }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">{% trans "تاريخ انتهاء الاشتراك" %}</label>
+                            {{ teacher_form.subscription_end_date }}
+                            <div class="form-text">{% trans "يمكنك تمديد أو تقليص الاشتراك يدوياً من هنا." %}</div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">{% trans "النبذة التعريفية" %}</label>
+                            {{ teacher_form.bio }}
+                        </div>
+                        {% endif %}
+
+                        {% if student_form %}
+                        <h6 class="text-info fw-bold border-bottom pb-2 mb-3">{% trans "بيانات الطالب" %}</h6>
+                        <div class="mb-4">
+                            <label class="form-label">{% trans "رقم ولي الأمر" %}</label>
+                            {{ student_form.parent_phone }}
+                        </div>
+                        {% endif %}
+
+                        {% if assistant_form %}
+                        <h6 class="text-warning fw-bold border-bottom pb-2 mb-3">{% trans "بيانات المساعد" %}</h6>
+                        <div class="mb-4">
+                            <label class="form-label">{% trans "رقم الهاتف" %}</label>
+                            {{ assistant_form.phone }}
+                        </div>
+                        {% endif %}                        
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg fw-bold">{% trans "حفظ التعديلات" %}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

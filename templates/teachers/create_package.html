@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}إنشاء حزمة{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h2 class="fw-bold mb-4">📦 {% trans "إنشاء حزمة جديدة" %}</h2>
+    
+    <form method="POST" enctype="multipart/form-data" id="pkgForm">
+        {% csrf_token %}
+        
+        <!-- البيانات الأساسية (كما هي) -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-8">
+                <label class="form-label fw-bold">{% trans "الاسم" %}</label>
+                {{ form.title }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">{% trans "الصف الدراسي" %}</label>
+                {{ form.grade }}
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label fw-bold">{% trans "السعر" %}</label>
+                {{ form.price }}
+            </div>
+            <div class="col-12">
+                <label class="form-label fw-bold">{% trans "الوصف" %}</label>
+                {{ form.description }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">{% trans "الغلاف" %}</label>
+                {{ form.image }}
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold">{% trans "حد المشاهدة" %}</label>
+                {{ form.view_limit }}
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- واجهة اختيار المحتوى الذكية -->
+        <h4 class="fw-bold text-primary mb-3">{% trans "محتوى الحزمة" %}</h4>
+        
+        <!-- 1. فلتر المجموعات -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">{% trans "تصفية حسب المجموعة:" %}</label>
+            <select id="groupFilter" class="form-select">
+                <option value="all">{% trans "عرض الكل" %}</option>
+                {% for g in groups %}
+                    <option value="g{{ g.id }}">{{ g.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="row">
+            <!-- المحاضرات -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header bg-dark text-white fw-bold">📹 {% trans "المحاضرات" %}</div>
+                    <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
+                        <ul class="list-group list-group-flush" id="lecList">
+                            {% for g in groups %}
+                                {% for lec in g.lectures.all %}
+                                <li class="list-group-item group-item g{{ g.id }}">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="lectures" value="{{ lec.id }}" id="lec{{ lec.id }}">
+                                        <label class="form-check-label w-100" for="lec{{ lec.id }}">
+                                            {{ lec.title }} <span class="badge bg-light text-dark border ms-auto">{{ g.name }}</span>
+                                        </label>
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الامتحانات -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header bg-warning text-dark fw-bold">📝 {% trans "الامتحانات" %}</div>
+                    <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
+                        <ul class="list-group list-group-flush" id="examList">
+                            {% for g in groups %}
+                                {% for exam in g.exams.all %}
+                                <li class="list-group-item group-item g{{ g.id }}">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="exams" value="{{ exam.id }}" id="exam{{ exam.id }}">
+                                        <label class="form-check-label w-100" for="exam{{ exam.id }}">
+                                            {{ exam.title }} <span class="badge bg-light text-dark border ms-auto">{{ g.name }}</span>
+                                        </label>
+                                    </div>
+                                </li>
+                                {% endfor %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-success btn-lg fw-bold">{% trans "حفظ ونشر الحزمة" %}</button>
+        </div>
+    </form>
+</div>
+
+<!-- سكريبت الفلترة -->
+<script>
+    document.getElementById('groupFilter').addEventListener('change', function() {
+        const selectedGroup = this.value;
+        const items = document.querySelectorAll('.group-item');
+        
+        items.forEach(item => {
+            if (selectedGroup === 'all' || item.classList.contains(selectedGroup)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    });
+</script>
+{% endblock %}

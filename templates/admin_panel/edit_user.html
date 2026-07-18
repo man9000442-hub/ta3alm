@@ -1,0 +1,150 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% load i18n %}
+
+{% block page_title %}تعديل: {{ target_user.get_full_name }}{% endblock %}
+{% block nav_users %}active{% endblock %}
+{% block breadcrumb %}
+<span class="sep">/</span>
+<a href="{% url 'admin_panel:manage_users' %}">المستخدمون</a>
+<span class="sep">/</span>
+<span class="current">تعديل</span>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>
+        <i class="bi bi-pencil-fill me-2" style="color:var(--admin-accent);"></i>
+        تعديل: {{ target_user.get_full_name|default:target_user.email }}
+    </h1>
+    <p>
+        <span class="role-badge
+            {% if target_user.role == 'teacher' %}role-teacher
+            {% elif target_user.role == 'student' %}role-student
+            {% elif target_user.role == 'assistant' %}role-assistant
+            {% else %}role-admin{% endif %} me-2">
+            {{ target_user.get_role_display }}
+        </span>
+        {{ target_user.email }}
+    </p>
+</div>
+
+<div class="row g-4">
+    <!-- بيانات أساسية -->
+    <div class="col-lg-6">
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <span class="admin-card-title"><i class="bi bi-person-fill me-2"></i>البيانات الأساسية</span>
+            </div>
+            <div class="p-4">
+                <form method="POST">
+                    {% csrf_token %}
+                    {% for field in user_form %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                        <div class="text-danger small mt-1">{{ field.errors|join:", " }}</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary fw-bold px-4">
+                            <i class="bi bi-check-circle me-1"></i>حفظ
+                        </button>
+                        <a href="{% url 'admin_panel:manage_users' %}" class="btn btn-light fw-bold">إلغاء</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- بيانات فرعية -->
+    <div class="col-lg-6">
+        {% if teacher_form %}
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <span class="admin-card-title"><i class="bi bi-person-video3 me-2 text-primary"></i>بيانات المعلم</span>
+            </div>
+            <div class="p-4">
+                <form method="POST">
+                    {% csrf_token %}
+                    {% for field in teacher_form %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}<div class="text-danger small">{{ field.errors|join:", " }}</div>{% endif %}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary fw-bold px-4">
+                        <i class="bi bi-check-circle me-1"></i>حفظ بيانات المعلم
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if student_form %}
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <span class="admin-card-title"><i class="bi bi-mortarboard me-2 text-success"></i>بيانات الطالب</span>
+            </div>
+            <div class="p-4">
+                <form method="POST">
+                    {% csrf_token %}
+                    {% for field in student_form %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">{{ field.label }}</label>
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-success fw-bold px-4">حفظ</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if assistant_form %}
+        <div class="admin-card">
+            <div class="admin-card-header">
+                <span class="admin-card-title"><i class="bi bi-person-badge me-2" style="color:var(--admin-gold);"></i>بيانات المساعد</span>
+            </div>
+            <div class="p-4">
+                <form method="POST">
+                    {% csrf_token %}
+                    {% for field in assistant_form %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">{{ field.label }}</label>
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn fw-bold px-4" style="background:var(--admin-gold); color:white;">حفظ</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- معلومات إضافية (read-only) -->
+        <div class="admin-card mt-3">
+            <div class="admin-card-header">
+                <span class="admin-card-title"><i class="bi bi-info-circle me-2"></i>معلومات إضافية</span>
+            </div>
+            <div class="p-4">
+                <div class="row g-2" style="font-size:0.875rem;">
+                    <div class="col-6"><span class="text-muted">تاريخ الانضمام:</span></div>
+                    <div class="col-6 fw-bold">{{ target_user.date_joined|date:"j M Y" }}</div>
+                    <div class="col-6"><span class="text-muted">آخر دخول:</span></div>
+                    <div class="col-6 fw-bold">{{ target_user.last_login|date:"j M Y H:i"|default:"—" }}</div>
+                    <div class="col-6"><span class="text-muted">محظور؟</span></div>
+                    <div class="col-6">
+                        {% if target_user.is_banned %}
+                        <span class="role-badge status-banned">نعم</span>
+                        {% else %}
+                        <span class="role-badge status-active">لا</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

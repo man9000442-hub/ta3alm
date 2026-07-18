@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "درجات الحزمة" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between mb-4">
+        <h3 class="fw-bold">{% trans "سجل درجات الحزمة:" %} {{ package.title }}</h3>
+        <a href="{% url 'my_package_content' package.id %}" class="btn btn-outline-secondary">{% trans "عودة" %}</a>
+    </div>
+
+    <!-- المجموع الكلي -->
+    <div class="card bg-success text-white mb-4 shadow border-0">
+        <div class="card-body text-center p-4">
+            <h1 class="display-4 fw-bold">{{ total_score }}</h1>
+            <p class="fs-5 mb-0">{% trans "مجموع النقاط المكتسبة" %}</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- 1. الامتحانات -->
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-warning text-dark fw-bold">{% trans "نتائج الامتحانات" %}</div>
+                <ul class="list-group list-group-flush">
+                    {% for res in exam_results %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>{{ res.exam.title }}</span>
+                        <span class="badge bg-primary rounded-pill">{{ res.score }}</span>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item text-muted text-center">{% trans "لم تمتحن بعد." %}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- 2. الفيديوهات -->
+        <div class="col-md-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white fw-bold">{% trans "نقاط المشاهدة" %}</div>
+                <ul class="list-group list-group-flush">
+                    {% for vp in video_points %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>{{ vp.lecture.title }}</span>
+                        <span class="badge bg-success rounded-pill">+{{ vp.points_awarded }}</span>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item text-muted text-center">{% trans "لم تشاهد فيديوهات بعد." %}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

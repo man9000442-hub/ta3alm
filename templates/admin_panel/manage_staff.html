@@ -1,0 +1,148 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% load i18n %}
+{% block page_title %}فريق الإدارة{% endblock %}
+{% block nav_staff %}active{% endblock %}
+{% block breadcrumb %}<span class="sep">/</span><span class="current">فريق الإدارة</span>{% endblock %}
+
+{% block content %}
+<div class="page-header d-flex align-items-center justify-content-between">
+    <div>
+        <h1><i class="bi bi-person-badge-fill me-2" style="color:var(--admin-accent);"></i>فريق الإدارة</h1>
+        <p>{{ staff_list|length }} مسؤول مُعيَّن</p>
+    </div>
+    <button class="btn fw-bold px-4" style="background:var(--admin-accent); color:white;"
+            data-bs-toggle="modal" data-bs-target="#appointModal">
+        <i class="bi bi-person-plus-fill me-1"></i>تعيين مسؤول
+    </button>
+</div>
+
+<!-- Role legend -->
+<div class="d-flex gap-2 mb-4 flex-wrap">
+    {% for val, lbl in admin_roles %}
+    <span class="role-badge
+        {% if val == 'owner' %}role-admin
+        {% elif val == 'moderator' %}role-teacher
+        {% elif val == 'support' %}role-student
+        {% else %}role-assistant{% endif %}">
+        {{ lbl }}
+    </span>
+    {% endfor %}
+</div>
+
+<div class="admin-card">
+    <div class="table-responsive">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>المسؤول</th>
+                    <th>الدور</th>
+                    <th>الحالة</th>
+                    <th>عيَّنه</th>
+                    <th>تاريخ التعيين</th>
+                    <th>إجراء</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in staff_list %}
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="user-avatar" style="background:var(--admin-accent);">
+                                {{ s.user.first_name|slice:":1"|upper }}
+                            </div>
+                            <div>
+                                <div class="fw-bold" style="font-size:0.875rem;">{{ s.user.get_full_name }}</div>
+                                <div class="text-muted" style="font-size:0.75rem;">{{ s.user.email }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="role-badge
+                            {% if s.admin_role == 'owner' %}role-admin
+                            {% elif s.admin_role == 'moderator' %}role-teacher
+                            {% elif s.admin_role == 'support' %}role-student
+                            {% else %}role-assistant{% endif %}">
+                            {{ s.get_admin_role_display }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if s.is_active_admin %}
+                        <span class="role-badge status-active">نشط</span>
+                        {% else %}
+                        <span class="role-badge status-expired">موقوف</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-muted" style="font-size:0.85rem;">
+                        {{ s.appointed_by.get_full_name|default:"النظام" }}
+                    </td>
+                    <td class="text-muted" style="font-size:0.85rem;">
+                        {{ s.appointed_at|date:"j M Y" }}
+                    </td>
+                    <td>
+                        <form method="POST"
+                              onsubmit="return confirm('إزالة {{ s.user.get_full_name }} من فريق الإدارة؟');">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="remove">
+                            <input type="hidden" name="profile_id" value="{{ s.id }}">
+                            <button class="action-btn action-btn-delete" title="إزالة">
+                                <i class="bi bi-person-dash-fill"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6">
+                    <div class="empty-state">
+                        <i class="bi bi-people-fill"></i>
+                        لا يوجد مسؤولون مُعيَّنون بعد
+                    </div>
+                </td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Appoint Modal -->
+<div class="modal fade" id="appointModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius:16px; border:none;">
+            <div class="modal-header border-0">
+                <h5 class="modal-title fw-bold">
+                    <i class="bi bi-person-plus-fill me-2" style="color:var(--admin-accent);"></i>تعيين مسؤول جديد
+                </h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="appoint">
+                <div class="modal-body">
+                    <p class="text-muted small mb-3">أدخل إيميل مستخدم موجود في المنصة لتعيينه مسؤولاً إدارياً.</p>
+                    {% for field in appoint_form %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small text-muted">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}<div class="text-danger small">{{ field.errors|join:", " }}</div>{% endif %}
+                    </div>
+                    {% endfor %}
+
+                    <!-- Role descriptions -->
+                    <div class="alert alert-info small p-2 mt-2" style="border-radius:10px;">
+                        <strong>صلاحيات الأدوار:</strong><br>
+                        🔴 <strong>مالك:</strong> كل الصلاحيات<br>
+                        🔵 <strong>مشرف:</strong> إدارة + تعديل المستخدمين<br>
+                        🟢 <strong>دعم فني:</strong> عرض المستخدمين فقط<br>
+                        🟡 <strong>مسؤول مالي:</strong> التقارير المالية فقط
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn fw-bold px-4" style="background:var(--admin-accent); color:white;">
+                        <i class="bi bi-check-circle me-1"></i>تعيين
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% load i18n %}
+<div class="bg-white shadow-sm border-bottom mb-4">
+    <div class="container">
+        <!-- العنوان وزر الخروج -->
+        <div class="d-flex align-items-center justify-content-between py-3 border-bottom">
+            <div class="d-flex align-items-center">
+                <div class="bg-primary text-white rounded-circle p-2 me-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                    <i class="bi bi-collection-play-fill"></i>
+                </div>
+                <div>
+                    <h5 class="mb-0 fw-bold text-dark">{{ group.name }}</h5>
+                    <span class="badge bg-secondary small">{{ group.get_grade_display }}</span>
+                </div>
+            </div>
+            <a href="{% url 'teacher_dashboard' %}" class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-arrow-right"></i> {% trans "خروج للرئيسية" %}
+            </a>
+        </div>
+
+        <!-- التبويبات الكاملة -->
+        <ul class="nav nav-tabs border-bottom-0 mt-3">
+            
+            <!-- 1. المحاضرات -->
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'lectures' %}active fw-bold border-bottom-0{% endif %} px-4 py-3" 
+                   href="{% url 'group_detail' group.id %}"
+                   style="{% if active_tab == 'lectures' %}border-top: 3px solid #0d6efd; color: #000;{% endif %}">
+                    <i class="bi bi-youtube me-2"></i> {% trans "المحاضرات" %}
+                </a>
+            </li>
+            
+            <!-- 2. الامتحانات -->
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'exams' %}active fw-bold border-bottom-0{% endif %} px-4 py-3" 
+                   href="{% url 'group_exams' group.id %}"
+                   style="{% if active_tab == 'exams' %}border-top: 3px solid #ffc107; color: #000;{% endif %}">
+                    <i class="bi bi-pencil-square me-2"></i> {% trans "الامتحانات" %}
+                </a>
+            </li>
+            
+            <!-- 3. الملفات (جديد) -->
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'files' %}active fw-bold border-bottom-0{% endif %} px-4 py-3" 
+                   href="{% url 'group_files_teacher' group.id %}"
+                   style="{% if active_tab == 'files' %}border-top: 3px solid #dc3545; color: #000;{% endif %}">
+                    <i class="bi bi-file-earmark-pdf-fill me-2"></i> {% trans "الملفات" %}
+                </a>
+            </li>
+
+            <!-- 4. الطلاب -->
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'students' %}active fw-bold border-bottom-0{% endif %} px-4 py-3" 
+                   href="{% url 'group_students' group.id %}"
+                   style="{% if active_tab == 'students' %}border-top: 3px solid #198754; color: #000;{% endif %}">
+                    <i class="bi bi-people-fill me-2"></i> {% trans "الطلاب" %}
+                </a>
+            </li>
+
+            <!-- 5. الترتيب -->
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'ranking' %}active fw-bold border-bottom-0{% endif %} px-4 py-3" 
+                   href="{% url 'group_ranking' group.id %}"
+                   style="{% if active_tab == 'ranking' %}border-top: 3px solid #fd7e14; color: #000;{% endif %}">
+                    <i class="bi bi-trophy-fill me-2"></i> {% trans "الترتيب" %}
+                </a>
+            </li>
+
+            <!-- 6. الطلبات -->
+            <li class="nav-item">
+                <a class="nav-link {% if active_tab == 'requests' %}active fw-bold border-bottom-0{% endif %} px-4 py-3 position-relative" 
+                   href="{% url 'group_requests' group.id %}"
+                   style="{% if active_tab == 'requests' %}border-top: 3px solid #6c757d; color: #000;{% endif %}">
+                    <i class="bi bi-person-plus-fill me-2"></i> {% trans "الطلبات" %}
+                    {% if pending_count > 0 %}
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="margin-left: -10px; margin-top: 10px;">
+                        {{ pending_count }}
+                    </span>
+                    {% endif %}
+                </a>
+            </li>
+
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,161 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% load i18n %}
+
+{% block page_title %}الإحصاءات الرئيسية{% endblock %}
+{% block nav_dashboard %}active{% endblock %}
+{% block breadcrumb %}<span class="sep">/</span><span class="current">الإحصاءات</span>{% endblock %}
+
+{% block content %}
+
+<!-- Page Header -->
+<div class="page-header d-flex align-items-center justify-content-between">
+    <div>
+        <h1><i class="bi bi-speedometer2 me-2" style="color:var(--admin-accent);"></i>لوحة القيادة</h1>
+        <p>مرحباً {{ request.user.get_full_name|default:request.user.email }} 👋</p>
+    </div>
+    {% if is_owner %}
+    <div class="d-flex gap-2">
+        <form method="POST" action="{% url 'admin_panel:toggle_maintenance' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm fw-bold px-4
+                {% if site_settings.is_maintenance_mode %}btn-danger{% else %}btn-outline-secondary{% endif %}">
+                <i class="bi bi-tools me-1"></i>
+                {% if site_settings.is_maintenance_mode %}إيقاف الصيانة{% else %}تفعيل الصيانة{% endif %}
+            </button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Stat Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:#e8f4fd; color:#0d6efd;">
+                <i class="bi bi-person-video3"></i>
+            </div>
+            <div class="stat-number">{{ total_teachers }}</div>
+            <div class="stat-label">معلم مسجّل</div>
+            <div class="stat-change up">
+                <i class="bi bi-arrow-up-circle-fill me-1"></i>{{ active_teachers_count }} نشط
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:#e8fdf4; color:#0f9b58;">
+                <i class="bi bi-mortarboard-fill"></i>
+            </div>
+            <div class="stat-number">{{ total_students }}</div>
+            <div class="stat-label">طالب مسجّل</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:#fff8e1; color:#f5a623;">
+                <i class="bi bi-person-badge-fill"></i>
+            </div>
+            <div class="stat-number">{{ total_assistants }}</div>
+            <div class="stat-label">مساعد</div>
+        </div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="stat-card">
+            <div class="stat-icon" style="background:#fde8ea; color:#e94560;">
+                <i class="bi bi-patch-check-fill"></i>
+            </div>
+            <div class="stat-number">{{ active_teachers_count }}</div>
+            <div class="stat-label">اشتراك ساري</div>
+        </div>
+    </div>
+</div>
+
+<!-- Status + Audit Log -->
+<div class="row g-3">
+
+    <!-- Quick Actions -->
+    <div class="col-lg-4">
+        <div class="admin-card h-100">
+            <div class="admin-card-header">
+                <span class="admin-card-title"><i class="bi bi-lightning-fill me-2" style="color:var(--admin-gold);"></i>إجراءات سريعة</span>
+            </div>
+            <div class="p-3 d-flex flex-column gap-2">
+                {% if can_manage_users %}
+                <a href="{% url 'admin_panel:manage_users' %}" class="btn btn-light text-start fw-600">
+                    <i class="bi bi-people-fill me-2 text-primary"></i> إدارة المستخدمين
+                </a>
+                {% endif %}
+                {% if can_view_finance %}
+                <a href="{% url 'admin_panel:finance_report' %}" class="btn btn-light text-start fw-600">
+                    <i class="bi bi-cash-stack me-2 text-success"></i> التقارير المالية
+                </a>
+                <a href="{% url 'admin_panel:withdrawals' %}" class="btn btn-light text-start fw-600">
+                    <i class="bi bi-bank me-2 text-warning"></i> طلبات السحب
+                </a>
+                {% endif %}
+                {% if can_manage_plans %}
+                <a href="{% url 'admin_panel:manage_plans' %}" class="btn btn-light text-start fw-600">
+                    <i class="bi bi-tags-fill me-2" style="color:var(--admin-accent);"></i> إدارة الباقات
+                </a>
+                {% endif %}
+                {% if is_owner %}
+                <a href="{% url 'admin_panel:manage_staff' %}" class="btn btn-light text-start fw-600">
+                    <i class="bi bi-person-badge-fill me-2 text-danger"></i> فريق الإدارة
+                </a>
+                {% endif %}
+                <hr class="my-1">
+                <a href="{% url 'home' %}" target="_blank" class="btn btn-light text-start fw-600">
+                    <i class="bi bi-box-arrow-up-left me-2 text-secondary"></i> فتح الموقع
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audit Log -->
+    <div class="col-lg-8">
+        <div class="admin-card h-100">
+            <div class="admin-card-header">
+                <span class="admin-card-title"><i class="bi bi-journal-text me-2" style="color:var(--admin-accent);"></i>آخر الأحداث الإدارية</span>
+                {% if is_owner %}
+                <a href="{% url 'admin_panel:audit_log' %}" class="btn btn-sm btn-outline-secondary">
+                    عرض الكل
+                </a>
+                {% endif %}
+            </div>
+            <div class="admin-card-body">
+                {% if recent_logs %}
+                {% for log in recent_logs %}
+                {% with action=log.action %}
+                <div class="audit-item">
+                    <div class="audit-dot"
+                         style="background:
+                             {% if action == 'ban_user' or action == 'delete_user' %}#e94560
+                             {% elif action == 'renew_subscription' or action == 'unban_user' %}#0f9b58
+                             {% elif action == 'toggle_maintenance' %}#f5a623
+                             {% else %}#0d6efd{% endif %};">
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="fw-600" style="font-size:0.875rem;">
+                            {{ log.get_action_display }}
+                            {% if log.target_label %}<span class="text-muted">— {{ log.target_label }}</span>{% endif %}
+                        </div>
+                        <div class="text-muted" style="font-size:0.75rem;">
+                            {{ log.admin.get_full_name|default:log.admin.email|default:"—" }}
+                            · {{ log.created_at|date:"j M Y H:i" }}
+                        </div>
+                    </div>
+                </div>
+                {% endwith %}
+                {% endfor %}
+                {% else %}
+                <div class="empty-state">
+                    <i class="bi bi-journal-x"></i>
+                    لا توجد أحداث بعد
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

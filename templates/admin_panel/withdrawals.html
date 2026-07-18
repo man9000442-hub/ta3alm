@@ -1,0 +1,54 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% load i18n %}
+{% block page_title %}طلبات السحب{% endblock %}
+{% block nav_withdrawals %}active{% endblock %}
+{% block breadcrumb %}<span class="sep">/</span><span class="current">طلبات السحب</span>{% endblock %}
+
+{% block content %}
+<div class="page-header"><h1><i class="bi bi-bank me-2" style="color:var(--admin-accent);"></i>طلبات السحب</h1></div>
+
+<div class="admin-card">
+    <div class="table-responsive">
+        <table class="admin-table">
+            <thead>
+                <tr><th>المعلم</th><th>المبلغ</th><th>رقم الحساب / المحفظة</th><th>التاريخ</th><th>الحالة</th><th>إجراء</th></tr>
+            </thead>
+            <tbody>
+                {% for r in requests %}
+                <tr>
+                    <td>
+                        <div class="fw-bold" style="font-size:0.875rem;">{{ r.wallet.teacher.user.get_full_name }}</div>
+                        <div class="text-muted" style="font-size:0.75rem;">{{ r.wallet.teacher.user.phone }}</div>
+                    </td>
+                    <td class="fw-bold" style="color:var(--admin-success);">{{ r.amount }} EGP</td>
+                    <td style="font-size:0.8rem; direction:ltr;">{{ r.account_number|default:"—" }}</td>
+                    <td class="text-muted" style="font-size:0.85rem;">{{ r.created_at|date:"j M Y · H:i" }}</td>
+                    <td>
+                        {% if r.is_paid %}
+                        <span class="role-badge status-active"><i class="bi bi-check2 me-1"></i>مُسدَّد</span>
+                        {% else %}
+                        <span class="role-badge status-expired"><i class="bi bi-clock me-1"></i>معلّق</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if not r.is_paid %}
+                        <form method="POST" onsubmit="return confirm('تأكيد تسديد {{ r.amount }} EGP؟');">
+                            {% csrf_token %}
+                            <input type="hidden" name="req_id" value="{{ r.id }}">
+                            <button type="submit" class="btn btn-sm btn-success fw-bold px-3">
+                                <i class="bi bi-check-circle me-1"></i>تسديد
+                            </button>
+                        </form>
+                        {% else %}
+                        <span class="text-muted small">تم</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6"><div class="empty-state"><i class="bi bi-inbox"></i>لا توجد طلبات</div></td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

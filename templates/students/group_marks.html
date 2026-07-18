@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% blocktrans with group_name=group.name %}درجاتي | {{ group_name }}{% endblocktrans %}{% endblock %}
+
+{% block content %}
+    {% include 'students/includes/student_group_navbar.html' %}
+
+    <div class="container py-4">
+        
+        <h5 class="fw-bold mb-3 border-start border-4 border-primary ps-3 text-dark">
+            <i class="bi bi-laptop me-2"></i> {% trans "الامتحانات الإلكترونية" %}
+        </h5>
+        <div class="card shadow-sm border-0 mb-5">
+            <table class="table table-bordered text-center mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>{% trans "الامتحان" %}</th>
+                        <th>{% trans "الدرجة" %}</th>
+                        <th>{% trans "التاريخ" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for res in exam_results %}
+                    <tr>
+                        <td>{{ res.exam.title }}</td>
+                        <td class="fw-bold {% if res.score >= res.exam.total_marks|divisibleby:2 %}text-success{% else %}text-danger{% endif %}">{{ res.score }}</td>
+                        <td>{{ res.submitted_at|date:"d/m/Y" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="text-muted py-3">{% trans "لا توجد نتائج." %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold border-start border-4 border-info ps-3 text-dark mb-0">
+                <i class="bi bi-clipboard-data me-2"></i> {% trans "سجل الحصص والتقييمات" %}
+            </h5>
+            
+            <form method="GET">
+                <select name="month" class="form-select form-select-sm border-secondary" onchange="this.form.submit()" style="width: auto;">
+                    <option value="">{% trans "كل الشهور" %}</option>
+                    <option value="1" {% if selected_month == '1' %}selected{% endif %}>{% trans "يناير" %}</option>
+                    <option value="2" {% if selected_month == '2' %}selected{% endif %}>{% trans "فبراير" %}</option>
+                    <option value="3" {% if selected_month == '3' %}selected{% endif %}>{% trans "مارس" %}</option>
+                    <option value="4" {% if selected_month == '4' %}selected{% endif %}>{% trans "أبريل" %}</option>
+                    <option value="5" {% if selected_month == '5' %}selected{% endif %}>{% trans "مايو" %}</option>
+                    <option value="6" {% if selected_month == '6' %}selected{% endif %}>{% trans "يونيو" %}</option>
+                    <option value="7" {% if selected_month == '7' %}selected{% endif %}>{% trans "يوليو" %}</option>
+                    <option value="8" {% if selected_month == '8' %}selected{% endif %}>{% trans "أغسطس" %}</option>
+                    <option value="9" {% if selected_month == '9' %}selected{% endif %}>{% trans "سبتمبر" %}</option>
+                    <option value="10" {% if selected_month == '10' %}selected{% endif %}>{% trans "أكتوبر" %}</option>
+                    <option value="11" {% if selected_month == '11' %}selected{% endif %}>{% trans "نوفمبر" %}</option>
+                    <option value="12" {% if selected_month == '12' %}selected{% endif %}>{% trans "ديسمبر" %}</option>
+                </select>
+            </form>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle text-center mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th title="{% trans 'رقم الحصة' %}">#</th> <th>{% trans "التاريخ" %}</th>
+                            <th>{% trans "الحضور" %}</th>
+                            <th>{% trans "الواجب" %}</th>
+                            <th>{% trans "امتحان الحصة" %}</th>
+                            <th>{% trans "تسميع" %}</th>
+                            <th>{% trans "شامل" %}</th>
+                            <th>{% trans "ملاحظات" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr class="{% if not log.is_present %}table-danger bg-opacity-10{% endif %}">
+                            
+                            <td>
+                                <span class="badge bg-secondary rounded-pill">{{ log.session_number }}</span>
+                            </td>
+                            
+                            <td>{{ log.date|date:"d/m" }}</td>
+                            
+                            <td>
+                                {% if log.is_present %}
+                                    <i class="bi bi-check-circle-fill text-success"></i>
+                                {% else %}
+                                    <span class="badge bg-danger">{% trans "غياب" %}</span>
+                                {% endif %}
+                            </td>
+
+                            <td>{% if log.homework_score is not None %}<span class="fw-bold">{{ log.homework_score }}</span><span class="text-muted small">/{{ log.homework_max }}</span>{% else %}-{% endif %}</td>
+                            <td>{% if log.class_exam_score is not None %}<span class="fw-bold">{{ log.class_exam_score }}</span><span class="text-muted small">/{{ log.class_exam_max }}</span>{% else %}-{% endif %}</td>
+                            <td>{% if log.recitation_score is not None %}<span class="fw-bold">{{ log.recitation_score }}</span><span class="text-muted small">/{{ log.recitation_max }}</span>{% else %}-{% endif %}</td>
+                            <td>{% if log.comprehensive_exam_score is not None %}<span class="badge bg-primary">{{ log.comprehensive_exam_score }} / {{ log.comprehensive_exam_max }}</span>{% else %}-{% endif %}</td>
+                            
+                            <td class="text-muted small text-start text-truncate" style="max-width: 150px;">{{ log.note }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-muted py-4">{% trans "لا يوجد سجلات لهذا الشهر." %}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

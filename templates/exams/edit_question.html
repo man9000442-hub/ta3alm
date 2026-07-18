@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "تعديل السؤال" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-header bg-warning text-dark py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold">{% trans "تعديل السؤال" %}</h5>
+                    <span class="badge bg-light text-dark">{{ exam.title }}</span>
+                </div>
+                
+                <div class="card-body p-5">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <!-- 1. نص السؤال -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">{% trans "نص السؤال" %}</label>
+                            {{ form.text }}
+                        </div>
+
+                        <!-- 2. الصورة (عرض القديمة + رفع جديدة) -->
+                        <div class="mb-4 bg-light p-3 rounded border">
+                            <label class="form-label fw-bold d-block">{% trans "صورة السؤال" %}</label>
+                            
+                            <!-- عرض الصورة الحالية (إن وجدت) -->
+                            {% if question.image %}
+                                <div class="mb-3 text-center">
+                                    <img src="{{ question.image.url }}" class="img-fluid rounded border shadow-sm" style="max-height: 200px;">
+                                    <div class="form-check mt-2 d-inline-block">
+                                        <input type="checkbox" name="image-clear" id="image-clear_id" class="form-check-input">
+                                        <label for="image-clear_id" class="form-check-label text-danger small fw-bold">{% trans "حذف الصورة الحالية" %}</label>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            
+                            <!-- رفع صورة جديدة (حسب الباقة) -->
+                            {% if allow_images %}
+                                <label class="small text-primary fw-bold">{% trans "تغيير الصورة (اختياري):" %}</label>
+                                <input type="file" name="image" class="form-control mt-1" accept="image/*">
+                            {% else %}
+                                {% if not question.image %}
+                                    <div class="alert alert-warning small mb-0">
+                                        <i class="bi bi-lock-fill me-1"></i> {% trans "إضافة الصور غير متاحة في باقتك الحالية." %}
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-info small mb-0">
+                                        <i class="bi bi-info-circle me-1"></i> {% trans "يمكنك حذف الصورة الحالية، لكن لا يمكنك رفع صورة جديدة بسبب قيود الباقة." %}
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- 3. الاختيارات -->
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="small text-muted">{% trans "اختيار A" %}</label>
+                                {{ form.option_a }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small text-muted">{% trans "اختيار B" %}</label>
+                                {{ form.option_b }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small text-muted">{% trans "اختيار C" %}</label>
+                                {{ form.option_c }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small text-muted">{% trans "اختيار D" %}</label>
+                                {{ form.option_d }}
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- 4. الإجابة والدرجة -->
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">{% trans "الإجابة الصحيحة" %}</label>
+                                {{ form.correct_answer }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">{% trans "الدرجة" %}</label>
+                                {{ form.marks }}
+                            </div>
+                        </div>
+
+                        <!-- 5. الأزرار -->
+                        <div class="d-flex justify-content-between mt-5">
+                            <a href="{% url 'exam_manage' exam.id %}" class="btn btn-outline-secondary px-4">{% trans "إلغاء" %}</a>
+                            <button type="submit" class="btn btn-warning px-5 fw-bold shadow">
+                                <i class="bi bi-save"></i> {% trans "حفظ التعديلات" %}
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

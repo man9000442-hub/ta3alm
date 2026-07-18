@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "مجموعة مغلقة" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5 text-center" style="min-height: 70vh; display: flex; align-items: center; justify-content: center;">
+    <div class="card shadow-lg border-0 p-5 mx-auto rounded-4" style="max-width: 600px;">
+        <div class="mb-4">
+            <div class="bg-secondary bg-opacity-10 text-secondary rounded-circle d-inline-flex align-items-center justify-content-center p-4" style="width: 100px; height: 100px;">
+                <i class="bi bi-lock-fill display-4"></i>
+            </div>
+        </div>
+        
+        <h2 class="fw-bold text-dark mb-3">{% trans "المجموعة مغلقة مؤقتاً" %}</h2>
+        
+        <p class="lead text-muted mb-4">
+            {% trans "عفواً، هذه المجموعة غير متاحة حالياً بسبب قيود اشتراك المعلم." %}
+            <br>
+            <span class="fs-6 text-primary">{{ group_name }}</span>
+        </p>
+        
+        <div class="alert alert-warning small text-start">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {% trans "بياناتك محفوظة. يرجى التواصل مع المعلم لحل المشكلة." %}
+        </div>
+
+        <div class="d-grid gap-2 col-8 mx-auto mt-4">
+            <a href="{% url 'home' %}" class="btn btn-secondary btn-lg rounded-pill shadow-sm">
+                {% trans "العودة للرئيسية" %}
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

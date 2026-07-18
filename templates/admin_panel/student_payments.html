@@ -1,0 +1,44 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% load i18n %}
+{% block page_title %}مبيعات الحزم{% endblock %}
+{% block nav_sp %}active{% endblock %}
+{% block breadcrumb %}<span class="sep">/</span><span class="current">مبيعات الحزم</span>{% endblock %}
+
+{% block content %}
+<div class="page-header d-flex align-items-center justify-content-between">
+    <div>
+        <h1><i class="bi bi-cart-check-fill me-2" style="color:var(--admin-accent);"></i>مبيعات الحزم التعليمية</h1>
+    </div>
+    <div class="stat-card text-center" style="min-width:160px;">
+        <div class="stat-icon mx-auto" style="background:#e8f4fd; color:#0d6efd;"><i class="bi bi-bag-fill"></i></div>
+        <div class="stat-number">{{ total_revenue }}</div>
+        <div class="stat-label">إجمالي المبيعات (EGP)</div>
+    </div>
+</div>
+
+<div class="admin-card">
+    <div class="table-responsive">
+        <table class="admin-table">
+            <thead>
+                <tr><th>الطالب</th><th>الحزمة</th><th>المعلم</th><th>السعر</th><th>تاريخ الشراء</th></tr>
+            </thead>
+            <tbody>
+                {% for p in payments %}
+                <tr>
+                    <td>
+                        <div class="fw-bold" style="font-size:0.875rem;">{{ p.student.user.get_full_name }}</div>
+                        <div class="text-muted" style="font-size:0.75rem;">{{ p.student.user.phone }}</div>
+                    </td>
+                    <td class="fw-bold" style="font-size:0.875rem;">{{ p.package.title }}</td>
+                    <td class="text-muted" style="font-size:0.875rem;">{{ p.package.teacher.user.get_full_name }}</td>
+                    <td class="fw-bold" style="color:var(--admin-success);">{{ p.package.price }} EGP</td>
+                    <td class="text-muted" style="font-size:0.85rem;">{{ p.joined_at|date:"j M Y · H:i" }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="5"><div class="empty-state"><i class="bi bi-bag-x"></i>لا توجد مبيعات</div></td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,99 @@
+"""
+dashboard_admin/forms.py
+نماذج لوحة الإدارة
+"""
+from django import forms
+from django.contrib.auth import get_user_model
+from teachers.models import TeacherProfile
+from accounts.models import StudentProfile
+from assistants.models import AssistantProfile
+from .models import AdminProfile, AdminRole
+
+User = get_user_model()
+
+
+# ----------------------------------------------------------
+# تعديل بيانات مستخدم (من لوحة الإدارة)
+# ----------------------------------------------------------
+class AdminUserEditForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'phone', 'national_id', 'custom_id', 'role']
+        labels = {
+            'first_name':  'الاسم الأول',
+            'last_name':   'الاسم الأخير',
+            'email':       'البريد الإلكتروني',
+            'phone':       'رقم الهاتف',
+            'national_id': 'الرقم القومي',
+            'custom_id':   'الكود التعريفي',
+            'role':        'الدور',
+        }
+        widgets = {
+            'first_name':  forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name':   forms.TextInput(attrs={'class': 'form-control'}),
+            'email':       forms.EmailInput(attrs={'class': 'form-control'}),
+            'phone':       forms.TextInput(attrs={'class': 'form-control'}),
+            'national_id': forms.TextInput(attrs={'class': 'form-control'}),
+            'custom_id':   forms.TextInput(attrs={'class': 'form-control'}),
+            'role':        forms.Select(attrs={'class': 'form-select'}),
+        }
+
+
+class AdminTeacherEditForm(forms.ModelForm):
+    subscription_end_date = forms.DateTimeField(
+        label='تاريخ انتهاء الاشتراك',
+        required=False,
+        widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+    )
+
+    class Meta:
+        model = TeacherProfile
+        fields = ['subject', 'bio', 'subscription_end_date', 'current_plan']
+        labels = {
+            'subject':      'المادة',
+            'bio':          'نبذة',
+            'current_plan': 'الباقة الحالية',
+        }
+        widgets = {
+            'subject':      forms.Select(attrs={'class': 'form-select'}),
+            'bio':          forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'current_plan': forms.Select(attrs={'class': 'form-select'}),
+        }
+
+
+class AdminStudentEditForm(forms.ModelForm):
+    class Meta:
+        model = StudentProfile
+        fields = ['parent_phone']
+        labels = {'parent_phone': 'رقم ولي الأمر'}
+        widgets = {'parent_phone': forms.TextInput(attrs={'class': 'form-control'})}
+
+
+class AdminAssistantEditForm(forms.ModelForm):
+    class Meta:
+        model = AssistantProfile
+        fields = ['phone']
+        labels = {'phone': 'رقم الهاتف'}
+        widgets = {'phone': forms.TextInput(attrs={'class': 'form-control'})}
+
+
+# ----------------------------------------------------------
+# تعيين مسؤول جديد
+# ----------------------------------------------------------
+class AppointAdminForm(forms.ModelForm):
+    user_email = forms.EmailField(
+        label='البريد الإلكتروني للمستخدم',
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'أدخل إيميل المستخدم'}),
+    )
+
+    class Meta:
+        model = AdminProfile
+        fields = ['admin_role', 'notes']
+        labels = {
+            'admin_role': 'الدور الإداري',
+            'notes':      'ملاحظات',
+        }
+        widgets = {
+            'admin_role': forms.Select(attrs={'class': 'form-select'}),
+            'notes':      forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        }

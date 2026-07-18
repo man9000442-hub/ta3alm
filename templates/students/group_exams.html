@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+    {% include 'students/includes/student_group_navbar.html' %}
+    <div class="container">
+        <div class="list-group">
+            {% for exam in exams %}
+            <div class="list-group-item p-4 d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="fw-bold mb-1">{{ exam.title }}</h5>
+                    <small class="text-muted">
+                        {% blocktrans with duration=exam.duration_minutes count=exam.questions.count %}
+                            {{ duration }} دقيقة | {{ count }} سؤال
+                        {% endblocktrans %}
+                    </small>
+                </div>
+                
+                {% if exam.id in taken_ids %}
+                    <button class="btn btn-secondary disabled">{% trans "تم الأداء" %}</button>
+                {% else %}
+                    <a href="{% url 'student_take_exam' exam.id %}" class="btn btn-warning">{% trans "ابدأ الامتحان" %}</a>
+                {% endif %}
+            </div>
+            {% empty %}
+            <div class="text-center py-5 text-muted">{% trans "لا توجد امتحانات متاحة." %}</div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

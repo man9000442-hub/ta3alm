@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "عفواً" %}{% endblock %}
+
+{% block content %}
+<div class="container py-5 text-center" style="min-height: 70vh; display: flex; align-items: center; justify-content: center;">
+    <div class="card shadow-lg border-0 p-5 mx-auto rounded-4" style="max-width: 600px;">
+        <div class="mb-4">
+            <div class="bg-danger bg-opacity-10 text-danger rounded-circle d-inline-flex align-items-center justify-content-center p-4" style="width: 100px; height: 100px;">
+                <i class="bi bi-lock-fill display-4"></i>
+            </div>
+        </div>
+        
+        <h2 class="fw-bold text-dark mb-3">{% trans "هذا المحتوى غير متوفر حالياً" %}</h2>
+        
+        <p class="lead text-muted mb-4">
+            {% blocktrans with name=teacher_name %}
+                نعتذر منك، حساب المعلم 
+                <span class="text-primary fw-bold">{{ name }}</span> 
+                متوقف مؤقتاً لأسباب إدارية.
+            {% endblocktrans %}
+        </p>
+        
+        <div class="alert alert-light border small text-muted mb-4 text-start">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            {% trans "لا تقلق، جميع البيانات (الدرجات، الامتحانات، الحضور) محفوظة وآمنة تماماً. يرجى التواصل مع المعلم أو إدارة السنتر للتنبيه." %}
+        </div>
+
+        <div class="d-grid gap-2 col-8 mx-auto">
+            {% if user.role == 'student' %}
+                <a href="{% url 'student_dashboard' %}" class="btn btn-primary btn-lg rounded-pill shadow-sm">
+                    {% trans "العودة للوحة الطالب" %}
+                </a>
+            {% elif user.role == 'assistant' %}
+                <a href="{% url 'assistant_dashboard' %}" class="btn btn-dark btn-lg rounded-pill shadow-sm">
+                    {% trans "العودة للوحة المساعد" %}
+                </a>
+            {% else %}
+                <a href="{% url 'home' %}" class="btn btn-secondary btn-lg rounded-pill shadow-sm">
+                    {% trans "العودة للرئيسية" %}
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

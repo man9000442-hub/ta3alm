@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "محتوى:" %} {{ package.title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <!-- 1. هيدر الحزمة وأزرار التنقل -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 border-bottom pb-3">
+        <div>
+            <h2 class="fw-bold mb-1">{{ package.title }}</h2>
+            <p class="text-muted mb-0">{% trans "تقدمك الدراسي" %}</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{% url 'student_package_files' package.id %}" class="btn btn-outline-danger shadow-sm">
+                <i class="bi bi-file-earmark-pdf-fill me-1"></i> {% trans "الملفات" %}
+            </a>
+            <a href="{% url 'my_package_marks' package.id %}" class="btn btn-outline-success">
+                <i class="bi bi-bar-chart-fill me-1"></i> {% trans "درجاتي" %}
+            </a>
+            <a href="{% url 'package_leaderboard' package.id %}" class="btn btn-outline-warning text-dark">
+                <i class="bi bi-trophy-fill me-1"></i> {% trans "الترتيب" %}
+            </a>
+            <a href="{% url 'student_dashboard' %}" class="btn btn-secondary">{% trans "خروج" %}</a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- المحاضرات -->
+        <div class="col-md-8">
+            <h4 class="fw-bold text-primary mb-3"><i class="bi bi-youtube me-2"></i> {% trans "المحاضرات" %}</h4>
+            <div class="list-group shadow-sm border-0">
+                {% for lec in lectures %}
+                <div class="list-group-item p-3 d-flex justify-content-between align-items-center hover-bg">
+                    <div>
+                        <h6 class="mb-1 fw-bold">{{ lec.title }}</h6>
+                        <small class="text-muted">{{ lec.duration_minutes }} {% trans "دقيقة" %}</small>
+                    </div>
+                    
+                    {% if lec.id in watched_ids %}
+                        <a href="{% url 'watch_package_lecture' package.id lec.id %}" class="btn btn-sm btn-success px-3">
+                            <i class="bi bi-check-circle-fill"></i> {% trans "شوهد" %}
+                        </a>
+                    {% else %}
+                        <a href="{% url 'watch_package_lecture' package.id lec.id %}" class="btn btn-sm btn-primary px-3">
+                            <i class="bi bi-play-fill"></i> {% trans "ابدأ" %}
+                        </a>
+                    {% endif %}
+                </div>
+                {% empty %}
+                <div class="text-center py-4 text-muted">{% trans "لا توجد محاضرات." %}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- الامتحانات -->
+        <div class="col-md-4">
+            <h4 class="fw-bold text-warning mb-3"><i class="bi bi-pencil-square me-2"></i> {% trans "الامتحانات" %}</h4>
+            <div class="list-group shadow-sm border-0">
+                {% for exam in exams %}
+                <div class="list-group-item p-3">
+                    <h6 class="mb-1 fw-bold">{{ exam.title }}</h6>
+                    <div class="d-grid mt-2">
+                        <a href="{% url 'student_take_package_exam' package.id exam.id %}" class="btn btn-sm btn-outline-warning text-dark fw-bold">
+                            {% trans "بدأ الامتحان" %}
+                        </a>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="text-center py-4 text-muted">{% trans "لا توجد امتحانات." %}</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-bg:hover { background-color: #f8f9fa; }
+</style>
+{% endblock %}

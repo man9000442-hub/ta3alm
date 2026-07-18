@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load socialaccount %} {% block title %}{% trans "تسجيل الدخول" %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card shadow-lg border-0 rounded-4">
+            <div class="card-body p-5 text-center">
+                
+                <h2 class="mb-4 fw-bold text-primary">{% trans "مرحباً بعودتك!" %}</h2>
+                <p class="text-muted mb-4">{% trans "سجل دخولك للمنصة للمتابعة" %}</p>
+
+                <form class="login" method="POST" action="{% url 'account_login' %}">
+                    {% csrf_token %}
+                    
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger p-2 small">
+                        {{ form.non_field_errors|join:", " }}
+                    </div>
+                    {% endif %}
+
+                    <div class="mb-3 text-start">
+                        <label class="form-label fw-bold">{% trans "اسم المستخدم أو الإيميل أو الهاتف" %}</label>
+                        <input type="text" name="login" class="form-control form-control-lg bg-light border-0" placeholder="{% trans 'اكتب هنا...' %}" required autofocus>
+                        {% if form.login.errors %}
+                        <div class="text-danger small mt-1">{{ form.login.errors|join:", " }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3 text-start">
+                        <label class="form-label fw-bold">{% trans "كلمة المرور" %}</label>
+                        <input type="password" name="password" class="form-control form-control-lg bg-light border-0" placeholder="••••••••" required>
+                        {% if form.password.errors %}
+                        <div class="text-danger small mt-1">{{ form.password.errors|join:", " }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex justify-content-between mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="remember" id="rememberMe">
+                            <label class="form-check-label small" for="rememberMe">{% trans "تذكرني" %}</label>
+                        </div>
+                        <a href="{% url 'account_reset_password' %}" class="small text-decoration-none">{% trans "نسيت كلمة المرور؟" %}</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold rounded-3">{% trans "تسجيل الدخول" %}</button>
+                </form>
+
+                <div class="my-4 text-muted small position-relative">
+                    <hr>
+                    <span class="position-absolute top-50 start-50 translate-middle bg-white px-2">{% trans "أو" %}</span>
+                </div>
+
+                <form action="{% provider_login_url 'google' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-light border btn-lg w-100 d-flex align-items-center justify-content-center gap-2 py-2 shadow-sm hover-shadow rounded-3">
+                        <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="20" height="20" alt="Google Logo">
+                        <span class="fw-bold text-dark fs-6">{% trans "المتابعة باستخدام Google" %}</span>
+                    </button>
+                </form>
+
+                <hr class="my-4">
+                
+                <p class="small text-muted mb-0">
+                    {% trans "ليس لديك حساب؟" %} 
+                    <a href="{% url 'home' %}" class="text-decoration-none fw-bold text-primary">{% trans "أنشئ حساباً جديداً" %}</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-shadow:hover {
+        background-color: #f8f9fa;
+        transform: translateY(-2px);
+        transition: all 0.2s;
+    }
+</style>
+{% endblock %}

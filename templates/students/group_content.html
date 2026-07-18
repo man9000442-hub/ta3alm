@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+    {% include 'students/includes/student_group_navbar.html' %}
+    <div class="container">
+        <div class="row g-4">
+            {% for lecture in lectures %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="fw-bold">{{ lecture.title }}</h5>
+                        <p class="text-muted small">{{ lecture.description|truncatewords:10 }}</p>
+                        
+                        {% if lecture.id in unlocked_ids %}
+                            <a href="{% url 'student_watch_lecture' lecture.id %}" class="btn btn-success w-100">
+                                <i class="bi bi-play-fill"></i> {% trans "مشاهدة" %}
+                            </a>
+                        {% else %}
+                            <a href="{% url 'student_watch_lecture' lecture.id %}" class="btn btn-primary w-100">
+                                <i class="bi bi-lock-fill"></i> {% trans "أدخل الكود للمشاهدة" %}
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center text-muted py-5">{% trans "لا توجد محاضرات حالياً." %}</div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

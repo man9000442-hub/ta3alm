@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}
+    {% blocktrans with name=student.user.first_name %}سجل: {{ name }}{% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+    {% include 'teachers/includes/group_navbar.html' %}
+
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h4 class="fw-bold mb-1">
+                    <i class="bi bi-journal-text text-primary me-2"></i> {% trans "السجل الكامل" %}
+                </h4>
+                <p class="text-muted mb-0">
+                    {% blocktrans with f_name=student.user.first_name l_name=student.user.last_name %}
+                        الطالب: <span class="fw-bold text-dark">{{ f_name }} {{ l_name }}</span>
+                    {% endblocktrans %}
+                </p>
+            </div>
+            <a href="{% url 'group_students' group.id %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-right me-1"></i> {% trans "عودة" %}
+            </a>
+        </div>
+
+        <form method="GET" class="mb-3 d-flex align-items-center gap-2 bg-light p-2 rounded shadow-sm" style="max-width: 300px;">
+            <label class="fw-bold text-muted small"><i class="bi bi-filter"></i> {% trans "تصفية:" %}</label>
+            <select name="month" class="form-select form-select-sm border-0 bg-white" onchange="this.form.submit()">
+                <option value="">-- {% trans "كل الشهور" %} --</option>
+                <option value="1" {% if selected_month == '1' %}selected{% endif %}>{% trans "يناير" %}</option>
+                <option value="2" {% if selected_month == '2' %}selected{% endif %}>{% trans "فبراير" %}</option>
+                <option value="3" {% if selected_month == '3' %}selected{% endif %}>{% trans "مارس" %}</option>
+                <option value="4" {% if selected_month == '4' %}selected{% endif %}>{% trans "أبريل" %}</option>
+                <option value="5" {% if selected_month == '5' %}selected{% endif %}>{% trans "مايو" %}</option>
+                <option value="6" {% if selected_month == '6' %}selected{% endif %}>{% trans "يونيو" %}</option>
+                <option value="7" {% if selected_month == '7' %}selected{% endif %}>{% trans "يوليو" %}</option>
+                <option value="8" {% if selected_month == '8' %}selected{% endif %}>{% trans "أغسطس" %}</option>
+                <option value="9" {% if selected_month == '9' %}selected{% endif %}>{% trans "سبتمبر" %}</option>
+                <option value="10" {% if selected_month == '10' %}selected{% endif %}>{% trans "أكتوبر" %}</option>
+                <option value="11" {% if selected_month == '11' %}selected{% endif %}>{% trans "نوفمبر" %}</option>
+                <option value="12" {% if selected_month == '12' %}selected{% endif %}>{% trans "ديسمبر" %}</option>
+            </select>
+        </form>
+
+        <div class="card shadow-sm border-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle text-center mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>{% trans "الحصة" %}</th>
+                            <th>{% trans "التاريخ" %}</th>
+                            <th>{% trans "الحضور" %}</th>
+                            <th>{% trans "الواجب" %}</th>
+                            <th>{% trans "امتحان الحصة" %}</th>
+                            <th>{% trans "التسميع" %}</th>
+                            <th>{% trans "الشامل" %}</th>
+                            <th>{% trans "ملاحظات" %}</th>
+                            <th>{% trans "حذف" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for log in logs %}
+                        <tr class="{% if not log.is_present %}table-danger bg-opacity-10{% endif %}">
+                            
+                            <td>
+                                <span class="badge bg-secondary rounded-pill">{{ log.session_number }}</span>
+                            </td>
+
+                            <td class="text-muted small">{{ log.date|date:"d/m" }}</td>
+                            
+                            <td>
+                                {% if log.is_present %}
+                                    <span class="text-success fw-bold"><i class="bi bi-check-lg"></i></span>
+                                {% else %}
+                                    <span class="badge bg-danger">{% trans "غياب" %}</span>
+                                {% endif %}
+                            </td>
+
+                            <td>{% if log.homework_score is not None %}<span class="fw-bold">{{ log.homework_score }}</span><span class="text-muted small">/{{ log.homework_max }}</span>{% else %}-{% endif %}</td>
+                            <td>{% if log.class_exam_score is not None %}<span class="fw-bold">{{ log.class_exam_score }}</span><span class="text-muted small">/{{ log.class_exam_max }}</span>{% else %}-{% endif %}</td>
+                            <td>{% if log.recitation_score is not None %}<span class="fw-bold">{{ log.recitation_score }}</span><span class="text-muted small">/{{ log.recitation_max }}</span>{% else %}-{% endif %}</td>
+                            <td>
+                                {% if log.comprehensive_exam_score is not None %}
+                                    <span class="badge bg-primary">{{ log.comprehensive_exam_score }} / {{ log.comprehensive_exam_max }}</span>
+                                {% else %}-{% endif %}
+                            </td>
+
+                            <td class="text-start small text-muted text-truncate" style="max-width: 150px;" title="{{ log.note }}">{{ log.note|default:"-" }}</td>
+
+                            <td>
+                                {% if is_owner %}
+                                <form method="POST" class="d-inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="delete_log">
+                                    <input type="hidden" name="log_id" value="{{ log.id }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger border-0" onclick="return confirm('{% trans "حذف هذا السجل نهائياً؟" %}')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="9" class="py-5 text-muted">{% trans "لا توجد سجلات مطابقة." %}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

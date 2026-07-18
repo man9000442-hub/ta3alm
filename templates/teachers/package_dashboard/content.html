@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% trans "إدارة المحتوى" %}{% endblock %}
+
+{% block content %}
+    {% include 'teachers/includes/package_navbar.html' %}
+
+    <div class="container py-3">
+        
+        <!-- الأزرار العلوية -->
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+            <h4 class="fw-bold text-dark border-start border-4 border-primary ps-3 mb-0">{% trans "محتوى الحزمة" %}</h4>
+            
+            <div class="d-flex gap-2">
+                <!-- زر الاستيراد -->
+                <button class="btn btn-outline-dark shadow-sm" data-bs-toggle="modal" data-bs-target="#importContentModal">
+                    <i class="bi bi-arrow-repeat me-1"></i> {% trans "استيراد" %}
+                </button>
+                
+                <!-- زر محاضرة -->
+                <button class="btn btn-danger shadow-sm" data-bs-toggle="modal" data-bs-target="#addLectureModal">
+                    <i class="bi bi-youtube me-1"></i> {% trans "محاضرة" %}
+                </button>
+
+                <!-- زر امتحان -->
+                <button class="btn btn-warning shadow-sm" data-bs-toggle="modal" data-bs-target="#addExamModal">
+                    <i class="bi bi-pencil-square me-1"></i> {% trans "امتحان" %}
+                </button>
+
+                <!-- زر PDF (جديد) -->
+                <button class="btn btn-dark shadow-sm" data-bs-toggle="modal" data-bs-target="#addPackPDFModal">
+                    <i class="bi bi-file-earmark-plus me-1"></i> {% trans "ملف" %}
+                </button>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- 1. المحاضرات -->
+            <div class="col-md-5">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-dark text-white fw-bold py-3 d-flex justify-content-between">
+                        <span><i class="bi bi-youtube me-2"></i> {% trans "المحاضرات" %}</span>
+                        <span class="badge bg-light text-dark">{{ package.lectures.count }}</span>
+                    </div>
+                    <ul class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
+                        {% for lec in package.lectures.all %}
+                        <li class="list-group-item p-3 d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1 fw-bold">{{ lec.title }}</h6>
+                                <small class="text-muted">{% if lec.group %}{{ lec.group.name }}{% else %}{% trans "محتوى خاص" %}{% endif %}</small>
+                            </div>
+                            <form method="POST" action="{% url 'remove_package_content' package.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="type" value="lecture">
+                                <input type="hidden" name="id" value="{{ lec.id }}">
+                                <button class="btn btn-sm text-danger" title="{% trans 'إزالة' %}"><i class="bi bi-x-lg"></i></button>
+                            </form>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item text-center py-4 text-muted">{% trans "لا توجد محاضرات." %}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 2. الامتحانات -->
+            <div class="col-md-4">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-warning text-dark fw-bold py-3 d-flex justify-content-between">
+                        <span><i class="bi bi-pencil-square me-2"></i> {% trans "الامتحانات" %}</span>
+                        <span class="badge bg-dark text-white">{{ package.exams.count }}</span>
+                    </div>
+                    <ul class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
+                        {% for exam in package.exams.all %}
+                        <li class="list-group-item p-3 d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1 fw-bold">{{ exam.title }}</h6>
+                                <small class="text-muted">{{ exam.duration_minutes }} {% trans "د" %}</small>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'exam_manage' exam.id %}" class="btn btn-sm text-primary"><i class="bi bi-gear-fill"></i></a>
+                                <form method="POST" action="{% url 'remove_package_content' package.id %}">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="type" value="exam">
+                                    <input type="hidden" name="id" value="{{ exam.id }}">
+                                    <button class="btn btn-sm text-danger"><i class="bi bi-x-lg"></i></button>
+                                </form>
+                            </div>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item text-center py-4 text-muted">{% trans "لا توجد امتحانات." %}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 3. الملفات (جديد) -->
+            <div class="col-md-3">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-header bg-secondary text-white fw-bold py-3 d-flex justify-content-between">
+                        <span><i class="bi bi-file-earmark-text me-2"></i> {% trans "الملفات" %}</span>
+                        <span class="badge bg-dark">{{ package.pdfs.count }}</span>
+                    </div>
+                    <ul class="list-group list-group-flush" style="max-height: 400px; overflow-y: auto;">
+                        {% for pdf in package.pdfs.all %}
+                        <li class="list-group-item p-3 d-flex justify-content-between align-items-center">
+                            <a href="{{ pdf.link }}" target="_blank" class="text-decoration-none text-dark fw-bold text-truncate" style="max-width: 150px;">
+                                <i class="bi bi-file-pdf text-danger me-1"></i> {{ pdf.title }}
+                            </a>
+                            
+                            <form method="POST" action="{% url 'remove_package_content' package.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="type" value="pdf"> <!-- نوع جديد -->
+                                <input type="hidden" name="id" value="{{ pdf.id }}">
+                                <button class="btn btn-sm text-danger"><i class="bi bi-x-lg"></i></button>
+                            </form>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item text-center py-4 text-muted small">{% trans "لا توجد ملفات." %}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    
+    <!-- 1. Modal إضافة PDF -->
+    <div class="modal fade" id="addPackPDFModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title">{% trans "إضافة ملف جديد" %}</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="{% url 'add_pdf_to_package' package.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">{% trans "اسم الملف" %}</label>
+                            <input type="text" name="title" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">{% trans "رابط الملف (Drive/Direct)" %}</label>
+                            <input type="url" name="link" class="form-control" placeholder="https://..." required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-dark">{% trans "إضافة" %}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Modal الاستيراد (المحدث مع الصف) -->
+    <div class="modal fade" id="importContentModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title fw-bold">{% trans "استيراد محتوى" %}</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="{% url 'import_package_content' package.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">{% trans "اختر المجموعة المصدر:" %}</label>
+                            <select id="sourceGroupSelect" class="form-select border-primary" name="source_group_id" required>
+                                <option value="" selected disabled>{% trans "-- اختر مجموعة --" %}</option>
+                                {% for g in package.teacher.groups.all %}
+                                    {% if g.grade == package.grade %}
+                                        <option value="group_{{ g.id }}">{{ g.name }} ({{ g.get_grade_display }})</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- منطقة المحتوى (تظهر بالـ JS) -->
+                        <div id="contentArea" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-6 border-end">
+                                    <h6 class="fw-bold text-primary border-bottom pb-2">
+                                        <input type="checkbox" class="form-check-input me-1" id="selectAllLecs"> {% trans "المحاضرات" %}
+                                    </h6>
+                                    <div style="max-height: 300px; overflow-y: auto;">
+                                        {% for g in package.teacher.groups.all %}
+                                            <div class="group-content group_{{ g.id }}" style="display: none;">
+                                                {% for lec in g.lectures.all %}
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input lec-chk" type="checkbox" name="lecture_ids" value="{{ lec.id }}">
+                                                        <label class="form-check-label small">{{ lec.title }}</label>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 class="fw-bold text-warning text-dark border-bottom pb-2">
+                                        <input type="checkbox" class="form-check-input me-1" id="selectAllExams"> {% trans "الامتحانات" %}
+                                    </h6>
+                                    <div style="max-height: 300px; overflow-y: auto;">
+                                        {% for g in package.teacher.groups.all %}
+                                            <div class="group-content group_{{ g.id }}" style="display: none;">
+                                                {% for exam in g.exams.all %}
+                                                    <div class="form-check mb-2">
+                                                        <input class="form-check-input exam-chk" type="checkbox" name="exam_ids" value="{{ exam.id }}">
+                                                        <label class="form-check-label small">{{ exam.title }}</label>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="submit" class="btn btn-primary px-4">{% trans "استيراد المحدد" %}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- باقي المودالز (محاضرة وامتحان) كما هي -->
+    {% include 'teachers/includes/modals_content.html' %}
+
+    <!-- JavaScript للتحكم -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const groupSelect = document.getElementById('sourceGroupSelect');
+            const contentArea = document.getElementById('contentArea');
+            const allContentDivs = document.querySelectorAll('.group-content');
+            
+            groupSelect.addEventListener('change', function() {
+                const selectedClass = this.value;
+                contentArea.style.display = 'block';
+                
+                allContentDivs.forEach(div => {
+                    div.style.display = 'none';
+                    div.querySelectorAll('input').forEach(c => c.checked = false);
+                });
+
+                if (selectedClass) {
+                    document.querySelectorAll('.' + selectedClass).forEach(div => div.style.display = 'block');
+                }
+            });
+
+            document.getElementById('selectAllLecs').addEventListener('change', function() {
+                document.querySelectorAll('.group-content[style="display: block;"] .lec-chk').forEach(c => c.checked = this.checked);
+            });
+            document.getElementById('selectAllExams').addEventListener('change', function() {
+                document.querySelectorAll('.group-content[style="display: block;"] .exam-chk').forEach(c => c.checked = this.checked);
+            });
+        });
+    </script>
+{% endblock %}

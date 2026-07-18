@@ -1,0 +1,84 @@
+"""
+accounts/models.py — نموذج المستخدم المخصص
+"""
+from django.db import models
+from django.contrib.auth.models import AbstractUser
+from django.utils.translation import gettext_lazy as _
+from core.constants import ROLE_CHOICES
+import random
+import string
+
+
+class User(AbstractUser):
+    role = models.CharField(
+        max_length=20,
+        choices=ROLE_CHOICES,
+        default='student',
+        verbose_name=_('نوع المستخدم'),
+    )
+    phone = models.CharField(
+        max_length=15, blank=True, null=True,
+        verbose_name=_('رقم الهاتف'),
+    )
+    national_id = models.CharField(
+        max_length=14, blank=True, null=True, unique=True,
+        verbose_name=_('الرقم القومي'),
+    )
+    custom_id = models.CharField(
+        max_length=10, blank=True, null=True, unique=True,
+        verbose_name=_('كود المستخدم'),
+    )
+    is_banned = models.BooleanField(default=False, verbose_name=_('محظور'))
+
+    class Meta(AbstractUser.Meta):
+        pass
+
+    def save(self, *args, **kwargs):
+        # ✅ السوبر يوزر / الأدمن لا يحتاج كود — نتجاهل توليده
+        if self.is_superuser or self.role == 'admin':
+            super().save(*args, **kwargs)
+            return
+
+        # توليد custom_id تلقائياً لو لم يوجد
+        if not self.custom_id and self.role in ['student', 'teacher', 'assistant']:
+            chars = string.ascii_uppercase + string.digits
+            if self.national_id and len(self.national_id) >= 14:
+                letters = ''.join(random.choices(string.ascii_uppercase, k=2))
+                self.custom_id = f"{letters}{self.national_id[-3:]}"
+            else:
+                prefix = {'teacher': 'T', 'assistant': 'A', 'student': 'S'}.get(self.role, 'U')
+                self.custom_id = prefix + ''.join(random.choices(chars, k=6))
+
+        super().save(*args, **kwargs)
+
+    def get_dashboard_url(self):
+        """يُعيد رابط لوحة التحكم المناسبة للمستخدم."""
+        from django.urls import reverse
+        if self.is_superuser or self.role == 'admin':
+            return reverse('admin_panel:dashboard')
+        if self.role == 'teacher':
+            return reverse('teacher_dashboard')
+        if self.role == 'student':
+            return reverse('student_dashboard')
+        if self.role == 'assistant':
+            return reverse('assistant_dashboard')
+        return reverse('home')
+
+    def is_platform_admin(self):
+        """هل هذا المستخدم له صلاحيات إدارية على المنصة؟"""
+        return self.is_superuser or self.role == 'admin'
+
+
+class StudentProfile(models.Model):
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name='student_profile',
+    )
+    parent_phone = models.CharField(max_length=15, verbose_name=_('رقم ولي الأمر'))
+    enrolled_teachers = models.ManyToManyField(
+        'teachers.TeacherProfile', blank=True,
+        related_name='students',
+        verbose_name=_('المدرسين المشترك معهم'),
+    )
+
+    def __str__(self):
+        return self.user.get_full_name() or self.user.username
