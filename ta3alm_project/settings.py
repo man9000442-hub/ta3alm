@@ -143,6 +143,7 @@ CORS_ALLOWED_ORIGINS = [
 # ==========================================================
 # إعدادات الأمان (Security Settings)
 # ==========================================================
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = not DEBUG
 SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0
 SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
