@@ -712,36 +712,39 @@ def subscription_info(request):
 
 
 
-from .models import SubscriptionPlan  # ✅ الاستيراد الصحيح من teachers.models
+from .models import SubscriptionPlan
+from django.urls import reverse
+
 @login_required
 def paymob_checkout(request):
     try: teacher = request.user.teacher_profile
     except: return redirect('home')
 
-    # +++++ الشرط الجديد: ممنوع الدفع لو الاشتراك ساري +++++
     if teacher.has_active_subscription():
         messages.warning(request, "اشتراكك ما زال سارياً. لا يمكنك الاشتراك في باقة جديدة الآن.")
         return redirect('subscription_info')
-    # ++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
     plan_id = request.GET.get('plan_id')
-    method = request.GET.get('method', 'card') # card or wallet
-    wallet_number = request.GET.get('wallet_number') # رقم المحفظة (لو موجود)
     
     if plan_id:
         plan = get_object_or_404(SubscriptionPlan, id=plan_id)
         amount = plan.price
-        request.session['selected_plan_id'] = plan.id
     else:
         amount = 500 
-    
-    amount_cents = int(amount) * 100 
 
-    # اختيار Integration ID
-    if method == 'wallet':
-        integration_id = settings.PAYMOB_WALLET_INTEGRATION_ID
-    else:
-        integration_id = settings.PAYMOB_INTEGRATION_ID
+    # توجيه إلى الدفع اليدوي
+    url = reverse('manual_checkout')
+    return redirect(f"{url}?type=teacher_subscription&id={plan_id or 1}&amount={amount}")
+
+    # ===== كود Paymob القديم معطل مؤقتاً =====
+    # method = request.GET.get('method', 'card') # card or wallet
+    # wallet_number = request.GET.get('wallet_number')
+    # amount_cents = int(amount) * 100 
+
+    # if method == 'wallet':
+    #     integration_id = settings.PAYMOB_WALLET_INTEGRATION_ID
+    # else:
+    #     integration_id = settings.PAYMOB_INTEGRATION_ID
 
     try:
         # 1. Auth

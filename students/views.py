@@ -544,21 +544,30 @@ def my_package_content(request, package_id):
 # ==========================================
 # 1. دالة بدء الدفع للحزم (Paymob Checkout for Packages)
 # ==========================================
+from django.urls import reverse
+
 @login_required
 def paymob_package_checkout(request, package_id):
     if request.user.role != 'student': return redirect('home')
 
     package = get_object_or_404(CoursePackage, id=package_id)
-    method = request.GET.get('method', 'card')
-    wallet_number = request.GET.get('wallet_number')
-    
-    amount_cents = int(package.price) * 100
-    request.session['buying_package_id'] = package.id
+    amount = package.price
 
-    if method == 'wallet':
-        integration_id = settings.PAYMOB_WALLET_INTEGRATION_ID
-    else:
-        integration_id = settings.PAYMOB_INTEGRATION_ID
+    # توجيه إلى الدفع اليدوي
+    url = reverse('manual_checkout')
+    return redirect(f"{url}?type=student_package&id={package.id}&amount={amount}")
+
+    # ===== كود Paymob القديم معطل مؤقتاً =====
+    # method = request.GET.get('method', 'card')
+    # wallet_number = request.GET.get('wallet_number')
+    
+    # amount_cents = int(package.price) * 100
+    # request.session['buying_package_id'] = package.id
+
+    # if method == 'wallet':
+    #     integration_id = settings.PAYMOB_WALLET_INTEGRATION_ID
+    # else:
+    #     integration_id = settings.PAYMOB_INTEGRATION_ID
 
     try:
         # Auth

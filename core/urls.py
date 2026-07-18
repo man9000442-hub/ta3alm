@@ -13,4 +13,5 @@ urlpatterns = [
     path('notifications/read/<int:notif_id>/', views.read_notification,     name='read_notification'),
     path('notifications/all/',                  views.all_notifications,     name='all_notifications'),
     path('guide/',                              views.platform_guide,        name='platform_guide'),
+    path('checkout/manual/',                    views.manual_checkout_view,  name='manual_checkout'),
 ]

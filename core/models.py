@@ -48,3 +48,68 @@ class Subject(models.Model):
     
     def __str__(self):
         return self.name
+
+class ManualPayment(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'قيد المراجعة'),
+        ('approved', 'مقبول'),
+        ('rejected', 'مرفوض'),
+    )
+    TYPE_CHOICES = (
+        ('teacher_subscription', 'اشتراك معلم'),
+        ('student_package', 'شراء حزمة طالب'),
+    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="المستخدم")
+    amount = models.PositiveIntegerField(verbose_name="المبلغ")
+    payment_type = models.CharField(max_length=50, choices=TYPE_CHOICES, verbose_name="نوع العملية")
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', verbose_name="الحالة")
+    
+    target_id = models.PositiveIntegerField(help_text="ID الباقة أو الحزمة", null=True, blank=True)
+    
+    phone_number = models.CharField(max_length=50, verbose_name="رقم المحفظة / انستا باي")
+    receipt_image = models.ImageField(upload_to='receipts/', verbose_name="صورة الإيصال (سكرين شوت)")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاريخ الطلب")
+
+    def __str__(self):
+        return f"{self.user} - {self.get_payment_type_display()} - {self.get_status_display()}"
+
+    def save(self, *args, **kwargs):
+        # تنفيذ عند القبول فقط (التحويل من حالة غير مقبول إلى مقبول)
+        if self.pk:
+            old_payment = ManualPayment.objects.get(pk=self.pk)
+            if old_payment.status != 'approved' and self.status == 'approved':
+                # منطق التفعيل
+                if self.payment_type == 'teacher_subscription':
+                    self.activate_teacher_subscription()
+                elif self.payment_type == 'student_package':
+                    self.activate_student_package()
+        super().save(*args, **kwargs)
+
+    def activate_teacher_subscription(self):
+        from teachers.models import SubscriptionPlan, TeacherProfile
+        from django.utils import timezone
+        from datetime import timedelta
+        try:
+            teacher = self.user.teacher_profile
+            plan = SubscriptionPlan.objects.get(id=self.target_id)
+            teacher.current_plan = plan
+            # إذا كان الاشتراك ساري نضيف 30 يوماً على المتبقي، وإلا من اليوم
+            if teacher.subscription_end_date and teacher.subscription_end_date > timezone.now():
+                teacher.subscription_end_date += timedelta(days=30)
+            else:
+                teacher.subscription_end_date = timezone.now() + timedelta(days=30)
+            teacher.save()
+        except Exception as e:
+            print(f"Error activating teacher subscription: {e}")
+
+    def activate_student_package(self):
+        from students.models import PackageEnrollment
+        from teachers.models import CoursePackage
+        try:
+            student = self.user.student_profile
+            package = CoursePackage.objects.get(id=self.target_id)
+            enrollment, created = PackageEnrollment.objects.get_or_create(student=student, package=package)
+            enrollment.is_paid = True
+            enrollment.save()
+        except Exception as e:
+            print(f"Error activating student package: {e}")

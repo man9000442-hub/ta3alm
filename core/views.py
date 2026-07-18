@@ -124,3 +124,44 @@ def all_notifications(request):
 # ==========================================================
 def platform_guide(request):
     return render(request, 'core/guide.html')
+
+# ==========================================================
+# 7. صفحة الدفع اليدوي
+# ==========================================================
+from django.contrib import messages
+from .forms import ManualPaymentForm
+
+@login_required
+def manual_checkout_view(request):
+    # استقبال المتغيرات من الـ session أو GET
+    payment_type = request.GET.get('type')
+    target_id = request.GET.get('id')
+    amount = request.GET.get('amount')
+
+    if not payment_type or not target_id or not amount:
+        messages.error(request, "بيانات الدفع غير مكتملة.")
+        return redirect('home')
+
+    if request.method == 'POST':
+        form = ManualPaymentForm(request.POST, request.FILES)
+        if form.is_valid():
+            payment = form.save(commit=False)
+            payment.user = request.user
+            payment.payment_type = payment_type
+            payment.target_id = target_id
+            payment.amount = amount
+            payment.save()
+            messages.success(request, "تم إرسال طلب الدفع بنجاح. يرجى الانتظار حتى تتم مراجعته من قبل الإدارة.")
+            if request.user.role == 'student':
+                return redirect('student_dashboard')
+            elif request.user.role == 'teacher':
+                return redirect('teacher_dashboard')
+            return redirect('home')
+    else:
+        form = ManualPaymentForm()
+
+    return render(request, 'core/manual_checkout.html', {
+        'form': form,
+        'amount': amount,
+        'payment_type': payment_type,
+    })
