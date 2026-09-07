@@ -5,8 +5,6 @@ Django settings for ta3alm_project project.
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-from django.utils.translation import gettext_lazy as _
-
 # ==========================================================
 # المسارات الأساسية
 # ==========================================================
@@ -22,17 +20,25 @@ import sys
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 if not SECRET_KEY:
-    if 'collectstatic' in sys.argv:
-        SECRET_KEY = 'dummy-key-for-build-phase'
+    if 'collectstatic' in sys.argv or os.environ.get('VERCEL') or os.environ.get('CI'):
+        SECRET_KEY = 'django-insecure-dummy-build-key-change-in-production'
     else:
-        raise ValueError("SECRET_KEY environment variable is not set. Check your .env file.")
+        SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-development-local-key')
 
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.environ.get(
-    'ALLOWED_HOSTS',
-    'localhost,127.0.0.1'
-).split(',')
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.environ.get(
+        'ALLOWED_HOSTS',
+        'localhost,127.0.0.1'
+    ).split(',')
+    if host.strip()
+]
+
+# دعم نطاقات Vercel تلقائياً
+if os.environ.get('VERCEL') or '.vercel.app' not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.extend(['.vercel.app', 'vercel.app'])
 
 # ==========================================================
 # التطبيقات المثبتة (Installed Apps)
@@ -94,6 +100,7 @@ else:
 # Middleware
 # ==========================================================
 MIDDLEWARE = [
+    'ta3alm_project.middleware.SubdomainAdminMiddleware',  # ← أول شيء حتى يعمل قبل كل شيء
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -160,7 +167,11 @@ X_FRAME_OPTIONS = 'DENY'
 CSRF_TRUSTED_ORIGINS = [
     'https://ta3alm.online',
     'https://www.ta3alm.online',
+    'https://admin.ta3alm.online',       # ← سب دومين الأدمن
     'https://ta3alm-production.up.railway.app',
+    'http://admin.localhost:8000',        # ← للتطوير المحلي
+    'http://admin.127.0.0.1:8000',
+    'https://*.vercel.app',
 ]
 
 # ==========================================================
@@ -243,8 +254,8 @@ USE_TZ = True
 TIME_ZONE = 'Africa/Cairo'
 
 LANGUAGES = [
-    ('ar', _('Arabic')),
-    ('en', _('English')),
+    ('ar', 'العربية'),
+    ('en', 'English'),
 ]
 
 LOCALE_PATHS = [
@@ -283,7 +294,7 @@ MEDIA_URL = '/media/'
 # AllAuth — إعدادات المصادقة
 # ==========================================================
 SITE_ID = 1
-PREPEND_WWW = not DEBUG
+PREPEND_WWW = os.environ.get('PREPEND_WWW', 'False') == 'True'
 
 LOGIN_REDIRECT_URL = 'custom_login_redirect'
 LOGOUT_REDIRECT_URL = '/'
