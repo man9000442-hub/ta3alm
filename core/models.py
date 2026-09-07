@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 class SiteSetting(models.Model):
     is_maintenance_mode = models.BooleanField(default=False, verbose_name=_("وضع الصيانة"))
+    is_ai_enabled = models.BooleanField(default=True, verbose_name=_("تفعيل ميزات الذكاء الاصطناعي"))
     
     def save(self, *args, **kwargs):
         self.pk = 1
@@ -35,6 +36,8 @@ class Notification(models.Model):
     
 # قائمة الصفوف (للاستخدام في الفلترة)
 GRADE_CHOICES = (
+    ('1_primary', 'أولى ابتدائي'), ('2_primary', 'ثانية ابتدائي'), ('3_primary', 'ثالثة ابتدائي'),
+    ('4_primary', 'رابعة ابتدائي'), ('5_primary', 'خامسة ابتدائي'), ('6_primary', 'سادسة ابتدائي'),
     ('1_prep', 'أولى إعدادي'), ('2_prep', 'ثانية إعدادي'), ('3_prep', 'ثالثة إعدادي'),
     ('1_sec', 'أولى ثانوي'), ('2_sec', 'ثانية ثانوي'), ('3_sec', 'ثالثة ثانوي'),
 )
@@ -46,6 +49,10 @@ class Subject(models.Model):
     # أو ببساطة: نجعل المادة عامة، ونفلتر بالمعلم.
     # الحل الأبسط: لا نربط المادة بالصف في الداتا بيز، بل نربط المعلم بالمادة.
     
+    class Meta:
+        verbose_name = "المادة"
+        verbose_name_plural = "المواد الدراسية"
+
     def __str__(self):
         return self.name
 
@@ -113,3 +120,37 @@ class ManualPayment(models.Model):
             enrollment.save()
         except Exception as e:
             print(f"Error activating student package: {e}")
+
+TERM_CHOICES = (
+    ('1', 'الترم الأول'),
+    ('2', 'الترم الثاني'),
+)
+
+class CurriculumUnit(models.Model):
+    title = models.CharField(max_length=200, verbose_name="اسم الوحدة / المحور")
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='units', verbose_name="المادة")
+    grade = models.CharField(max_length=20, choices=GRADE_CHOICES, verbose_name="الصف الدراسي")
+    term = models.CharField(max_length=1, choices=TERM_CHOICES, verbose_name="الترم")
+    order = models.PositiveIntegerField(default=1, verbose_name="الترتيب")
+
+    class Meta:
+        ordering = ['grade', 'subject', 'term', 'order']
+        verbose_name = "وحدة دراسية"
+        verbose_name_plural = "الوحدات الدراسية"
+
+    def __str__(self):
+        return f"[{self.get_grade_display()} - {self.get_term_display()}] {self.subject.name} - {self.title}"
+
+
+class CurriculumLesson(models.Model):
+    unit = models.ForeignKey(CurriculumUnit, on_delete=models.CASCADE, related_name='lessons', verbose_name="الوحدة")
+    title = models.CharField(max_length=200, verbose_name="اسم الدرس")
+    order = models.PositiveIntegerField(default=1, verbose_name="الترتيب")
+
+    class Meta:
+        ordering = ['unit', 'order']
+        verbose_name = "درس"
+        verbose_name_plural = "الدروس"
+
+    def __str__(self):
+        return f"{self.unit.title} - {self.title}"

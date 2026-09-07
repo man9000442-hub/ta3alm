@@ -103,6 +103,7 @@ class AuditLog(models.Model):
     ACTION_DELETE_PLAN   = 'delete_plan'
     ACTION_PAY_WITHDRAW  = 'pay_withdrawal'
     ACTION_TOGGLE_MAINT  = 'toggle_maintenance'
+    ACTION_TOGGLE_AI     = 'toggle_ai'
     ACTION_APPOINT_ADMIN = 'appoint_admin'
     ACTION_REMOVE_ADMIN  = 'remove_admin'
 
@@ -117,6 +118,7 @@ class AuditLog(models.Model):
         (ACTION_DELETE_PLAN,   _('حذف باقة')),
         (ACTION_PAY_WITHDRAW,  _('تسديد طلب سحب')),
         (ACTION_TOGGLE_MAINT,  _('تغيير وضع الصيانة')),
+        (ACTION_TOGGLE_AI,     _('تشغيل/إيقاف الذكاء الاصطناعي')),
         (ACTION_APPOINT_ADMIN, _('تعيين مسؤول')),
         (ACTION_REMOVE_ADMIN,  _('إزالة مسؤول')),
     ]

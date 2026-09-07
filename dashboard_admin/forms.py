@@ -102,3 +102,31 @@ class AppointAdminForm(forms.ModelForm):
             'admin_role': forms.Select(attrs={'class': 'form-select'}),
             'notes':      forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
         }
+
+# ----------------------------------------------------------
+# نماذج المناهج الدراسية
+# ----------------------------------------------------------
+from core.models import CurriculumUnit, CurriculumLesson
+
+class CurriculumUnitForm(forms.ModelForm):
+    class Meta:
+        model = CurriculumUnit
+        fields = ['title', 'subject', 'grade', 'term', 'order']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'subject': forms.Select(attrs={'class': 'form-select'}),
+            'grade': forms.Select(attrs={'class': 'form-select'}),
+            'term': forms.Select(attrs={'class': 'form-select'}),
+            'order': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
+
+CurriculumLessonFormSet = forms.inlineformset_factory(
+    CurriculumUnit, CurriculumLesson,
+    fields=['title', 'order'],
+    extra=1,
+    can_delete=True,
+    widgets={
+        'title': forms.TextInput(attrs={'class': 'form-control form-control-sm'}),
+        'order': forms.NumberInput(attrs={'class': 'form-control form-control-sm', 'style': 'width: 80px;'}),
+    }
+)

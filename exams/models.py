@@ -69,3 +69,33 @@ class ExamResult(models.Model):
 
     def __str__(self):
         return f"{self.student} — {self.exam.title}: {self.score}"
+
+
+class BankQuestion(models.Model):
+    ANSWER_CHOICES = (('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D'))
+    DIFFICULTY_CHOICES = (('easy', 'سهل'), ('medium', 'متوسط'), ('hard', 'صعب'))
+
+    text = models.TextField(verbose_name=_('نص السؤال'))
+    option_a = models.CharField(max_length=200, verbose_name=_('اختيار A'))
+    option_b = models.CharField(max_length=200, verbose_name=_('اختيار B'))
+    option_c = models.CharField(max_length=200, verbose_name=_('اختيار C'))
+    option_d = models.CharField(max_length=200, verbose_name=_('اختيار D'))
+    correct_answer = models.CharField(max_length=1, choices=ANSWER_CHOICES, verbose_name=_('الإجابة الصحيحة'))
+    
+    difficulty = models.CharField(max_length=10, choices=DIFFICULTY_CHOICES, default='medium', verbose_name=_('مستوى الصعوبة'))
+    
+    lesson = models.ForeignKey('core.CurriculumLesson', on_delete=models.SET_NULL, null=True, blank=True, related_name='bank_questions', verbose_name=_('الدرس'))
+    unit = models.ForeignKey('core.CurriculumUnit', on_delete=models.SET_NULL, null=True, blank=True, related_name='bank_questions', verbose_name=_('الوحدة'))
+    subject = models.ForeignKey('core.Subject', on_delete=models.CASCADE, related_name='bank_questions', verbose_name=_('المادة'))
+    grade = models.CharField(max_length=20, verbose_name=_('الصف الدراسي')) # using choice string but max_length=20
+
+    created_by = models.ForeignKey('teachers.TeacherProfile', on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_('تم الإنشاء بواسطة'))
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "سؤال في البنك"
+        verbose_name_plural = "بنك الأسئلة"
+
+    def __str__(self):
+        return f"[{self.get_difficulty_display()}] {self.text[:50]}"

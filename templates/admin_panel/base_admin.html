@@ -397,6 +397,17 @@
         {% endif %}
 
         {% if is_owner %}
+        <div class="sidebar-section-title">المناهج والبيانات الأساسية</div>
+        <a href="{% url 'admin_panel:manage_curriculum' %}"
+           class="sidebar-link {% block nav_curriculum %}{% endblock %}">
+            <i class="bi bi-journal-bookmark-fill"></i> إدارة المناهج (الوحدات والدروس)
+        </a>
+        <a href="/admin/core/subject/"
+           class="sidebar-link" target="_blank">
+            <i class="bi bi-book-half"></i> المواد الدراسية (Django Admin)
+        </a>
+
+        <div class="sidebar-section-title">فريق الإدارة وسجل الأحداث</div>
         <a href="{% url 'admin_panel:manage_staff' %}"
            class="sidebar-link {% block nav_staff %}{% endblock %}">
             <i class="bi bi-person-badge-fill"></i> فريق الإدارة

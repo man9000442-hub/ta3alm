@@ -96,6 +96,24 @@ def toggle_maintenance(request):
     return redirect('admin_panel:dashboard')
 
 
+@owner_required
+def toggle_ai(request):
+    """يُفعِّل أو يوقف جميع ميزات الذكاء الاصطناعي في المنصة."""
+    if request.method == 'POST':
+        site_settings = SiteSetting.load()
+        site_settings.is_ai_enabled = not site_settings.is_ai_enabled
+        site_settings.save()
+        status = "تشغيل" if site_settings.is_ai_enabled else "إيقاف"
+        AuditLog.log(request, AuditLog.ACTION_TOGGLE_AI,
+                     details={'ai_enabled': site_settings.is_ai_enabled},
+                     target_label="ميزات الذكاء الاصطناعي")
+        if site_settings.is_ai_enabled:
+            messages.success(request, "✅ تم تشغيل ميزات الذكاء الاصطناعي بنجاح.")
+        else:
+            messages.warning(request, "⛔ تم إيقاف ميزات الذكاء الاصطناعي. المنصة تعمل بشكل طبيعي بدون ذكاء اصطناعي.")
+    return redirect('admin_panel:dashboard')
+
+
 # ==========================================================
 # 3. إدارة المستخدمين
 # ==========================================================
@@ -372,6 +390,9 @@ def manage_plans(request):
                 student_limit=clean_int(request.POST.get('student_limit'), 1000),
                 group_limit=clean_int(request.POST.get('group_limit'), 5),
                 assistant_limit=clean_int(request.POST.get('assistant_limit'), 2),
+                ai_limit_period=request.POST.get('ai_limit_period', 'monthly'),
+                ai_exams_limit=clean_int(request.POST.get('ai_exams_limit'), 0),
+                ai_daily_limit=clean_int(request.POST.get('ai_daily_limit'), 1),
                 allow_online_packages=(request.POST.get('allow_online') == 'on'),
                 allow_question_images=(request.POST.get('allow_images') == 'on'),
                 is_default=(request.POST.get('is_default') == 'on'),
@@ -388,6 +409,9 @@ def manage_plans(request):
             plan.student_limit  = clean_int(request.POST.get('student_limit'), 1000)
             plan.group_limit    = clean_int(request.POST.get('group_limit'), 5)
             plan.assistant_limit = clean_int(request.POST.get('assistant_limit'), 2)
+            plan.ai_limit_period = request.POST.get('ai_limit_period', 'monthly')
+            plan.ai_exams_limit = clean_int(request.POST.get('ai_exams_limit'), 0)
+            plan.ai_daily_limit = clean_int(request.POST.get('ai_daily_limit'), 1)
             plan.allow_online_packages = (request.POST.get('allow_online') == 'on')
             plan.allow_question_images = (request.POST.get('allow_images') == 'on')
             plan.is_default     = (request.POST.get('is_default') == 'on')
@@ -526,3 +550,69 @@ def manual_payments(request):
     ctx['payments'] = payments
     return render(request, 'admin_panel/manual_payments.html', ctx)
 
+
+# ==========================================================
+# 13. إدارة المناهج (الوحدات والدروس)
+# ==========================================================
+from core.models import CurriculumUnit
+from .forms import CurriculumUnitForm, CurriculumLessonFormSet
+
+@owner_required
+def manage_curriculum(request):
+    ctx = _base_context(request)
+    units = CurriculumUnit.objects.select_related('subject').prefetch_related('lessons').order_by('grade', 'term', 'subject', 'order')
+    ctx['units'] = units
+    return render(request, 'admin_panel/curriculum_list.html', ctx)
+
+@owner_required
+def curriculum_unit_create(request):
+    ctx = _base_context(request)
+    if request.method == 'POST':
+        form = CurriculumUnitForm(request.POST)
+        if form.is_valid():
+            unit = form.save()
+            formset = CurriculumLessonFormSet(request.POST, instance=unit)
+            if formset.is_valid():
+                formset.save()
+                messages.success(request, "تم إضافة الوحدة ودروسها بنجاح.")
+                return redirect('admin_panel:manage_curriculum')
+        else:
+            formset = CurriculumLessonFormSet(request.POST)
+    else:
+        form = CurriculumUnitForm()
+        formset = CurriculumLessonFormSet()
+    
+    ctx['form'] = form
+    ctx['formset'] = formset
+    ctx['is_edit'] = False
+    return render(request, 'admin_panel/curriculum_form.html', ctx)
+
+@owner_required
+def curriculum_unit_edit(request, unit_id):
+    ctx = _base_context(request)
+    unit = get_object_or_404(CurriculumUnit, id=unit_id)
+    if request.method == 'POST':
+        form = CurriculumUnitForm(request.POST, instance=unit)
+        formset = CurriculumLessonFormSet(request.POST, instance=unit)
+        if form.is_valid() and formset.is_valid():
+            form.save()
+            formset.save()
+            messages.success(request, "تم تعديل الوحدة ودروسها بنجاح.")
+            return redirect('admin_panel:manage_curriculum')
+    else:
+        form = CurriculumUnitForm(instance=unit)
+        formset = CurriculumLessonFormSet(instance=unit)
+    
+    ctx['form'] = form
+    ctx['formset'] = formset
+    ctx['is_edit'] = True
+    ctx['unit'] = unit
+    return render(request, 'admin_panel/curriculum_form.html', ctx)
+
+@owner_required
+def curriculum_unit_delete(request, unit_id):
+    if request.method == 'POST':
+        unit = get_object_or_404(CurriculumUnit, id=unit_id)
+        unit.delete()
+        messages.success(request, "تم حذف الوحدة بجميع دروسها بنجاح.")
+    return redirect('admin_panel:manage_curriculum')

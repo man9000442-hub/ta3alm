@@ -16,9 +16,14 @@
     <div class="container py-3">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h4 class="fw-bold">{% trans "بنك الاختبارات" %}</h4>
-            <button class="btn btn-warning shadow-sm" data-bs-toggle="modal" data-bs-target="#addExamModal">
-                <i class="bi bi-plus-circle"></i> {% trans "امتحان جديد" %}
-            </button>
+            <div>
+                <a href="{% url 'ai_generate_exam' %}?group_id={{ group.id }}" class="btn btn-outline-primary shadow-sm me-2">
+                    <i class="fas fa-magic"></i> توليد بالذكاء الاصطناعي
+                </a>
+                <button class="btn btn-warning shadow-sm" data-bs-toggle="modal" data-bs-target="#addExamModal">
+                    <i class="bi bi-plus-circle"></i> {% trans "امتحان جديد" %}
+                </button>
+            </div>
         </div>
 
         <div class="list-group shadow-sm">

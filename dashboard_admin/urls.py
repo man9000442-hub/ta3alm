@@ -11,6 +11,7 @@ urlpatterns = [
     # الرئيسية
     path('',                    views.dashboard,          name='dashboard'),
     path('maintenance/toggle/', views.toggle_maintenance, name='toggle_maintenance'),
+    path('ai/toggle/',          views.toggle_ai,          name='toggle_ai'),
 
     # إدارة المستخدمين
     path('users/',              views.manage_users,       name='manage_users'),
@@ -31,4 +32,10 @@ urlpatterns = [
 
     # فريق الإدارة
     path('staff/',              views.manage_staff,       name='manage_staff'),
+
+    # المناهج الدراسية
+    path('curriculum/',         views.manage_curriculum,  name='manage_curriculum'),
+    path('curriculum/add/',     views.curriculum_unit_create, name='curriculum_unit_create'),
+    path('curriculum/edit/<int:unit_id>/', views.curriculum_unit_edit, name='curriculum_unit_edit'),
+    path('curriculum/delete/<int:unit_id>/', views.curriculum_unit_delete, name='curriculum_unit_delete'),
 ]

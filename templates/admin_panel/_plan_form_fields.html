@@ -20,6 +20,22 @@
         <label class="form-label fw-bold small text-muted">حد المساعدين</label>
         <input type="number" name="assistant_limit" class="form-control" value="{{ obj.assistant_limit|default:'2' }}" min="0">
     </div>
+    <div class="col-4">
+        <label class="form-label fw-bold small text-muted">فترة امتحانات الذكاء الاصطناعي</label>
+        <select name="ai_limit_period" class="form-select">
+            <option value="daily" {% if obj.ai_limit_period == 'daily' %}selected{% endif %}>يومي</option>
+            <option value="weekly" {% if obj.ai_limit_period == 'weekly' %}selected{% endif %}>أسبوعي</option>
+            <option value="monthly" {% if obj.ai_limit_period == 'monthly' or not obj.ai_limit_period %}selected{% endif %}>شهري</option>
+        </select>
+    </div>
+    <div class="col-4">
+        <label class="form-label fw-bold small text-muted">حد الامتحانات في الفترة</label>
+        <input type="number" name="ai_exams_limit" class="form-control" value="{{ obj.ai_exams_limit|default:'0' }}" min="0">
+    </div>
+    <div class="col-4">
+        <label class="form-label fw-bold small text-muted">الحد الأقصى اليومي</label>
+        <input type="number" name="ai_daily_limit" class="form-control" value="{{ obj.ai_daily_limit|default:'1' }}" min="0">
+    </div>
     <div class="col-12">
         <label class="form-label fw-bold small text-muted">وصف</label>
         <textarea name="desc" class="form-control" rows="2">{{ obj.description|default:'' }}</textarea>

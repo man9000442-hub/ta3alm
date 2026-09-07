@@ -161,7 +161,36 @@ def manual_checkout_view(request):
         form = ManualPaymentForm()
 
     return render(request, 'core/manual_checkout.html', {
-        'form': form,
         'amount': amount,
         'payment_type': payment_type,
     })
+
+# ==========================================================
+# 8. AJAX - جلب الدروس للمناهج
+# ==========================================================
+from django.http import JsonResponse
+from .models import CurriculumUnit
+
+@login_required
+def ajax_get_lessons(request):
+    grade = request.GET.get('grade')
+    subject_id = request.GET.get('subject')
+    term = request.GET.get('term')
+
+    if not all([grade, subject_id, term]):
+        return JsonResponse({'error': 'Missing parameters'}, status=400)
+
+    units = CurriculumUnit.objects.filter(
+        grade=grade, subject_id=subject_id, term=term
+    ).prefetch_related('lessons').order_by('order')
+
+    data = []
+    for unit in units:
+        unit_data = {
+            'id': f"unit_{unit.id}",
+            'title': unit.title,
+            'lessons': [{'id': lesson.id, 'title': lesson.title} for lesson in unit.lessons.order_by('order')]
+        }
+        data.append(unit_data)
+
+    return JsonResponse({'units': data})

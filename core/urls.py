@@ -14,4 +14,5 @@ urlpatterns = [
     path('notifications/all/',                  views.all_notifications,     name='all_notifications'),
     path('guide/',                              views.platform_guide,        name='platform_guide'),
     path('checkout/manual/',                    views.manual_checkout_view,  name='manual_checkout'),
+    path('ajax/get_lessons/',                   views.ajax_get_lessons,      name='ajax_get_lessons'),
 ]
