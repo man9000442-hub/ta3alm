@@ -36,9 +36,18 @@ ALLOWED_HOSTS = [
     if host.strip()
 ]
 
-# دعم نطاقات Vercel تلقائياً
-if os.environ.get('VERCEL') or '.vercel.app' not in ALLOWED_HOSTS:
-    ALLOWED_HOSTS.extend(['.vercel.app', 'vercel.app'])
+# دائماً تأكد من وجود الدومينات الأساسية للمنصة ونطاقات Vercel
+DEFAULT_PRODUCTION_HOSTS = [
+    'ta3alm.online',
+    'www.ta3alm.online',
+    'admin.ta3alm.online',
+    '.ta3alm.online',
+    '.vercel.app',
+    'vercel.app',
+]
+for h in DEFAULT_PRODUCTION_HOSTS:
+    if h not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(h)
 
 # ==========================================================
 # التطبيقات المثبتة (Installed Apps)
