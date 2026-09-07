@@ -3,7 +3,6 @@ from django.utils.translation import gettext_lazy as _
 
 class SiteSetting(models.Model):
     is_maintenance_mode = models.BooleanField(default=False, verbose_name=_("وضع الصيانة"))
-    is_ai_enabled = models.BooleanField(default=True, verbose_name=_("تفعيل ميزات الذكاء الاصطناعي"))
     
     def save(self, *args, **kwargs):
         self.pk = 1

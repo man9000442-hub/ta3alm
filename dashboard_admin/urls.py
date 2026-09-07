@@ -11,7 +11,6 @@ urlpatterns = [
     # الرئيسية
     path('',                    views.dashboard,          name='dashboard'),
     path('maintenance/toggle/', views.toggle_maintenance, name='toggle_maintenance'),
-    path('ai/toggle/',          views.toggle_ai,          name='toggle_ai'),
 
     # إدارة المستخدمين
     path('users/',              views.manage_users,       name='manage_users'),

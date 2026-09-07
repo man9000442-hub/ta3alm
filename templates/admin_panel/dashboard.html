@@ -24,18 +24,6 @@
             </button>
         </form>
 
-        <!-- زر تشغيل/إيقاف الذكاء الاصطناعي -->
-        <form method="POST" action="{% url 'admin_panel:toggle_ai' %}" id="ai-toggle-form">
-            {% csrf_token %}
-            <button type="submit" id="ai-toggle-btn"
-                class="btn btn-sm fw-bold px-4 {% if site_settings.is_ai_enabled %}btn-success{% else %}btn-outline-danger{% endif %}"
-                onclick="return confirmAiToggle(this)">
-                <i class="bi {% if site_settings.is_ai_enabled %}bi-robot{% else %}bi-slash-circle{% endif %} me-1"></i>
-                <span class="ai-status-dot d-inline-block rounded-circle me-1"
-                    style="width:9px;height:9px;background:{% if site_settings.is_ai_enabled %}#fff{% else %}#f00{% endif %};vertical-align:middle;"></span>
-                {% if site_settings.is_ai_enabled %}الذكاء الاصطناعي: شغّال{% else %}الذكاء الاصطناعي: متوقف{% endif %}
-            </button>
-        </form>
     </div>
     {% endif %}
 
@@ -172,16 +160,4 @@
     </div>
 
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-function confirmAiToggle(btn) {
-    const isOn = btn.classList.contains('btn-success');
-    const msg = isOn
-        ? 'هل أنت متأكد من إيقاف جميع ميزات الذكاء الاصطناعي؟\n\nالمنصة ستعمل بشكل طبيعي بدون ذكاء اصطناعي.'
-        : 'هل تريد تشغيل ميزات الذكاء الاصطناعي مجدداً؟';
-    return confirm(msg);
-}
-</script>
 {% endblock %}

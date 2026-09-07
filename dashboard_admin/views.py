@@ -96,23 +96,6 @@ def toggle_maintenance(request):
     return redirect('admin_panel:dashboard')
 
 
-@owner_required
-def toggle_ai(request):
-    """يُفعِّل أو يوقف جميع ميزات الذكاء الاصطناعي في المنصة."""
-    if request.method == 'POST':
-        site_settings = SiteSetting.load()
-        site_settings.is_ai_enabled = not site_settings.is_ai_enabled
-        site_settings.save()
-        status = "تشغيل" if site_settings.is_ai_enabled else "إيقاف"
-        AuditLog.log(request, AuditLog.ACTION_TOGGLE_AI,
-                     details={'ai_enabled': site_settings.is_ai_enabled},
-                     target_label="ميزات الذكاء الاصطناعي")
-        if site_settings.is_ai_enabled:
-            messages.success(request, "✅ تم تشغيل ميزات الذكاء الاصطناعي بنجاح.")
-        else:
-            messages.warning(request, "⛔ تم إيقاف ميزات الذكاء الاصطناعي. المنصة تعمل بشكل طبيعي بدون ذكاء اصطناعي.")
-    return redirect('admin_panel:dashboard')
-
 
 # ==========================================================
 # 3. إدارة المستخدمين
@@ -390,9 +373,6 @@ def manage_plans(request):
                 student_limit=clean_int(request.POST.get('student_limit'), 1000),
                 group_limit=clean_int(request.POST.get('group_limit'), 5),
                 assistant_limit=clean_int(request.POST.get('assistant_limit'), 2),
-                ai_limit_period=request.POST.get('ai_limit_period', 'monthly'),
-                ai_exams_limit=clean_int(request.POST.get('ai_exams_limit'), 0),
-                ai_daily_limit=clean_int(request.POST.get('ai_daily_limit'), 1),
                 allow_online_packages=(request.POST.get('allow_online') == 'on'),
                 allow_question_images=(request.POST.get('allow_images') == 'on'),
                 is_default=(request.POST.get('is_default') == 'on'),
@@ -409,9 +389,6 @@ def manage_plans(request):
             plan.student_limit  = clean_int(request.POST.get('student_limit'), 1000)
             plan.group_limit    = clean_int(request.POST.get('group_limit'), 5)
             plan.assistant_limit = clean_int(request.POST.get('assistant_limit'), 2)
-            plan.ai_limit_period = request.POST.get('ai_limit_period', 'monthly')
-            plan.ai_exams_limit = clean_int(request.POST.get('ai_exams_limit'), 0)
-            plan.ai_daily_limit = clean_int(request.POST.get('ai_daily_limit'), 1)
             plan.allow_online_packages = (request.POST.get('allow_online') == 'on')
             plan.allow_question_images = (request.POST.get('allow_images') == 'on')
             plan.is_default     = (request.POST.get('is_default') == 'on')

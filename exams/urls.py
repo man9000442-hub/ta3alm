@@ -11,8 +11,4 @@ urlpatterns = [
     path('question/delete/<int:question_id>/', views.delete_question, name='delete_question'),
     path('exam/<int:exam_id>/add/', views.add_question_page, name='add_question_page'),
     path('question/<int:question_id>/edit/', views.edit_question_page, name='edit_question_page'),
-    
-    # روابط الذكاء الاصطناعي
-    path('ai/generate/', views.ai_generate_exam, name='ai_generate_exam'),
-    path('ai/review/', views.ai_review_exam, name='ai_review_exam'),
 ]
