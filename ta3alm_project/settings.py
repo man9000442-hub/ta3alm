@@ -210,27 +210,49 @@ WSGI_APPLICATION = 'ta3alm_project.wsgi.application'
 # ==========================================================
 # قاعدة البيانات (Database)
 # ==========================================================
-USE_SQLITE = os.environ.get('USE_SQLITE', 'True') == 'True'
+import urllib.parse
 
-if USE_SQLITE:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-else:
+DATABASE_URL = os.environ.get('DATABASE_URL') or os.environ.get('POSTGRES_URL')
+raw_use_sqlite = os.environ.get('USE_SQLITE', '').strip().lower()
+
+if DATABASE_URL:
+    url = urllib.parse.urlparse(DATABASE_URL)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DB_NAME', 'postgres'),
+            'NAME': url.path.lstrip('/'),
+            'USER': url.username or '',
+            'PASSWORD': url.password or '',
+            'HOST': url.hostname or 'localhost',
+            'PORT': url.port or 5432,
+            'OPTIONS': {
+                'sslmode': 'require',
+                'connect_timeout': 10,
+            },
+        }
+    }
+elif raw_use_sqlite in ('false', '0', 'no') or os.environ.get('DB_HOST'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('DB_NAME', 'neondb'),
             'USER': os.environ.get('DB_USER', ''),
             'PASSWORD': os.environ.get('DB_PASSWORD', ''),
             'HOST': os.environ.get('DB_HOST', 'localhost'),
             'PORT': os.environ.get('DB_PORT', '5432'),
             'OPTIONS': {
+                'sslmode': 'require',
                 'connect_timeout': 10,
             },
+        }
+    }
+else:
+    # بيئة محلية أو Fallback لـ SQLite
+    db_file = Path('/tmp') / 'db.sqlite3' if 'VERCEL' in os.environ else BASE_DIR / 'db.sqlite3'
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': db_file,
         }
     }
 
