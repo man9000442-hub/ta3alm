@@ -70,7 +70,7 @@ class ZohoMailService:
 
     @property
     def api_url(self):
-        if self.config and self.config.zoho_api_url:
+        if self.config and self.config.zoho_api_url and "zohoapis.com" not in self.config.zoho_api_url:
             return self.config.zoho_api_url.rstrip('/')
         return "https://mail.zoho.com/api"
 
@@ -125,7 +125,21 @@ class ZohoMailService:
         access_token = data.get('access_token')
         refresh_token = data.get('refresh_token')
         expires_in = int(data.get('expires_in', 3600))
-        api_domain = data.get('api_domain')
+        api_domain = data.get('api_domain', '')
+
+        # تحديد دومين الـ Mail API المناسب حسب الـ data center
+        mail_domain = "https://mail.zoho.com/api"
+        if api_domain:
+            if "zohoapis.eu" in api_domain:
+                mail_domain = "https://mail.zoho.eu/api"
+            elif "zohoapis.in" in api_domain:
+                mail_domain = "https://mail.zoho.in/api"
+            elif "zohoapis.com.au" in api_domain:
+                mail_domain = "https://mail.zoho.com.au/api"
+            elif "zohoapis.sa" in api_domain:
+                mail_domain = "https://mail.zoho.sa/api"
+            else:
+                mail_domain = "https://mail.zoho.com/api"
 
         # حفظ التوكنات في قاعدة البيانات
         if self.config:
@@ -133,8 +147,7 @@ class ZohoMailService:
             if refresh_token:
                 self.config.refresh_token = refresh_token
             self.config.token_expires_at = timezone.now() + timedelta(seconds=expires_in - 120)
-            if api_domain:
-                self.config.zoho_api_url = f"{api_domain.rstrip('/')}/api"
+            self.config.zoho_api_url = mail_domain
             self.config.save()
 
             # جلب معرف الحساب فورياً وحفظه
@@ -283,15 +296,22 @@ class ZohoMailService:
             'Accept': 'application/json',
         }
 
-        # نحاول أولاً جلب المحتوى الكامل
+        # إذا لم يتم تمرير folder_id، نبحث عنه تلقائياً في قائمة الرسائل
+        if not folder_id:
+            try:
+                res_msgs = self.list_messages(limit=50).get('data', [])
+                for m in res_msgs:
+                    if str(m.get('messageId')) == str(message_id):
+                        folder_id = m.get('folderId')
+                        break
+            except Exception as e:
+                logger.warning("Could not auto-resolve folderId for message %s: %s", message_id, e)
+
         if folder_id:
             url = f"{self.api_url}/accounts/{account_id}/folders/{folder_id}/messages/{message_id}/content"
-        else:
-            url = f"{self.api_url}/accounts/{account_id}/messages/{message_id}/content"
-
-        response = requests.get(url, headers=headers, timeout=25)
-        if response.status_code == 200:
-            return response.json()
+            response = requests.get(url, headers=headers, timeout=25)
+            if response.status_code == 200:
+                return response.json()
 
         # بديل تفاصيل الرسالة إذا لم يرجع الـ endpoint الأول
         detail_url = f"{self.api_url}/accounts/{account_id}/messages/{message_id}/details"
@@ -299,7 +319,7 @@ class ZohoMailService:
         if detail_res.status_code == 200:
             return detail_res.json()
 
-        raise ValueError(f"تعذر جلب تفاصيل الرسالة {message_id}: {response.text}")
+        raise ValueError(f"تعذر جلب تفاصيل الرسالة {message_id}")
 
     # ------------------------------------------------------------------
     # 5. الرد وإرسال الرسائل (Send / Reply API)

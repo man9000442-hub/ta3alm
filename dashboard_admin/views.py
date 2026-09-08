@@ -656,10 +656,28 @@ def support_message_detail(request, message_id):
         return redirect('admin_panel:support_settings')
 
     folder_id = request.GET.get('folder_id')
+    msg_metadata = {}
+    try:
+        raw_msgs = service.list_messages(limit=50).get('data', [])
+        for m in raw_msgs:
+            if str(m.get('messageId')) == str(message_id):
+                msg_metadata = m
+                if not folder_id:
+                    folder_id = m.get('folderId')
+                break
+    except Exception as e:
+        logger.warning("Could not pre-fetch message metadata: %s", e)
+
     try:
         msg_data = service.get_message_content(message_id, folder_id=folder_id)
         data = msg_data.get('data', {}) if isinstance(msg_data, dict) else {}
-        ctx['message_data'] = data if data else msg_data
+        
+        # دمج الميتاداتا (الموضوع، المرسل، التاريخ) مع جسم الرسالة
+        merged = dict(msg_metadata)
+        if isinstance(data, dict):
+            merged.update(data)
+
+        ctx['message_data'] = merged
         ctx['message_id'] = message_id
         ctx['support_email'] = service.support_email
     except Exception as e:
