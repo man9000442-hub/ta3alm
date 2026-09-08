@@ -157,7 +157,7 @@
                             </a>
                         </td>
                         <td class="text-muted small" style="white-space: nowrap;">
-                            {{ msg.receivedTime|default:msg.date }}
+                            {{ msg.formatted_date|default:msg.receivedTime }}
                         </td>
                         <td class="text-center">
                             <a href="{% url 'admin_panel:support_message_detail' msg.messageId %}?folder_id={{ msg.folderId }}" class="btn btn-sm btn-outline-primary rounded-pill px-3 py-1 fw-bold">

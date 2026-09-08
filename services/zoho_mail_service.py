@@ -283,7 +283,23 @@ class ZohoMailService:
             self.config.last_synced_at = timezone.now()
             self.config.save(update_fields=['last_synced_at'])
 
-        return response.json()
+        res_json = response.json()
+        raw_list = res_json.get('data', []) if isinstance(res_json, dict) else []
+        from datetime import datetime
+        for m in raw_list:
+            rt = m.get('receivedTime') or m.get('sentDateInGMT')
+            if rt:
+                try:
+                    ts = int(rt)
+                    if ts > 1e11:
+                        ts = ts / 1000.0
+                    m['formatted_date'] = datetime.fromtimestamp(ts).strftime('%Y-%m-%d %I:%M %p')
+                except Exception:
+                    m['formatted_date'] = str(rt)
+            else:
+                m['formatted_date'] = ""
+
+        return res_json
 
     def get_message_content(self, message_id: str, folder_id: str = None) -> dict:
         """

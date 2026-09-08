@@ -36,7 +36,7 @@
                             <span class="fw-bold text-dark">إلى:</span> {{ message_data.toAddress|default:support_email }}
                         </div>
                         <div>
-                            <i class="bi bi-clock me-1"></i>{{ message_data.receivedTime|default:message_data.date }}
+                            <i class="bi bi-clock me-1"></i>{{ message_data.formatted_date|default:message_data.receivedTime }}
                         </div>
                     </div>
                 </div>
