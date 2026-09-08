@@ -1,0 +1,246 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% load i18n %}
+
+{% block title %}صندوق الدعم الفني | {{ support_email }}{% endblock %}
+{% block nav_support_inbox %}active{% endblock %}
+
+{% block breadcrumb %}
+<span class="sep">/</span> <span class="current">بريد الدعم الفني (Zoho Mail)</span>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h4 class="mb-1 fw-bold" style="color:var(--admin-primary)">
+            <i class="bi bi-envelope-at-fill text-danger me-2"></i>صندوق بريد الدعم الفني
+        </h4>
+        <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-light text-dark border px-2 py-1">
+                <i class="bi bi-send-check text-success me-1"></i>{{ support_email }}
+            </span>
+            {% if is_connected %}
+            <span class="badge bg-success-subtle text-success border border-success border-opacity-25 px-2 py-1">
+                <i class="bi bi-check-circle-fill me-1"></i>متصل بـ Zoho API
+            </span>
+            {% else %}
+            <span class="badge bg-danger-subtle text-danger border border-danger border-opacity-25 px-2 py-1">
+                <i class="bi bi-exclamation-triangle-fill me-1"></i>غير متصل بـ Zoho Mail
+            </span>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="d-flex align-items-center gap-2">
+        {% if is_connected %}
+        <button type="button" class="btn btn-primary fw-bold px-3 rounded-3" data-bs-toggle="modal" data-bs-target="#composeModal">
+            <i class="bi bi-pencil-square me-1"></i>رسالة جديدة
+        </button>
+        <a href="{% url 'admin_panel:support_inbox' %}" class="btn btn-outline-secondary rounded-3" title="تحديث الصندوق">
+            <i class="bi bi-arrow-clockwise"></i>
+        </a>
+        {% endif %}
+        {% if is_owner %}
+        <a href="{% url 'admin_panel:support_settings' %}" class="btn btn-outline-dark rounded-3">
+            <i class="bi bi-gear-fill me-1"></i>إعدادات الربط
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+{% if not is_connected %}
+<!-- بطاقة دعوة الربط بـ Zoho -->
+<div class="admin-card p-4 text-center mb-4 border-warning border-2">
+    <div class="mx-auto bg-warning bg-opacity-10 text-warning rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+        <i class="bi bi-cloud-arrow-up-fill fs-2"></i>
+    </div>
+    <h4 class="fw-bold mb-2">ربط المنصة بحساب Zoho Mail REST API</h4>
+    <p class="text-muted mx-auto mb-4" style="max-width: 620px;">
+        لقراءة الرسائل الواردة إلى <strong>{{ support_email }}</strong> والرد عليها فوراً من داخل المنصة عبر بروتوكول OAuth 2.0 الآمن، يلزم تفعيل الاتصال بحساب Zoho.
+    </p>
+
+    <div class="d-flex justify-content-center align-items-center gap-3">
+        {% if is_configured %}
+        <a href="{% url 'admin_panel:support_oauth_connect' %}" class="btn btn-danger btn-lg px-4 fw-bold rounded-pill shadow-sm">
+            <i class="bi bi-box-arrow-in-right me-2"></i>تخويل الربط الآن بضغطة واحدة (OAuth 2.0)
+        </a>
+        {% else %}
+        <a href="{% url 'admin_panel:support_settings' %}" class="btn btn-primary btn-lg px-4 fw-bold rounded-pill shadow-sm">
+            <i class="bi bi-sliders me-2"></i>إدخال Client ID & Secret
+        </a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+{% if error_message %}
+<div class="alert alert-warning d-flex align-items-center gap-2 mb-4">
+    <i class="bi bi-exclamation-octagon-fill fs-4"></i>
+    <div>
+        <strong>تنبيه من Zoho API:</strong> {{ error_message }}
+    </div>
+</div>
+{% endif %}
+
+{% if is_connected %}
+<!-- بطاقة الرسائل والبحث -->
+<div class="admin-card">
+    <div class="admin-card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <h5 class="admin-card-title mb-0">
+            <i class="bi bi-inbox-fill text-primary me-2"></i>الوارد ({{ messages_list|length }})
+        </h5>
+
+        <!-- شريط البحث -->
+        <form method="GET" action="{% url 'admin_panel:support_inbox' %}" class="d-flex align-items-center gap-2">
+            <div class="input-group input-group-sm">
+                <input type="text" name="q" value="{{ search_query }}" class="form-control" placeholder="بحث بالمرسل أو الموضوع..." style="border-radius: 8px 0 0 8px;">
+                <button class="btn btn-outline-secondary" type="submit" style="border-radius: 0 8px 8px 0;">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+            {% if search_query %}
+            <a href="{% url 'admin_panel:support_inbox' %}" class="btn btn-sm btn-link text-danger p-0" title="إلغاء الفلترة">
+                <i class="bi bi-x-circle-fill"></i>
+            </a>
+            {% endif %}
+        </form>
+    </div>
+
+    <div class="admin-card-body p-0">
+        <div class="table-responsive">
+            <table class="table admin-table mb-0 align-middle">
+                <thead>
+                    <tr>
+                        <th style="width: 40px;"></th>
+                        <th>المرسل</th>
+                        <th>الموضوع والمعاينة</th>
+                        <th>الوقت / التاريخ</th>
+                        <th class="text-center" style="width: 140px;">الإجراء</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for msg in messages_list %}
+                    <tr class="{% if msg.status == '0' %}fw-bold bg-light bg-opacity-50{% endif %}">
+                        <td class="text-center">
+                            {% if msg.status == '0' %}
+                            <span class="badge bg-primary rounded-circle p-1" title="رسالة غير مقروءة">
+                                <span class="visually-hidden">New</span>
+                            </span>
+                            {% else %}
+                            <i class="bi bi-envelope-open text-muted small"></i>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="user-avatar bg-primary" style="width: 32px; height: 32px; font-size: 0.8rem;">
+                                    {{ msg.fromAddress|slice:":1"|upper }}
+                                </div>
+                                <div>
+                                    <div class="text-dark fw-bold small text-truncate" style="max-width: 180px;">
+                                        {{ msg.sender|default:msg.fromAddress }}
+                                    </div>
+                                    <span class="text-muted small d-block" style="font-size: 0.72rem;">
+                                        {{ msg.fromAddress }}
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="{% url 'admin_panel:support_message_detail' msg.messageId %}?folder_id={{ msg.folderId }}" class="text-decoration-none text-dark d-block">
+                                <span class="d-block fw-bold text-truncate" style="max-width: 380px;">
+                                    {{ msg.subject|default:"(بدون موضوع)" }}
+                                </span>
+                                {% if msg.summary %}
+                                <span class="text-muted small text-truncate d-block fw-normal" style="max-width: 420px; font-size: 0.78rem;">
+                                    {{ msg.summary }}
+                                </span>
+                                {% endif %}
+                            </a>
+                        </td>
+                        <td class="text-muted small" style="white-space: nowrap;">
+                            {{ msg.receivedTime|default:msg.date }}
+                        </td>
+                        <td class="text-center">
+                            <a href="{% url 'admin_panel:support_message_detail' msg.messageId %}?folder_id={{ msg.folderId }}" class="btn btn-sm btn-outline-primary rounded-pill px-3 py-1 fw-bold">
+                                <i class="bi bi-reply-fill me-1"></i>عرض ورد
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-muted">
+                            <i class="bi bi-mailbox2 fs-1 text-secondary opacity-50 d-block mb-3"></i>
+                            <h6 class="fw-bold">لا توجد رسائل في صندوق الوارد</h6>
+                            <p class="small text-muted mb-0">جميع الرسائل الواردة لـ {{ support_email }} ستظهر هنا تلقائياً.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Modal إنشاء رسالة جديدة -->
+<div class="modal fade" id="composeModal" tabindex="-1" aria-labelledby="composeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 16px;">
+            <div class="modal-header text-white" style="background-color: var(--admin-primary); border-radius: 16px 16px 0 0;">
+                <h5 class="modal-title fw-bold" id="composeModalLabel">
+                    <i class="bi bi-send-plus-fill me-2"></i>إنشاء رسالة جديدة من {{ support_email }}
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="{% url 'admin_panel:support_compose' %}">
+                {% csrf_token %}
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">المرسل:</label>
+                        <input type="text" class="form-control bg-light" value="{{ support_email }}" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">إلى (البريد الإلكتروني للعميل / الطالب): <span class="text-danger">*</span></label>
+                        <input type="email" name="to_email" class="form-control" placeholder="name@example.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small">الموضوع: <span class="text-danger">*</span></label>
+                        <input type="text" name="subject" class="form-control" placeholder="بخصوص استفسارك على منصة تَعَلَّم..." required>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <label class="form-label fw-bold small mb-0">نص الرسالة: <span class="text-danger">*</span></label>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle py-0 px-2 small" type="button" data-bs-toggle="dropdown">
+                                    نماذج ردود جاهزة
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end shadow-sm small">
+                                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="insertSnippet('أهلاً بك، تم تفعيل حسابك واشتراكك بنجاح على منصة تَعَلَّم. نتمنى لك تجربة تعليمية ممتعة وموفقة!')">تفعيل الاشتراك بنجاح</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="insertSnippet('مرحباً بك، يرجى تزويدنا برقم الهاتف المسجل وصورة من إيصال الدفع حتى نتمكن من مراجعة طلبك وإتمامه فوراً.')">طلب إيصال / هاتف</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0)" onclick="insertSnippet('أهلاً بك، تم استلام استفسارك وسيتم الرد عليك وحل الأمر في أقرب وقت خلال ساعات عمل فريق الدعم.')">تم استلام الاستفسار</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <textarea name="content" id="composeContent" class="form-control" rows="7" placeholder="اكتب محتوى الرسالة هنا..." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light" style="border-radius: 0 0 16px 16px;">
+                    <button type="button" class="btn btn-secondary rounded-pill px-3" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">
+                        <i class="bi bi-send-fill me-1"></i>إرسال الرسالة
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function insertSnippet(text) {
+    const textarea = document.getElementById('composeContent');
+    if (textarea) {
+        textarea.value = text;
+        textarea.focus();
+    }
+}
+</script>
+{% endblock %}

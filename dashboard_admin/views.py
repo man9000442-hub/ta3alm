@@ -41,17 +41,27 @@ def _base_context(request):
     from core.models import SiteSetting
     site_settings = SiteSetting.load()
 
+    zoho_connected = False
+    try:
+        from .models import ZohoMailConfig
+        z_cfg = ZohoMailConfig.load()
+        zoho_connected = z_cfg.is_connected()
+    except Exception:
+        pass
+
     return {
-        'admin_user':       user,
-        'admin_profile':    profile,
-        'is_owner':         user.is_superuser or (profile and profile.is_owner),
-        'can_manage_users': user.is_superuser or (profile and profile.can_manage_users),
-        'can_delete_users': user.is_superuser or (profile and profile.can_delete_users),
-        'can_view_finance': user.is_superuser or (profile and profile.can_view_finance),
-        'can_manage_plans': user.is_superuser or (profile and profile.can_manage_plans),
-        'can_view_audit':   user.is_superuser or (profile and profile.can_view_audit_log),
-        'unread_count':     unread_count,
-        'site_settings':    site_settings,
+        'admin_user':         user,
+        'admin_profile':      profile,
+        'is_owner':           user.is_superuser or (profile and profile.is_owner),
+        'can_manage_users':   user.is_superuser or (profile and profile.can_manage_users),
+        'can_delete_users':   user.is_superuser or (profile and profile.can_delete_users),
+        'can_view_finance':   user.is_superuser or (profile and profile.can_view_finance),
+        'can_manage_plans':   user.is_superuser or (profile and profile.can_manage_plans),
+        'can_view_audit':     user.is_superuser or (profile and profile.can_view_audit_log),
+        'can_manage_support': user.is_superuser or (profile and (profile.is_owner or profile.can_manage_users or profile.admin_role == AdminRole.SUPPORT)),
+        'unread_count':       unread_count,
+        'site_settings':      site_settings,
+        'zoho_connected':     zoho_connected,
     }
 
 
@@ -593,3 +603,215 @@ def curriculum_unit_delete(request, unit_id):
         unit.delete()
         messages.success(request, "تم حذف الوحدة بجميع دروسها بنجاح.")
     return redirect('admin_panel:manage_curriculum')
+
+
+# ==========================================================
+# 14. خدمة العملاء والبريد (Zoho Mail REST API - OAuth 2.0)
+# ==========================================================
+from services.zoho_mail_service import ZohoMailService
+from django.urls import reverse
+import logging
+logger = logging.getLogger(__name__)
+
+
+@admin_required
+def support_inbox(request):
+    """صندوق البريد الوارد لإيميلات الدعم الفني support@ta3alm.online"""
+    ctx = _base_context(request)
+    if not ctx['can_manage_support']:
+        messages.error(request, "ليس لديك صلاحية الوصول لصندوق الدعم الفني.")
+        return redirect('admin_panel:dashboard')
+
+    service = ZohoMailService()
+    ctx['is_configured'] = service.is_configured()
+    ctx['is_connected'] = service.is_connected()
+    ctx['support_email'] = service.support_email
+    ctx['messages_list'] = []
+    ctx['error_message'] = None
+    ctx['search_query'] = request.GET.get('q', '').strip()
+
+    if service.is_connected():
+        try:
+            res = service.list_messages(limit=30, search_key=ctx['search_query'] or None)
+            raw_data = res.get('data', []) if isinstance(res, dict) else []
+            ctx['messages_list'] = raw_data
+        except Exception as e:
+            ctx['error_message'] = str(e)
+            logger.error("Zoho list messages view error: %s", e)
+
+    return render(request, 'admin_panel/support_inbox.html', ctx)
+
+
+@admin_required
+def support_message_detail(request, message_id):
+    """عرض تفاصيل البريد الإلكتروني مع نموذج الرد المباشر"""
+    ctx = _base_context(request)
+    if not ctx['can_manage_support']:
+        messages.error(request, "ليس لديك صلاحية الوصول لصندوق الدعم الفني.")
+        return redirect('admin_panel:dashboard')
+
+    service = ZohoMailService()
+    if not service.is_connected():
+        messages.warning(request, "يرجى ربط حساب Zoho Mail أولاً.")
+        return redirect('admin_panel:support_settings')
+
+    folder_id = request.GET.get('folder_id')
+    try:
+        msg_data = service.get_message_content(message_id, folder_id=folder_id)
+        data = msg_data.get('data', {}) if isinstance(msg_data, dict) else {}
+        ctx['message_data'] = data if data else msg_data
+        ctx['message_id'] = message_id
+        ctx['support_email'] = service.support_email
+    except Exception as e:
+        messages.error(request, f"فشل جلب تفاصيل الرسالة: {e}")
+        return redirect('admin_panel:support_inbox')
+
+    return render(request, 'admin_panel/support_message_detail.html', ctx)
+
+
+@admin_required
+def support_send_reply(request):
+    """إرسال رد على رسالة عبر Zoho Mail API"""
+    if request.method != 'POST':
+        return redirect('admin_panel:support_inbox')
+
+    ctx = _base_context(request)
+    if not ctx['can_manage_support']:
+        messages.error(request, "ليس لديك صلاحية الرد على إيميلات الدعم.")
+        return redirect('admin_panel:dashboard')
+
+    to_email = request.POST.get('to_email', '').strip()
+    subject = request.POST.get('subject', '').strip()
+    content = request.POST.get('content', '').strip()
+    message_id = request.POST.get('message_id', '').strip()
+
+    if not to_email or not content:
+        messages.error(request, "يرجى كتابة البريد الإلكتروني ومحتوى الرد.")
+        if message_id:
+            return redirect('admin_panel:support_message_detail', message_id=message_id)
+        return redirect('admin_panel:support_inbox')
+
+    service = ZohoMailService()
+    try:
+        service.send_reply(to_email=to_email, subject=subject, content=content, message_id=message_id or None)
+        AuditLog.log(
+            request,
+            AuditLog.ACTION_ZOHO_REPLY,
+            target_label=f"إرسال رد إلى {to_email}",
+            details={'to': to_email, 'subject': subject, 'message_id': message_id}
+        )
+        messages.success(request, f"تم إرسال الرد بنجاح إلى {to_email} من {service.support_email}!")
+    except Exception as e:
+        logger.error("Failed to send reply: %s", e)
+        messages.error(request, f"فشل إرسال الرد عبر Zoho: {e}")
+
+    if message_id:
+        return redirect('admin_panel:support_message_detail', message_id=message_id)
+    return redirect('admin_panel:support_inbox')
+
+
+@admin_required
+def support_compose(request):
+    """إنشاء وإرسال رسالة جديدة لأي مستخدم من support@ta3alm.online"""
+    if request.method == 'POST':
+        to_email = request.POST.get('to_email', '').strip()
+        subject = request.POST.get('subject', '').strip()
+        content = request.POST.get('content', '').strip()
+
+        if not to_email or not subject or not content:
+            messages.error(request, "جميع الحقول (المستقبل، الموضوع، المحتوى) مطلوبة.")
+            return redirect('admin_panel:support_inbox')
+
+        service = ZohoMailService()
+        try:
+            service.compose_new_message(to_email=to_email, subject=subject, content=content)
+            AuditLog.log(
+                request,
+                AuditLog.ACTION_ZOHO_COMPOSE,
+                target_label=f"رسالة جديدة إلى {to_email}",
+                details={'to': to_email, 'subject': subject}
+            )
+            messages.success(request, f"تم إرسال الرسالة بنجاح إلى {to_email}!")
+        except Exception as e:
+            messages.error(request, f"فشل إرسال الرسالة: {e}")
+
+    return redirect('admin_panel:support_inbox')
+
+
+@admin_required
+def support_settings(request):
+    """صفحة إعدادات وحالة اتصال Zoho Mail REST API"""
+    ctx = _base_context(request)
+    if not ctx['is_owner']:
+        messages.error(request, "إعدادات الربط متاحة لمالك المنصة فقط.")
+        return redirect('admin_panel:support_inbox')
+
+    from .models import ZohoMailConfig
+    config = ZohoMailConfig.load()
+    service = ZohoMailService(config=config)
+
+    redirect_uri = request.build_absolute_uri(reverse('admin_panel:support_oauth_callback'))
+    ctx['redirect_uri'] = redirect_uri
+    ctx['config'] = config
+    ctx['service'] = service
+
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        if action == 'save_keys':
+            config.client_id = request.POST.get('client_id', '').strip()
+            config.client_secret = request.POST.get('client_secret', '').strip()
+            config.support_email = request.POST.get('support_email', '').strip() or 'support@ta3alm.online'
+            refresh_token = request.POST.get('refresh_token', '').strip()
+            if refresh_token:
+                config.refresh_token = refresh_token
+            config.save()
+            messages.success(request, "تم حفظ الإعدادات بنجاح.")
+            return redirect('admin_panel:support_settings')
+        elif action == 'disconnect':
+            config.refresh_token = ''
+            config.access_token = ''
+            config.account_id = ''
+            config.token_expires_at = None
+            config.save()
+            messages.info(request, "تم قطع الاتصال بـ Zoho Mail.")
+            return redirect('admin_panel:support_settings')
+
+    return render(request, 'admin_panel/support_settings.html', ctx)
+
+
+@admin_required
+def support_oauth_connect(request):
+    """بدء جلسة المصادقة السريعة عبر OAuth 2.0 في Zoho"""
+    service = ZohoMailService()
+    if not service.client_id:
+        messages.error(request, "يرجى إدخال Client ID أولاً في الإعدادات قبل بدء الربط.")
+        return redirect('admin_panel:support_settings')
+
+    redirect_uri = request.build_absolute_uri(reverse('admin_panel:support_oauth_callback'))
+    auth_url = service.get_authorization_url(redirect_uri=redirect_uri)
+    return redirect(auth_url)
+
+
+@admin_required
+def support_oauth_callback(request):
+    """استقبال الكود من Zoho وحفظ التوكنات تلقائياً"""
+    error = request.GET.get('error')
+    if error:
+        messages.error(request, f"تم رفض التخويل من Zoho أو حدث خطأ: {error}")
+        return redirect('admin_panel:support_settings')
+
+    code = request.GET.get('code')
+    if not code:
+        messages.error(request, "لم يتم استلام كود التخويل من Zoho.")
+        return redirect('admin_panel:support_settings')
+
+    service = ZohoMailService()
+    redirect_uri = request.build_absolute_uri(reverse('admin_panel:support_oauth_callback'))
+    try:
+        service.exchange_code(code=code, redirect_uri=redirect_uri)
+        messages.success(request, "تم ربط بريد Zoho Mail بنجاح! يمكنك الآن إدارة الرسائل والرد عليها مباشرة.")
+        return redirect('admin_panel:support_inbox')
+    except Exception as e:
+        messages.error(request, str(e))
+        return redirect('admin_panel:support_settings')
+

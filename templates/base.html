@@ -4,6 +4,7 @@
 
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_CODE == 'ar' %}rtl{% else %}ltr{% endif %}">
+
 <head>
     <!-- الأساسيات -->
     <meta charset="UTF-8">
@@ -11,46 +12,65 @@
     <link rel="icon" href="{% static 'images/favicon.png' %}" type="image/png">
     <!-- العنوان المتغير -->
     <title>{% block meta_title %}منصة تعلّم | أقوى منصة تعليمية في مصر{% endblock %}</title>
-    
+
     <!-- الوصف المتغير (مهم جداً لجوجل) -->
-    <meta name="description" content="{% block meta_description %}منصة تعلّم هي وجهتك الأولى للثانوية العامة. دروس أونلاين، امتحانات إلكترونية، ومتابعة مع أفضل المدرسين في مصر.{% endblock %}">
-    
+    <meta name="description"
+        content="{% block meta_description %}منصة تعلّم هي وجهتك الأولى للثانوية العامة. دروس أونلاين، امتحانات إلكترونية، ومتابعة مع أفضل المدرسين في مصر.{% endblock %}">
+
     <!-- الكلمات الدلالية (Keywords) -->
-    <meta name="keywords" content="ثانوية عامة, تعليم اونلاين, منصة تعليمية, امتحانات الكترونية, {% block meta_keywords %}{% endblock %}">
+    <meta name="keywords"
+        content="ثانوية عامة, تعليم اونلاين, منصة تعليمية, امتحانات الكترونية, {% block meta_keywords %}{% endblock %}">
 
     <!-- Open Graph (عشان لما تشير اللينك على فيسبوك وواتساب يظهر بشكل حلو) -->
     <meta property="og:title" content="{% block og_title %}منصة تعلّم التعليمية{% endblock %}">
     <meta property="og:description" content="{% block og_description %}سجل الآن وابدأ رحلة التفوق.{% endblock %}">
-    <meta property="og:image" content="{% block og_image %}https://ta3alm.online/static/images/logo_share.png{% endblock %}">
+    <meta property="og:image"
+        content="{% block og_image %}https://ta3alm.online/static/images/logo_share.png{% endblock %}">
     <meta property="og:url" content="{{ request.build_absolute_uri }}">
     <meta property="og:type" content="website">
-    <meta property="og:locale" content="ar_EG"> <!-- استهداف مصر -->    
+    <meta property="og:locale" content="ar_EG"> <!-- استهداف مصر -->
     <title>{% trans "منصة تعلّم" %} | {% block title %}{% endblock %}</title>
 
     <!-- CSS -->
     {% if LANGUAGE_CODE == 'ar' %}
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
-        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-        <style>body { font-family: 'Cairo', sans-serif; }</style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+    </style>
     {% else %}
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
-        <style>body { font-family: 'Roboto', sans-serif; }</style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
     {% endif %}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
-        body { display: flex; flex-direction: column; min-height: 100vh; background-color: #f8f9fa; }
-        main { flex: 1; }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-color: #f8f9fa;
+        }
+
+        main {
+            flex: 1;
+        }
 
         /* الناف بار العلوي */
         .top-navbar {
             background-color: #800000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             padding: 10px 0;
             z-index: 1030;
         }
-        
+
         .brand-logo {
             color: #FFD700 !important;
             font-weight: 800;
@@ -61,51 +81,210 @@
 
         .menu-btn {
             color: white;
-            border: 1px solid rgba(255,255,255,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 8px;
             padding: 5px 12px;
             transition: all 0.3s;
         }
-        .menu-btn:hover { background-color: rgba(255,255,255,0.1); border-color: white; }
+
+        .menu-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: white;
+        }
 
         /* القائمة الجانبية */
-        .sidebar-header { background-color: #800000; color: white; }
+        .sidebar-header {
+            background-color: #800000;
+            color: white;
+        }
+
         .sidebar-link {
-            display: flex; align-items: center; padding: 12px 20px;
-            color: #333; text-decoration: none; font-weight: 600;
-            border-radius: 8px; margin-bottom: 5px; transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            transition: all 0.2s;
         }
-        .sidebar-link:hover, .sidebar-link.active {
-            background-color: #f0f0f0; color: #800000; transform: translateX(5px);
+
+        .sidebar-link:hover,
+        .sidebar-link.active {
+            background-color: #f0f0f0;
+            color: #800000;
+            transform: translateX(5px);
         }
-        .sidebar-link i { font-size: 1.2rem; margin-inline-end: 15px; color: #800000; }
+
+        .sidebar-link i {
+            font-size: 1.2rem;
+            margin-inline-end: 15px;
+            color: #800000;
+        }
 
         /* الفوتر والوضع الليلي */
-        .hover-glow:hover { background-color: rgba(255, 255, 255, 0.2) !important; transform: translateY(-2px); transition: all 0.3s ease; }
-        .code-font { font-family: 'Courier New', monospace; letter-spacing: 1px; }
-        
-        body.dark-mode { background-color: #121212 !important; color: #e0e0e0 !important; }
-        body.dark-mode .sidebar-link { color: #ccc; }
-        body.dark-mode .sidebar-link:hover { background-color: #333; color: #FFD700; }
-        body.dark-mode .offcanvas, body.dark-mode .card, body.dark-mode .list-group-item { background-color: #1e1e1e; border-color: #333; }
+        .hover-glow:hover {
+            background-color: rgba(255, 255, 255, 0.2) !important;
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+
+        .code-font {
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+
+        body.dark-mode {
+            background-color: #121212 !important;
+            color: #e0e0e0 !important;
+        }
+
+        body.dark-mode .sidebar-link {
+            color: #ccc;
+        }
+
+        body.dark-mode .sidebar-link:hover {
+            background-color: #333;
+            color: #FFD700;
+        }
+
+        body.dark-mode .offcanvas,
+        body.dark-mode .card,
+        body.dark-mode .list-group-item {
+            background-color: #1e1e1e;
+            border-color: #333;
+        }
+
         /* إضافة جديدة لمنع انضغاط النصوص */
         .nowrap-text {
-            white-space: nowrap; /* يمنع النص من الانقسام لسطرين */
+            white-space: nowrap;
+            /* يمنع النص من الانقسام لسطرين */
         }
 
         @media (max-width: 576px) {
+
             /* تصغير الخط في الموبايل فقط ليتسع المكان */
-            .brand-logo { font-size: 1.2rem; } 
-            .mobile-small-text { font-size: 0.75rem !important; padding: 4px 8px !important; }
-        }    
+            .brand-logo {
+                font-size: 1.2rem;
+            }
+
+        /* Modern SaaS Footer Styles */
+        .site-footer {
+            background: linear-gradient(180deg, #520000 0%, #2f0000 50%, #170000 100%);
+            color: #f1f5f9;
+            border-top: 3px solid #FFD700;
+            position: relative;
+        }
+        .site-footer .footer-title {
+            color: #ffffff;
+            font-size: 1.05rem;
+            font-weight: 800;
+            margin-bottom: 1.2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        .site-footer .footer-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 32px;
+            height: 3px;
+            background-color: #FFD700;
+            border-radius: 2px;
+        }
+        [dir="ltr"] .site-footer .footer-title::after {
+            right: auto;
+            left: 0;
+        }
+        .site-footer .footer-link {
+            color: rgba(255, 255, 255, 0.75);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.92rem;
+            margin-bottom: 0.7rem;
+            transition: all 0.25s ease;
+        }
+        .site-footer .footer-link:hover {
+            color: #FFD700;
+            transform: translateX(-4px);
+        }
+        [dir="ltr"] .site-footer .footer-link:hover {
+            transform: translateX(4px);
+        }
+        .site-footer .social-pill {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        .site-footer .social-pill:hover {
+            background: #FFD700;
+            color: #520000;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(255, 215, 0, 0.35);
+        }
+        .site-footer .support-card {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 14px;
+            padding: 1rem;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+        .site-footer .support-card:hover {
+            border-color: rgba(255, 215, 0, 0.65);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+        }
+        .site-footer .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.78rem;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            color: #34d399;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .site-footer .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px #10b981;
+        }
+        .site-footer .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.25rem;
+            padding-bottom: 1.25rem;
+        }
+        body.dark-mode .site-footer {
+            background: linear-gradient(180deg, #1e0505 0%, #120202 50%, #0a0101 100%);
+            border-top-color: #d4af37;
+        }
     </style>
 </head>
+
 <body>
 
     <!-- 1. الناف بار العلوي -->
     <nav class="top-navbar sticky-top">
         <div class="container d-flex justify-content-between align-items-center">
-            
+
             <div class="d-flex align-items-center gap-3">
                 <!-- أ) زر القائمة -->
                 <button class="btn menu-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu">
@@ -119,17 +298,19 @@
             <div class="d-flex align-items-center gap-2">
                 <!-- ج) زر تواصل معنا (واتساب) -->
                 <!-- أزلنا d-none ليظهر النص دائماً، وأضفنا nowrap-text -->
-                <a href="https://wa.me/+201507200894" target="_blank" class="btn btn-sm btn-outline-warning text-white fw-bold d-flex align-items-center rounded-pill px-3 mobile-small-text nowrap-text">
-                    <i class="bi bi-whatsapp me-1"></i> 
+                <a href="https://wa.me/+201507200894" target="_blank"
+                    class="btn btn-sm btn-outline-warning text-white fw-bold d-flex align-items-center rounded-pill px-3 mobile-small-text nowrap-text">
+                    <i class="bi bi-whatsapp me-1"></i>
                     <span>{% trans "تواصل معنا" %}</span>
                 </a>
 
                 <!-- د) الترحيب -->
                 {% if user.is_authenticated %}
-                    <!-- جعلناه يظهر في الشاشات الصغيرة (sm) ويختفي فقط في الموبايلات الضيقة جداً جداً -->
-                    <div class="text-white d-none d-sm-block fw-bold border-start border-white ps-2 ms-1 mobile-small-text nowrap-text">
-                        {% trans "مرحباً،" %} <span class="text-warning">{{ user.first_name }}</span>
-                    </div>
+                <!-- جعلناه يظهر في الشاشات الصغيرة (sm) ويختفي فقط في الموبايلات الضيقة جداً جداً -->
+                <div
+                    class="text-white d-none d-sm-block fw-bold border-start border-white ps-2 ms-1 mobile-small-text nowrap-text">
+                    {% trans "مرحباً،" %} <span class="text-warning">{{ user.first_name }}</span>
+                </div>
                 {% endif %}
             </div>
 
@@ -137,14 +318,15 @@
     </nav>
 
     <!-- 2. القائمة الجانبية (Sidebar) -->
-    <div class="offcanvas {% if LANGUAGE_CODE == 'ar' %}offcanvas-end{% else %}offcanvas-start{% endif %}" tabindex="-1" id="sidebarMenu">
+    <div class="offcanvas {% if LANGUAGE_CODE == 'ar' %}offcanvas-end{% else %}offcanvas-start{% endif %}" tabindex="-1"
+        id="sidebarMenu">
         <div class="offcanvas-header sidebar-header">
             <h5 class="offcanvas-title fw-bold">
                 {% if user.is_authenticated %}
-                    {{ user.first_name }} {{ user.last_name }}
-                    <br><small class="opacity-75 fs-6">{{ user.get_role_display }}</small>
+                {{ user.first_name }} {{ user.last_name }}
+                <br><small class="opacity-75 fs-6">{{ user.get_role_display }}</small>
                 {% else %}
-                    {% trans "القائمة الرئيسية" %}
+                {% trans "القائمة الرئيسية" %}
                 {% endif %}
             </h5>
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
@@ -152,80 +334,98 @@
 
         <div class="offcanvas-body">
             {% if user.is_authenticated %}
-                <!-- روابط لوحة التحكم حسب الدور -->
-                {% if user.role == 'teacher' %}
-                    <a href="{% url 'teacher_dashboard' %}" class="sidebar-link"><i class="bi bi-speedometer2"></i> {% trans "لوحة المعلم" %}</a>
-                    <a href="{% url 'teacher_packages' %}" class="sidebar-link"><i class="bi bi-box-seam"></i> {% trans "إدارة الحزم" %}</a>
-                    <a href="{% url 'manage_assistants' %}" class="sidebar-link"><i class="bi bi-people"></i> {% trans "المساعدين" %}</a>
-                    <a href="{% url 'teacher_wallet' %}" class="sidebar-link"><i class="bi bi-wallet2"></i> {% trans "المحفظة" %}</a>
-                    <a href="{% url 'subscription_info' %}" class="sidebar-link"><i class="bi bi-star"></i> {% trans "الاشتراك" %}</a>
-                    <a href="{% url 'teacher_settings' %}" class="sidebar-link"><i class="bi bi-gear"></i> {% trans "الملف الشخصي" %}</a>
-                
-                {% elif user.role == 'student' %}
-                    <a href="{% url 'student_dashboard' %}" class="sidebar-link"><i class="bi bi-speedometer2"></i> {% trans "لوحة الطالب" %}</a>
-                    <a href="{% url 'search_groups' %}" class="sidebar-link"><i class="bi bi-search"></i> {% trans "بحث عن مدرس" %}</a>
-                    <a href="{% url 'list_packages' %}" class="sidebar-link"><i class="bi bi-shop"></i> {% trans "تصفح الكورسات" %}</a>
-                    <a href="{% url 'student_settings' %}" class="sidebar-link"><i class="bi bi-person-gear"></i> {% trans "بياناتي" %}</a>
-                
-                {% elif user.role == 'assistant' %}
-                    <a href="{% url 'assistant_dashboard' %}" class="sidebar-link"><i class="bi bi-speedometer2"></i> {% trans "لوحة المساعد" %}</a>
-                    <a href="{% url 'find_teacher' %}" class="sidebar-link"><i class="bi bi-briefcase"></i> {% trans "بحث عن عمل" %}</a>
-                
-                {% elif user.is_superuser %}
-                    <a href="{% url 'admin_panel:dashboard' %}" class="sidebar-link"><i class="bi bi-shield-lock"></i> {% trans "لوحة المالك" %}</a>
-                {% endif %}
-                <!-- ... (بعد روابط المستخدمين وقبل الـ hr) ... -->
+            <!-- روابط لوحة التحكم حسب الدور -->
+            {% if user.role == 'teacher' %}
+            <a href="{% url 'teacher_dashboard' %}" class="sidebar-link"><i class="bi bi-speedometer2"></i> {% trans
+                "لوحة المعلم" %}</a>
+            <a href="{% url 'teacher_packages' %}" class="sidebar-link"><i class="bi bi-box-seam"></i> {% trans "إدارة
+                الحزم" %}</a>
+            <a href="{% url 'manage_assistants' %}" class="sidebar-link"><i class="bi bi-people"></i> {% trans
+                "المساعدين" %}</a>
+            <a href="{% url 'teacher_wallet' %}" class="sidebar-link"><i class="bi bi-wallet2"></i> {% trans "المحفظة"
+                %}</a>
+            <a href="{% url 'subscription_info' %}" class="sidebar-link"><i class="bi bi-star"></i> {% trans "الاشتراك"
+                %}</a>
+            <a href="{% url 'teacher_settings' %}" class="sidebar-link"><i class="bi bi-gear"></i> {% trans "الملف
+                الشخصي" %}</a>
 
-                <!-- رابط الدليل (للجميع) -->
-                <a href="{% url 'platform_guide' %}" class="sidebar-link mt-2">
-                    <i class="bi bi-info-circle-fill text-primary"></i> {% trans "دليل المنصة" %}
-                </a>
+            {% elif user.role == 'student' %}
+            <a href="{% url 'student_dashboard' %}" class="sidebar-link"><i class="bi bi-speedometer2"></i> {% trans
+                "لوحة الطالب" %}</a>
+            <a href="{% url 'search_groups' %}" class="sidebar-link"><i class="bi bi-search"></i> {% trans "بحث عن مدرس"
+                %}</a>
+            <a href="{% url 'list_packages' %}" class="sidebar-link"><i class="bi bi-shop"></i> {% trans "تصفح الكورسات"
+                %}</a>
+            <a href="{% url 'student_settings' %}" class="sidebar-link"><i class="bi bi-person-gear"></i> {% trans
+                "بياناتي" %}</a>
+
+            {% elif user.role == 'assistant' %}
+            <a href="{% url 'assistant_dashboard' %}" class="sidebar-link"><i class="bi bi-speedometer2"></i> {% trans
+                "لوحة المساعد" %}</a>
+            <a href="{% url 'find_teacher' %}" class="sidebar-link"><i class="bi bi-briefcase"></i> {% trans "بحث عن
+                عمل" %}</a>
+
+            {% elif user.is_superuser %}
+            <a href="{% url 'admin_panel:dashboard' %}" class="sidebar-link"><i class="bi bi-shield-lock"></i> {% trans
+                "لوحة المالك" %}</a>
+            {% endif %}
+            <!-- ... (بعد روابط المستخدمين وقبل الـ hr) ... -->
+
+            <!-- رابط الدليل (للجميع) -->
+            <a href="{% url 'platform_guide' %}" class="sidebar-link mt-2">
+                <i class="bi bi-info-circle-fill text-primary"></i> {% trans "دليل المنصة" %}
+            </a>
 
             <hr class="my-3">
-            
-            <h6 class="text-muted small fw-bold px-3 mb-2">{% trans "الإعدادات العامة" %}</h6>
-                <hr class="my-3">
-                
-                <!-- الإشعارات -->
-                <a href="{% url 'all_notifications' %}" class="sidebar-link d-flex justify-content-between">
-                    <span><i class="bi bi-bell"></i> {% trans "الإشعارات" %}</span>
-                    {% if unread_count > 0 %}
-                        <span class="badge bg-danger rounded-pill">{{ unread_count }}</span>
-                    {% endif %}
-                </a>
 
-                <!-- الخروج -->
-                <form method="post" action="{% url 'account_logout' %}">
-                    {% csrf_token %}
-                    <button type="submit" class="sidebar-link w-100 text-start border-0 bg-transparent text-danger">
-                        <i class="bi bi-box-arrow-right text-danger"></i> {% trans "تسجيل الخروج" %}
-                    </button>
-                </form>
+            <h6 class="text-muted small fw-bold px-3 mb-2">{% trans "الإعدادات العامة" %}</h6>
+            <hr class="my-3">
+
+            <!-- الإشعارات -->
+            <a href="{% url 'all_notifications' %}" class="sidebar-link d-flex justify-content-between">
+                <span><i class="bi bi-bell"></i> {% trans "الإشعارات" %}</span>
+                {% if unread_count > 0 %}
+                <span class="badge bg-danger rounded-pill">{{ unread_count }}</span>
+                {% endif %}
+            </a>
+
+            <!-- الخروج -->
+            <form method="post" action="{% url 'account_logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="sidebar-link w-100 text-start border-0 bg-transparent text-danger">
+                    <i class="bi bi-box-arrow-right text-danger"></i> {% trans "تسجيل الخروج" %}
+                </button>
+            </form>
 
             {% else %}
-                <a href="{% url 'home' %}" class="sidebar-link"><i class="bi bi-house"></i> {% trans "الرئيسية" %}</a>
-                <a href="{% url 'account_login' %}" class="sidebar-link"><i class="bi bi-box-arrow-in-right"></i> {% trans "تسجيل الدخول" %}</a>
-                <a href="{% url 'account_signup' %}" class="sidebar-link"><i class="bi bi-person-plus"></i> {% trans "إنشاء حساب" %}</a>
+            <a href="{% url 'home' %}" class="sidebar-link"><i class="bi bi-house"></i> {% trans "الرئيسية" %}</a>
+            <a href="{% url 'account_login' %}" class="sidebar-link"><i class="bi bi-box-arrow-in-right"></i> {% trans
+                "تسجيل الدخول" %}</a>
+            <a href="{% url 'account_signup' %}" class="sidebar-link"><i class="bi bi-person-plus"></i> {% trans "إنشاء
+                حساب" %}</a>
             {% endif %}
 
             <hr class="my-3">
-            
+
             <h6 class="text-muted small fw-bold px-3 mb-2">{% trans "الإعدادات العامة" %}</h6>
-            
+
             <!-- اللغة -->
             <form action="{% url 'set_language' %}" method="post" class="px-3 mb-2">
                 {% csrf_token %}
                 <input name="next" type="hidden" value="{{ request.get_full_path }}">
                 {% if LANGUAGE_CODE == 'ar' %}
-                    <button type="submit" name="language" value="en" class="btn btn-outline-dark btn-sm w-100"><i class="bi bi-translate"></i> English</button>
+                <button type="submit" name="language" value="en" class="btn btn-outline-dark btn-sm w-100"><i
+                        class="bi bi-translate"></i> English</button>
                 {% else %}
-                    <button type="submit" name="language" value="ar" class="btn btn-outline-dark btn-sm w-100"><i class="bi bi-translate"></i> العربية</button>
+                <button type="submit" name="language" value="ar" class="btn btn-outline-dark btn-sm w-100"><i
+                        class="bi bi-translate"></i> العربية</button>
                 {% endif %}
             </form>
 
             <!-- الوضع الليلي -->
             <div class="px-3">
-                <button class="btn btn-outline-secondary btn-sm w-100" id="darkModeSidebar"><i class="bi bi-moon-stars"></i> {% trans "الوضع الليلي" %}</button>
+                <button class="btn btn-outline-secondary btn-sm w-100" id="darkModeSidebar"><i
+                        class="bi bi-moon-stars"></i> {% trans "الوضع الليلي" %}</button>
             </div>
         </div>
     </div>
@@ -233,50 +433,130 @@
     <!-- 3. المحتوى -->
     <main class="py-4">
         {% if messages %}
-            <div class="container">
-                {% for message in messages %}
-                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                {% endfor %}
+        <div class="container">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
+            {% endfor %}
+        </div>
         {% endif %}
         {% block content %}{% endblock %}
     </main>
 
-    <!-- 4. الفوتر (المعدل) -->
-    <footer class="text-white pt-4 pb-3 mt-auto" style="background-color: #600000; border-top: 4px solid #FFD700;">
-        <div class="container text-center">
-            
-            <div class="row justify-content-center align-items-center mb-3">
-                <div class="col-lg-10">
-                    <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-3">
-                        <h6 class="mb-0 fw-bold">
-                            {% trans "جميع الحقوق محفوظة لمنصة" %} <span class="text-warning">Ta3alm</span> &copy; {% now "Y" %}
-                        </h6>
-                        
-                        <span class="d-none d-md-block text-white-50">|</span>
+    <!-- 4. الفوتر العصري الحديث (Modern Footer) -->
+    <footer class="site-footer text-white pt-5 mt-auto">
+        <div class="container">
+            <div class="row g-4 pb-4">
+                <!-- 1. الشعار والرسالة -->
+                <div class="col-lg-4 col-md-6 mb-3">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <span class="d-inline-flex align-items-center justify-content-center bg-warning text-dark rounded-circle shadow-sm" style="width: 38px; height: 38px;">
+                            <i class="bi bi-mortarboard-fill fs-5"></i>
+                        </span>
+                        <h4 class="mb-0 fw-bold brand-logo text-warning" style="letter-spacing: 0.5px;">تَعَلَّم <span class="badge bg-warning bg-opacity-25 text-warning border border-warning border-opacity-25 fs-6 fw-normal ms-1">Ta3alm</span></h4>
+                    </div>
+                    <p class="text-white-50 small mb-3 lh-lg">
+                        المنصة التعليمية الرائدة لربط نخبة المعلمين بالطلاب وأولياء الأمور في مصر والوطن العربي. نقدم بيئة تعليمية ذكية وتفاعلية تواكب متطلبات التفوق الدراسي وبناء المستقبل.
+                    </p>
+                    <div class="mb-3">
+                        <span class="status-badge">
+                            <span class="status-dot"></span>
+                            <span>{% trans "جميع الخدمات تعمل بكفاءة" %}</span>
+                        </span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 pt-1">
+                        <a href="https://wa.me/201021469315" target="_blank" class="social-pill" title="WhatsApp" aria-label="WhatsApp">
+                            <i class="bi bi-whatsapp"></i>
+                        </a>
+                        <a href="mailto:support@ta3alm.online" class="social-pill" title="Support Email" aria-label="Email">
+                            <i class="bi bi-envelope-fill"></i>
+                        </a>
+                        <a href="#" class="social-pill" title="Facebook" aria-label="Facebook">
+                            <i class="bi bi-facebook"></i>
+                        </a>
+                        <a href="#" class="social-pill" title="Telegram" aria-label="Telegram">
+                            <i class="bi bi-telegram"></i>
+                        </a>
+                    </div>
+                </div>
 
-                        <!-- كبسولة الشركة (الرابط هنا) -->
-                        <!-- تأكد من وضع رابط صفحتك بدلاً من # -->
-                        <!-- <a href="https://noveyra.vercel.app/" target="_blank" class="d-flex align-items-center bg-white bg-opacity-10 px-3 py-1 rounded-pill text-decoration-none hover-glow border border-light border-opacity-25">
-                            <span class="small me-2 text-white opacity-75">Powered By</span>
-                            <img src="{% static 'images/noveyra_logo.png' %}" alt="Noveyra" class="img-fluid me-2" style="max-height: 20px;">
-                            <span class="fw-bold text-white" style="letter-spacing: 1px;">NOVEYRA</span>
-                        </a> -->
+                <!-- 2. روابط سريعة -->
+                <div class="col-lg-2 col-md-6 col-6 mb-3">
+                    <h5 class="footer-title">{% trans "روابط سريعة" %}</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="{% url 'home' %}" class="footer-link"><i class="bi bi-chevron-left small text-warning"></i> {% trans "الرئيسية" %}</a></li>
+                        <li><a href="{% url 'home' %}#teachers" class="footer-link"><i class="bi bi-chevron-left small text-warning"></i> {% trans "نخبة المعلمين" %}</a></li>
+                        <li><a href="{% url 'account_login' %}" class="footer-link"><i class="bi bi-chevron-left small text-warning"></i> {% trans "تسجيل الدخول" %}</a></li>
+                        <li><a href="{% url 'account_signup' %}" class="footer-link"><i class="bi bi-chevron-left small text-warning"></i> {% trans "إنشاء حساب جديد" %}</a></li>
+                        <li><a href="{% url 'home' %}#about" class="footer-link"><i class="bi bi-chevron-left small text-warning"></i> {% trans "عن المنصة" %}</a></li>
+                    </ul>
+                </div>
+
+                <!-- 3. المراحل التعليمية -->
+                <div class="col-lg-2 col-md-6 col-6 mb-3">
+                    <h5 class="footer-title">{% trans "المراحل التعليمية" %}</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="{% url 'home' %}" class="footer-link"><i class="bi bi-book small text-warning"></i> {% trans "المرحلة الابتدائية" %}</a></li>
+                        <li><a href="{% url 'home' %}" class="footer-link"><i class="bi bi-journal-text small text-warning"></i> {% trans "المرحلة الإعدادية" %}</a></li>
+                        <li><a href="{% url 'home' %}" class="footer-link"><i class="bi bi-mortarboard small text-warning"></i> {% trans "المرحلة الثانوية" %}</a></li>
+                        <li><a href="{% url 'home' %}" class="footer-link"><i class="bi bi-patch-question small text-warning"></i> {% trans "بنك الامتحانات" %}</a></li>
+                    </ul>
+                </div>
+
+                <!-- 4. الدعم الفني والتواصل الرسمي -->
+                <div class="col-lg-4 col-md-6 mb-3">
+                    <h5 class="footer-title">{% trans "الدعم الفني والتواصل" %}</h5>
+                    <div class="support-card shadow-sm">
+                        <div class="d-flex align-items-center gap-3 mb-2">
+                            <div class="d-flex align-items-center justify-content-center bg-warning bg-opacity-25 text-warning rounded-3 p-2">
+                                <i class="bi bi-envelope-at-fill fs-4"></i>
+                            </div>
+                            <div>
+                                <span class="text-white-50 small d-block">{% trans "البريد الرسمي للدعم والاستفسارات" %}</span>
+                                <a href="mailto:support@ta3alm.online" class="fw-bold text-warning text-decoration-none text-break fs-6" id="supportEmailText">
+                                    support@ta3alm.online
+                                </a>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between pt-2 border-top border-white border-opacity-10">
+                            <span class="text-white-50 small"><i class="bi bi-clock-history me-1"></i> {% trans "رد سريع على مدار اليوم" %}</span>
+                            <button class="btn btn-sm btn-outline-warning py-0 px-2 rounded-pill d-inline-flex align-items-center gap-1" id="copyEmailBtn" onclick="copySupportEmail(this)">
+                                <i class="bi bi-clipboard"></i> <span>{% trans "نسخ" %}</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 p-2 rounded-3 bg-white bg-opacity-10 d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-whatsapp text-success fs-5"></i>
+                            <span class="small text-white">{% trans "محادثة فورية عبر واتساب" %}</span>
+                        </div>
+                        <a href="https://wa.me/201021469315" target="_blank" class="btn btn-sm btn-success rounded-pill px-3 py-1">
+                            {% trans "تواصل الآن" %}
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-12">
-                    <p class="small mb-0 opacity-75 code-font">
-                        Designed & Developed By 
-                        <a href="https://man9000442-hub.github.io/Eng-Abdelrahman-prot/" target="_blank" class="text-warning fw-bold text-decoration-none border-bottom border-warning pb-1">
-                            Abdelrahman Tarek
-                        </a>
-                    </p>
+            <!-- الشريط السفلي (Copyright & Credits) -->
+            <div class="footer-bottom">
+                <div class="row align-items-center gy-3 text-center text-md-start">
+                    <div class="col-md-6 text-md-start text-center">
+                        <p class="small mb-0 text-white-50">
+                            {% trans "جميع الحقوق محفوظة لمنصة" %} <strong class="text-warning">Ta3alm</strong> &copy; {% now "Y" %}
+                        </p>
+                    </div>
+                    <div class="col-md-6 text-md-end text-center">
+                        <p class="small mb-0 text-white-50 code-font">
+                            Designed & Developed By
+                            <a href="https://se-abdulrahman.vercel.app/" target="_blank"
+                                class="text-warning fw-bold text-decoration-none border-bottom border-warning border-opacity-50 pb-1 ms-1 hover-glow">
+                                Abdelrahman Tarek
+                            </a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -289,9 +569,9 @@
         const body = document.body;
         if (localStorage.getItem('theme') === 'dark') {
             body.classList.add('dark-mode');
-            if(toggleBtn) toggleBtn.innerHTML = '<i class="bi bi-sun"></i> {% trans "الوضع النهاري" %}';
+            if (toggleBtn) toggleBtn.innerHTML = '<i class="bi bi-sun"></i> {% trans "الوضع النهاري" %}';
         }
-        if(toggleBtn){
+        if (toggleBtn) {
             toggleBtn.addEventListener('click', () => {
                 body.classList.toggle('dark-mode');
                 if (body.classList.contains('dark-mode')) {
@@ -303,7 +583,26 @@
                 }
             });
         }
+
+        // Copy Support Email Function
+        function copySupportEmail(btn) {
+            const email = "support@ta3alm.online";
+            navigator.clipboard.writeText(email).then(() => {
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="bi bi-check2"></i> <span>{% trans "تم النسخ!" %}</span>';
+                btn.classList.remove('btn-outline-warning');
+                btn.classList.add('btn-warning', 'text-dark');
+                setTimeout(() => {
+                    btn.innerHTML = originalHtml;
+                    btn.classList.remove('btn-warning', 'text-dark');
+                    btn.classList.add('btn-outline-warning');
+                }, 2500);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
     </script>
     {% block extra_js %}{% endblock %}
 </body>
+
 </html>

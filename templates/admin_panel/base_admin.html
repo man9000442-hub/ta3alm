@@ -368,6 +368,19 @@
         </a>
         {% endif %}
 
+        {% if can_manage_support %}
+        <div class="sidebar-section-title">خدمة العملاء والبريد</div>
+        <a href="{% url 'admin_panel:support_inbox' %}"
+           class="sidebar-link {% block nav_support_inbox %}{% endblock %}">
+            <i class="bi bi-envelope-at-fill"></i> بريد الدعم (Zoho)
+            {% if zoho_connected %}
+            <span class="badge-dot" style="background:#00d26a;" title="متصل"></span>
+            {% else %}
+            <span class="badge-dot" style="background:#e94560;" title="غير متصل"></span>
+            {% endif %}
+        </a>
+        {% endif %}
+
         {% if can_view_finance %}
         <div class="sidebar-section-title">المالية</div>
         <a href="{% url 'admin_panel:finance_report' %}"

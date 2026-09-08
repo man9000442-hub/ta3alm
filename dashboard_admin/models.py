@@ -106,6 +106,8 @@ class AuditLog(models.Model):
     ACTION_TOGGLE_AI     = 'toggle_ai'
     ACTION_APPOINT_ADMIN = 'appoint_admin'
     ACTION_REMOVE_ADMIN  = 'remove_admin'
+    ACTION_ZOHO_REPLY    = 'zoho_reply'
+    ACTION_ZOHO_COMPOSE  = 'zoho_compose'
 
     ACTION_CHOICES = [
         (ACTION_BAN,           _('حظر مستخدم')),
@@ -121,6 +123,8 @@ class AuditLog(models.Model):
         (ACTION_TOGGLE_AI,     _('تشغيل/إيقاف الذكاء الاصطناعي')),
         (ACTION_APPOINT_ADMIN, _('تعيين مسؤول')),
         (ACTION_REMOVE_ADMIN,  _('إزالة مسؤول')),
+        (ACTION_ZOHO_REPLY,    _('رد على بريد إلكتروني (Zoho)')),
+        (ACTION_ZOHO_COMPOSE,  _('إرسال بريد جديد (Zoho)')),
     ]
 
     admin = models.ForeignKey(
@@ -186,3 +190,113 @@ class AuditLog(models.Model):
             details=details or {},
             ip_address=ip or None,
         )
+
+
+# ==========================================================
+# إعدادات Zoho Mail REST API (OAuth 2.0)
+# ==========================================================
+class ZohoMailConfig(models.Model):
+    """
+    إعدادات وحساب الربط مع Zoho Mail REST API (OAuth 2.0)
+    تعتمد على Singleton Pattern بحيث يكون هناك سجل واحد دائمًا (pk=1)
+    مع إمكانية القراءة من متغيرات البيئة (.env) كقيم افتراضية.
+    """
+    client_id = models.CharField(
+        max_length=255, blank=True,
+        verbose_name=_('Client ID'),
+        help_text=_('معرف العميل من Zoho Developer Console')
+    )
+    client_secret = models.CharField(
+        max_length=255, blank=True,
+        verbose_name=_('Client Secret'),
+        help_text=_('الرمز السري للعميل من Zoho Developer Console')
+    )
+    refresh_token = models.TextField(
+        blank=True,
+        verbose_name=_('Refresh Token'),
+        help_text=_('توكن التجديد الدائم المستلم عبر OAuth 2.0')
+    )
+    access_token = models.TextField(
+        blank=True,
+        verbose_name=_('Access Token الحالي'),
+        help_text=_('التوكن المؤقت المستخدم حالياً في استدعاءات REST API')
+    )
+    token_expires_at = models.DateTimeField(
+        null=True, blank=True,
+        verbose_name=_('تاريخ انتهاء Access Token')
+    )
+    account_id = models.CharField(
+        max_length=100, blank=True,
+        verbose_name=_('Account ID'),
+        help_text=_('معرف حساب البريد في Zoho (يتم جلبه تلقائياً)')
+    )
+    support_email = models.EmailField(
+        default='support@ta3alm.online',
+        verbose_name=_('البريد المعتمد للدعم'),
+        help_text=_('البريد المستخدم للإرسال والاستقبال')
+    )
+    zoho_accounts_url = models.CharField(
+        max_length=255,
+        default='https://accounts.zoho.com',
+        verbose_name=_('رابط المصادقة لـ Zoho Accounts'),
+        help_text=_('حسب نطاق السيرفر الجغرافي (مثل https://accounts.zoho.com أو .eu)')
+    )
+    zoho_api_url = models.CharField(
+        max_length=255,
+        default='https://mail.zoho.com/api',
+        verbose_name=_('رابط الـ API الأساسي لـ Zoho Mail'),
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name=_('مفعل')
+    )
+    last_synced_at = models.DateTimeField(
+        null=True, blank=True,
+        verbose_name=_('آخر وقت مزامنة')
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _('إعدادات Zoho Mail')
+        verbose_name_plural = _('إعدادات Zoho Mail')
+
+    def __str__(self):
+        return f"إعدادات Zoho Mail ({self.get_effective_support_email()})"
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def load(cls):
+        import os
+        obj, _ = cls.objects.get_or_create(pk=1)
+        return obj
+
+    def get_effective_client_id(self):
+        import os
+        return (self.client_id or os.environ.get('ZOHO_CLIENT_ID', '')).strip()
+
+    def get_effective_client_secret(self):
+        import os
+        return (self.client_secret or os.environ.get('ZOHO_CLIENT_SECRET', '')).strip()
+
+    def get_effective_refresh_token(self):
+        import os
+        return (self.refresh_token or os.environ.get('ZOHO_REFRESH_TOKEN', '')).strip()
+
+    def get_effective_account_id(self):
+        import os
+        return (self.account_id or os.environ.get('ZOHO_ACCOUNT_ID', '')).strip()
+
+    def get_effective_support_email(self):
+        import os
+        return (self.support_email or os.environ.get('ZOHO_SUPPORT_EMAIL', 'support@ta3alm.online')).strip()
+
+    def is_configured(self):
+        return bool(self.get_effective_client_id() and self.get_effective_client_secret())
+
+    def is_connected(self):
+        return bool(self.is_configured() and self.get_effective_refresh_token())
+

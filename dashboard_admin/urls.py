@@ -37,4 +37,13 @@ urlpatterns = [
     path('curriculum/add/',     views.curriculum_unit_create, name='curriculum_unit_create'),
     path('curriculum/edit/<int:unit_id>/', views.curriculum_unit_edit, name='curriculum_unit_edit'),
     path('curriculum/delete/<int:unit_id>/', views.curriculum_unit_delete, name='curriculum_unit_delete'),
+
+    # خدمة العملاء وبريد الدعم (Zoho Mail REST API)
+    path('support-inbox/',                 views.support_inbox,          name='support_inbox'),
+    path('support-inbox/message/<str:message_id>/', views.support_message_detail, name='support_message_detail'),
+    path('support-inbox/reply/',           views.support_send_reply,     name='support_send_reply'),
+    path('support-inbox/compose/',         views.support_compose,        name='support_compose'),
+    path('support-inbox/settings/',        views.support_settings,       name='support_settings'),
+    path('support-inbox/oauth-connect/',   views.support_oauth_connect,  name='support_oauth_connect'),
+    path('support-inbox/oauth2callback/',  views.support_oauth_callback, name='support_oauth_callback'),
 ]

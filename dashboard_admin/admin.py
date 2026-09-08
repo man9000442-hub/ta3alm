@@ -23,3 +23,17 @@ class AuditLogAdmin(admin.ModelAdmin):
 
     def has_change_permission(self, request, obj=None):
         return False
+
+
+from .models import ZohoMailConfig
+
+@admin.register(ZohoMailConfig)
+class ZohoMailConfigAdmin(admin.ModelAdmin):
+    list_display = ['support_email', 'account_id', 'is_active', 'last_synced_at', 'updated_at']
+    fields = [
+        'support_email', 'client_id', 'client_secret', 'refresh_token',
+        'account_id', 'zoho_accounts_url', 'zoho_api_url', 'is_active',
+        'access_token', 'token_expires_at', 'last_synced_at'
+    ]
+    readonly_fields = ['access_token', 'token_expires_at', 'last_synced_at']
+
