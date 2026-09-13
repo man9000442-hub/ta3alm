@@ -1,4 +1,4 @@
-"""
+﻿"""
 core/views.py — الصفحات العامة للمنصة
 (تم نقل كل views الإدارة إلى dashboard_admin/views.py)
 """
@@ -194,3 +194,12 @@ def ajax_get_lessons(request):
         data.append(unit_data)
 
     return JsonResponse({'units': data})
+
+# ==========================================================
+# 9. صفحة الباقات العامة (Public Pricing Page)
+# ==========================================================
+from teachers.models import SubscriptionPlan
+
+def public_plans(request):
+    plans = SubscriptionPlan.objects.all().order_by('price')
+    return render(request, 'core/public_plans.html', {'plans': plans})
